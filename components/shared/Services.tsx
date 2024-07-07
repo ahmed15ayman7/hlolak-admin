@@ -1,9 +1,9 @@
 import Link from 'next/link';
 const Services = ({img,title,subTitle,link,desc}:{img:string,title:string,subTitle:string,link:string,desc:string}) => {
 return (
-    <section className="mt-10 text-gray-700 body-font">
-      <div className="mx-4 container px-5 py-24 shadow-xl bg-white rounded-lg ">
-        <div className="lg:flex flex-nowrap -mt-4">
+    <section className="mt-10  text-gray-700 body-font">
+      <div className="mx-4  container px-5 py-24 shadow-xl bg-white rounded-lg ">
+        <div className="lg:flex  flex-nowrap -mt-4">
           <div className="flex h-auto lg:w-3/6 xl:w-3/6 2xl:w-3/6 rounded-lg shadow-md p-2 m-4" data-aos="fade-up">
             <img
               className="w-full"

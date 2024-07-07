@@ -7,7 +7,7 @@ const ServicesSection: React.FC = () => {
         <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
           <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">خدماتنا</h1>
           <p className="lg:w-1/2 xl:w-1/2 w-full leading-relaxed text-base">
-            حلول تمويلية تمكنك من امتلاك بيت العمر بكل يسر وسهولة.
+            Lorem ipsum dolor sit amet consectetur adipisicing.
           </p>
         </div>
         <div className="flex flex-wrap sm:-m-4 -mb-10 -mt-4">

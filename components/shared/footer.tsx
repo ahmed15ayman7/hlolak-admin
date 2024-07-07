@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
           </div>
           <div className="flex flex-wrap items-center justify-center w-full">
             <p className="break-words w-full">
-              الرياض - حي العليا - مركز النمر 1 - الدور السادس مكتب رقم 608
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, voluptates.
             </p>
             <a href="tel:920013474" className="w-full">
               <span className="mt-2  bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300 flex items-center ">
@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
                     d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"
                   />
                 </svg>
-                للاستفسار 920013474
+                للاستفسار [number]
               </span>
             </a>
             <a
@@ -76,13 +76,13 @@ const Footer: React.FC = () => {
             اعتماد الشركة من الهيئة العامة للعقار
           </div>
           <span className=" md:flex-row max-w-6xl justify-center mt-2  lg:-mr-10 xl:-mr-10 2xl:-mr-10 bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 py-0.5 rounded dark:bg-gray-700 dark:text-yellow-300 border border-yellow-300 flex items-center px-2">
-            120018965
+            [number]
           </span>
           <div className="text-lg md:flex-row max-w-6xl my-1 text-gray-700 lg:-mr-10 xl:-mr-10 2xl:-mr-10">
             ساعات العمل
           </div>
           <span className=" justify-center mt-2 lg:-mr-10 xl:-mr-10 2xl:-mr-10  bg-blue-100  text-blue-800 text-xs font-medium mr-2 py-0.5 rounded dark:bg-gray-700 dark:text-blue-500 border border-blue-500 flex items-center px-2">
-            9:30 - - 5:30
+            [start time] - - [end time]
           </span>
         </div>
       </div>

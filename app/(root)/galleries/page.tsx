@@ -1,8 +1,11 @@
+import PreviewGallery from '@/components/shared/PreviewGallery'
 import React from 'react'
 
 const Galleries = () => {
   return (
-    <div>galleries</div>
+    <div>
+      <PreviewGallery/>
+    </div>
   )
 }
 
