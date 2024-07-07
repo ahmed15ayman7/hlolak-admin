@@ -75,7 +75,12 @@
     }
   }
 
-
+:root{
+  --bg: #151c2c;
+  --bgSoft: #182237;
+  --text: white;
+  --textSoft: #b7bac1;
+}
 .overlay-background-image {
   width: 100%;
   height: 100%;
@@ -98,4 +103,7 @@
 }
 .btn-blue {
   @apply bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-700 transition-colors;
+}
+.account-form_input {
+  @apply border border-[#1F1F22] bg-[#ffffff] text-[#000000] !important;
 }

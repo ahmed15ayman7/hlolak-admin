@@ -1,0 +1,255 @@
+"use server";
+import { connectDB } from "@/mongoose";
+import { FilterQuery, SortOrder } from "mongoose";
+import { revalidatePath } from "next/cache";
+import User from "../models/user.models";
+import bcrypt from 'bcrypt';
+import { signUpSchema,loginSchema } from '@/lib/validations/authSchemas';
+import { redirect } from "next/navigation";
+
+
+export async function Regester(data: any) {
+        try {
+            connectDB();
+      const { email, password } = signUpSchema.parse(data);
+
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return "Email already in use" ;
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      const newUser = new User({
+        email,
+        password: hashedPassword,
+      });
+
+      await newUser.save();
+
+      return "true"
+    } catch (error:any) {
+      return  `${error.errors}` ;
+    }
+  
+}
+export async function LoginF(data: any) {
+  try {
+    const { email, password } = loginSchema.parse(data);
+    const user = await User.findOne({ email: email});
+    if (!user) {
+      console.log( "Invalid email or password" )
+      return "Invalid email or password" 
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      console.log("Invalid  password")
+      return "Invalid password"
+    }
+
+    console.log( "Login successful")
+    return "Login successful" 
+  } catch (error:any) {
+    console.log(error);
+    return  `${error}` ;
+  }
+  
+}
+
+interface props {
+  userId: string | undefined;
+  email: string | undefined;
+  username: string;
+  name: string;
+  image: string;
+  phone: string;
+  path: string;
+  type:string;
+}
+export interface UserData {
+  _id: string;
+  id: string;
+  username: string;
+  email:string;
+  name: string;
+  image: string;
+  phone: string;
+  onboarding: boolean;
+}
+export interface Result {
+  _id: string|undefined;
+  email: string|undefined;
+  name: string|undefined;
+  image: string|undefined;
+  id: string|undefined;
+  type: string|undefined;
+  phone: string|undefined;
+  
+}
+export async function updateUser({
+  userId,
+  type,
+  email,
+  username,
+  name,
+  image,
+  path,
+  phone,
+}: props): Promise<void> {
+  connectDB();
+  try {
+    await User.findOneAndUpdate(
+       {email:email},
+      {
+        type:type,
+        username: username,
+        name: name,
+        image: image,
+        onboarding: true,
+        phone: phone,
+      },
+      { upsert: true }
+    );
+    console.log("Successfully updated user");
+    if (path.includes("/profile/edit")) {
+      revalidatePath(path);
+    }
+  } catch (error: any) {
+    console.log(`failed to update user: ${error.message}`);
+  }
+}
+export async function fetchUser(email: string | undefined) {
+  try {
+    connectDB();
+    let userInfo: UserData | null = await User.findOne({ email: email })
+
+    if (!userInfo) {
+      console.log("user not found");
+      console.log("found user with id ");
+    }
+    
+    return JSON.stringify( userInfo);
+  } catch (error: any) {
+    console.log(`not found user: ${error.message}`);
+  }
+}
+export async function fetchAllUser({
+  searchString = "",
+  pageNum = 1,
+  pageSize = 20,
+  sortBy = "desc",
+  userId
+}: {
+  searchString: string;
+  userId: string;
+  pageNum: number;
+  pageSize: number;
+  sortBy?: SortOrder;
+}) {
+  try {
+    connectDB();
+    let skipAmount = (pageNum - 1) * pageSize;
+    let regex = new RegExp(searchString, "i");
+    let query: FilterQuery<typeof User> = { _id: { $ne:userId  } };
+    if (searchString.trim() !== "") {
+      query.$or = [
+        { name: { $regex: regex } },
+        { username: { $regex: regex } },
+        { sport: { $regex: regex } },
+      ];
+    }
+    let users = await User.find(query )
+      .sort({ createdAt: "desc" })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .exec();
+    const totalUsers = await User.countDocuments(query);
+    let isNext = +totalUsers > skipAmount + users.length;
+    return { users, isNext };
+  } catch (error: any) {
+    console.log(`not found user: ${error.message}`);
+  }
+}
+export async function fetchUserPosts(userId: string) {
+  connectDB();
+  try {
+    let posts: Result | null = await User.findOne({ id: userId })
+
+    return posts;
+  } catch (error: any) {
+    console.log(`not found user: ${error.message}`);
+  }
+}
+// admin 
+
+export const addUser = async (formData: Iterable<readonly [PropertyKey, any]>) => {
+  const { username, email, password, phone, address, isAdmin, isActive } =
+    Object.fromEntries(formData);
+
+  try {
+    connectDB();
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const newUser = new User({
+      username,
+      email,
+      password: hashedPassword,
+      phone,
+      address,
+      isAdmin,
+      isActive,
+    });
+
+    await newUser.save();
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to create user!");
+  }
+
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
+};
+
+
+
+
+
+
+
+export const deleteUser = async (formData: Iterable<readonly [PropertyKey, any]>) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    connectDB();
+    await User.findByIdAndDelete(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete user!");
+  }
+
+  revalidatePath("/dashboard/products");
+};
+
+
+
+export const fetchUsers = async (q:string, page:number) => {
+  const regex = new RegExp(q, "i");
+
+  const ITEM_PER_PAGE = 2;
+
+  try {
+    connectDB();
+    const count = await User.countDocuments();
+    const users = await User.find({ username: { $regex: regex } })
+      .limit(ITEM_PER_PAGE)
+      .skip(ITEM_PER_PAGE * (page - 1));
+    return { count, users };
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to fetch users!");
+  }
+};
+

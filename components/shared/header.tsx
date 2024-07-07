@@ -14,7 +14,7 @@ const NavBar: React.FC = () => {
     <nav className="bg-white  p-2 shadow-lg rounded-lg sticky top-0 z-50 flex flex-nowrap justify-center items-center">
       <div className="flex justify-between">
         <div className="flex space-x-32 items-center justify-center h-16 w-full">
-          <Link href="/validate_login">
+          <Link href="/sign-in">
             <p className="mt-2 mb-2 p-2 transition-colors rounded-lg shadow-md hover:bg-blue-500 hover:text-white">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
@@ -61,13 +61,13 @@ const NavBar: React.FC = () => {
           <div className="flex items-center justify-center flex-shrink-0">
             <Link href="/">
               <p>
-                <img className="w-32 h-auto" src="/assets/holoolak_company_logo-fbf516f6af84aea561274ece952ac5827d50fe364275bb06c03631114aec8721.svg" alt="Logo" />
+                <img className="w-32 h-auto" src="https://holoolak.com/assets/holoolak_company_logo-fbf516f6af84aea561274ece952ac5827d50fe364275bb06c03631114aec8721.svg" alt="Logo" />
               </p>
             </Link>
           </div>
           <div className="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
             <NavItem href="/" text="الرئيسية" mobile />
-            <NavItem href="/service" text="خدماتنا" mobile />
+            <NavItem href="/services" text="خدماتنا" mobile />
             <NavItem href="/about_us" text="نبذة عنا" mobile />
             <NavItem href="/blog_posts" text="المدونة" mobile />
             <NavItem href="/galleries" text="معرض الصور" mobile />
@@ -92,7 +92,7 @@ type NavItemProps = {
 
     return(
 <Link href={href}>
-    <p className={`h-full flex items-center border-b-4  px-4 py-4 justify-center transition-colors  ${check||(href==='/'&&pathname==='/')?' border-blue-400':'border-transparent'} ${mobile ? 'text-black hover:bg-blue-400 hover:text-white p-2 rounded-lg' : ''}`}>
+    <p className={` flex items-center border-b-4  px-4 py-4 justify-center transition-colors  ${check||(href==='/'&&pathname==='/')?' border-blue-400':'border-transparent'} ${mobile ? ' text-black hover:bg-blue-400 hover:text-white p-2 rounded-lg' : 'h-full'}`}>
       {text}
     </p>
   </Link>
