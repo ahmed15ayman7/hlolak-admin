@@ -14,8 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
 import Image from "next/image";
-import { ChangeEvent, useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
+import { ChangeEvent, useState ,useEffect} from "react";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/uploadthing";
 import { updateUser } from "@/lib/actions/user.actions";
@@ -24,7 +23,9 @@ import { usePathname, useRouter } from "next/navigation";
 
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-
+import {selectUser, setUser } from "@/lib/redux/userSlice";
+import { getUserByRedux } from "@/lib/redux/dispatch";
+import { useDispatch, useSelector } from "react-redux";
 interface props {
   userData: {
     _id: string | undefined;
@@ -37,8 +38,15 @@ interface props {
 }
 
 const AccountProfile = ({ userData }: props) => {
-  let pathname = usePathname();
+  const dispatch = useDispatch();
   let router = useRouter();
+  let path= usePathname()
+  let [disable,SetDis]=useState(false)
+  const user = useSelector(selectUser);
+  useEffect(()=>{
+    getUserByRedux(router,path,user)
+  
+  },[])
   let { startUpload } = useUploadThing("mediaPost");
   const [files, setFiles] = useState<File[]>([]);
   let form = useForm<z.infer<typeof UserValidation>>({
@@ -69,7 +77,8 @@ const AccountProfile = ({ userData }: props) => {
   }
   
   async function onSubmit(values: z.infer<typeof UserValidation>) {
-    let typeUser =values.username.trim().length>5? values.username.trim().slice(-5)==="admin"?"admin":values.username.trim().slice(-8)==="employee"?"employee":"user":"user"
+
+    let typeUser =values.username.trim().length>5? values.username.trim().slice(-5)==="admin"?"admin":"employee":"employee"
     try {
       console.log("Submit update user ");
       const blob = values.profile_photo;
@@ -80,7 +89,7 @@ const AccountProfile = ({ userData }: props) => {
           values.profile_photo = imageRes[0].url;
         }
       }
-         await updateUser({
+       let user=  await updateUser({
           type:typeUser,
           email:userData.email,
             userId: userData._id,
@@ -88,9 +97,10 @@ const AccountProfile = ({ userData }: props) => {
             name: values.name,
             image: values.profile_photo,
             phone: values.phone,
-            path: pathname,
+            path: path,
           })
-      if (pathname.includes("/profile/edit")) {
+          dispatch(setUser(user));
+      if (path.includes("/profile/edit")) {
         console.log("Submit update user ");
         router.back();
       } else {
@@ -98,8 +108,6 @@ const AccountProfile = ({ userData }: props) => {
           router.replace("/dashboard");
         }else if (typeUser==="employee") {
           router.replace("/tasks");
-        }else if (typeUser==="user") {
-          router.replace("/");
         }
       }
     } catch (error: any) {
@@ -212,7 +220,7 @@ const AccountProfile = ({ userData }: props) => {
           )}
           />
         
-        <Button type="submit" className="p-2 w-full bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 ">
+        <Button onClick={()=>{SetDis(true)}} disabled={disable} type="submit" className="p-2 w-full bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 ">
           Submit
         </Button>
       </form>

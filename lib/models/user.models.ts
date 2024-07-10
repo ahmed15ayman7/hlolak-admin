@@ -9,11 +9,6 @@ const userSchema = new mongoose.Schema({
     password:{type:'string', required: true},
     image: {type:'string'},
     onboarding: {type: 'boolean', default: false},
-    messages: [{ type:mongoose.Schema.Types.ObjectId, ref: 'Message' }],
-    rooms: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Room'
-    }],
     updatedAt: {
         type: Date,
         default: Date.now,

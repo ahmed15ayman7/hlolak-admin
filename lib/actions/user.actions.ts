@@ -11,48 +11,49 @@ import { redirect } from "next/navigation";
 export async function Regester(data: any) {
         try {
             connectDB();
-      const { email, password } = signUpSchema.parse(data);
-
-      const existingUser = await User.findOne({ email });
-      if (existingUser) {
-        return "Email already in use" ;
-      }
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      const newUser = new User({
-        email,
-        password: hashedPassword,
-      });
-
-      await newUser.save();
-
-      return "true"
-    } catch (error:any) {
-      return  `${error.errors}` ;
-    }
-  
-}
-export async function LoginF(data: any) {
-  try {
-    const { email, password } = loginSchema.parse(data);
+            const { email, password } = signUpSchema.parse(data);
+            
+            const existingUser = await User.findOne({ email });
+            if (existingUser) {
+              return {message:"Email already in use" };
+            }
+            
+            const hashedPassword = await bcrypt.hash(password, 10);
+            
+            const newUser = new User({
+              email,
+              password: hashedPassword,
+            });
+            
+           let user = await newUser.save();
+            
+            return {message:"true",user:user}
+          } catch (error:any) {
+            return  {message:`${error.errors}` };
+          }
+          
+        }
+        export async function LoginF(data: any) {
+          try {
+            connectDB();
+            const { email, password } = loginSchema.parse(data);
     const user = await User.findOne({ email: email});
     if (!user) {
       console.log( "Invalid email or password" )
-      return "Invalid email or password" 
+      return {message:"Invalid email or password" }
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       console.log("Invalid  password")
-      return "Invalid password"
+      return  {message: "Invalid password"}
     }
-
+    
     console.log( "Login successful")
-    return "Login successful" 
+    return {message:"Login successful",user:user }
   } catch (error:any) {
     console.log(error);
-    return  `${error}` ;
+    return  {message:`${error}`} ;
   }
   
 }
@@ -99,7 +100,7 @@ export async function updateUser({
 }: props): Promise<void> {
   connectDB();
   try {
-    await User.findOneAndUpdate(
+  let user=  await User.findOneAndUpdate(
        {email:email},
       {
         type:type,
@@ -115,6 +116,7 @@ export async function updateUser({
     if (path.includes("/profile/edit")) {
       revalidatePath(path);
     }
+    return user
   } catch (error: any) {
     console.log(`failed to update user: ${error.message}`);
   }
@@ -166,7 +168,7 @@ export async function fetchAllUser({
       .exec();
     const totalUsers = await User.countDocuments(query);
     let isNext = +totalUsers > skipAmount + users.length;
-    return { users, isNext };
+    return {count:totalUsers, users, isNext};
   } catch (error: any) {
     console.log(`not found user: ${error.message}`);
   }
@@ -183,9 +185,7 @@ export async function fetchUserPosts(userId: string) {
 }
 // admin 
 
-export const addUser = async (formData: Iterable<readonly [PropertyKey, any]>) => {
-  const { username, email, password, phone, address, isAdmin, isActive } =
-    Object.fromEntries(formData);
+export const addUser = async ({name, username, email, password, phone, type, image }:{name:string, username:string, email:string, password:string, phone:string, type:string, image:string }) => {
 
   try {
     connectDB();
@@ -198,9 +198,10 @@ export const addUser = async (formData: Iterable<readonly [PropertyKey, any]>) =
       email,
       password: hashedPassword,
       phone,
-      address,
-      isAdmin,
-      isActive,
+      onboarding: true,
+      image,
+      type,
+      name,
     });
 
     await newUser.save();
@@ -241,7 +242,7 @@ export const fetchUsers = async (q:string, page:number) => {
   const ITEM_PER_PAGE = 2;
 
   try {
-    connectDB();
+    await connectDB();
     const count = await User.countDocuments();
     const users = await User.find({ username: { $regex: regex } })
       .limit(ITEM_PER_PAGE)

@@ -2,9 +2,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter } from 'next/navigation';
+import { useRouter,usePathname } from "next/navigation";
 import { loginSchema } from "@/lib/validations/authSchemas";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import {
   Form,
   FormControl,
@@ -16,13 +16,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LoginF } from "@/lib/actions/user.actions";
+import {selectUser, setUser } from "@/lib/redux/userSlice";
+import { getUserByRedux } from "@/lib/redux/dispatch";
+import { useDispatch, useSelector } from "react-redux";
+
+
 type LoginFormValues = {
   email: string;
   password: string;
 };
 
 export default function Login() {
+  const dispatch = useDispatch();
   let router = useRouter();
+  let path= usePathname()
+  const user = useSelector(selectUser);
+  useEffect(()=>{
+    getUserByRedux(router,path,user)
+    
+  },[])
   const [first, setfirst] = useState("");
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -34,11 +46,20 @@ export default function Login() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       let req = await LoginF(data);
-      if (req === "Login successful") {
-        localStorage.setItem("user", JSON.stringify(data));
-        router.replace("/");
+      if (req.message === "Login successful") {
+        localStorage.setItem("user", JSON.stringify(req?.user));
+        dispatch(setUser(req?.user));
+        if(req?.user.type==="admin"){
+          router.replace("/dashboard");
+        }
+        if(req?.user.type==="employee"){
+          router.replace("/work");
+        }
+        if(req?.user.type==="user"){
+          router.replace("/");
+        }
       } else {
-        setfirst(req);
+        setfirst(req.message);
       }
     } catch (error) {
       console.log(error);
@@ -73,7 +94,7 @@ export default function Login() {
                       type="email"
                       {...field}
                       placeholder="email"
-                      className="no-focus  bg-dark-1 text-white"
+                      className="no-focus  bg-dark-1 text-[#000]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -93,7 +114,7 @@ export default function Login() {
                       type="password"
                       {...field}
                       placeholder="password"
-                      className="no-focus bg-dark-1 text-white"
+                      className="no-focus bg-dark-1 text-[#000]"
                     />
                   </FormControl>
                   <FormMessage />

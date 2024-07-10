@@ -1,7 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { signUpSchema } from "@/lib/validations/authSchemas";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Regester } from "@/lib/actions/user.actions";
-import { useRouter } from "next/navigation";
-
+import { usePathname, useRouter } from "next/navigation";
+import {selectUser, setUser } from "@/lib/redux/userSlice";
+import { getUserByRedux } from "@/lib/redux/dispatch";
+import { useDispatch, useSelector } from "react-redux";
 type SignUpFormValues = {
   email: string;
   password: string;
@@ -24,8 +26,14 @@ type SignUpFormValues = {
 };
 
 export default function Register() {
-  const [first, setfirst] = useState("");
   let router = useRouter();
+  let path= usePathname()
+  const user = useSelector(selectUser);
+  useEffect(()=>{
+    getUserByRedux(router,path,user)
+    
+  },[])
+  const [first, setfirst] = useState("");
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -38,12 +46,11 @@ export default function Register() {
   const onSubmit = async (data: SignUpFormValues) => {
     try {
       let req = await Regester(data);
-      if (req === "true") {
-
-        localStorage.setItem("user", JSON.stringify(data));
+      if (req.message === "true") {
+        localStorage.setItem("user", JSON.stringify(req.user));
         router.replace("/onboarding")
       } else {
-        setfirst(req);
+        setfirst(req.message);
       }
     } catch (error) {
       console.log(error);
@@ -79,7 +86,7 @@ export default function Register() {
                       type="email"
                       {...field}
                       placeholder="email"
-                      className="no-focus  bg-dark-1 text-white"
+                      className="no-focus  bg-dark-1 text-[#000]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -100,7 +107,7 @@ export default function Register() {
                       type="password"
                       {...field}
                       placeholder="password"
-                      className="no-focus bg-dark-1 text-white"
+                      className="no-focus bg-dark-1 text-[#000]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -122,7 +129,7 @@ export default function Register() {
                       type="password"
                       {...field}
                       placeholder="confirmPassword"
-                      className="no-focus  bg-dark-1 text-white"
+                      className="no-focus  bg-dark-1 text-[#000]"
                     />
                   </FormControl>
                   <FormMessage />

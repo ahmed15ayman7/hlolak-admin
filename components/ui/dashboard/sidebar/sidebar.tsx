@@ -15,6 +15,8 @@ import {
   MdLogout,
 } from "react-icons/md";
 import { useRouter } from "next/navigation";
+import { setUser } from "@/lib/redux/userSlice";
+import { useDispatch } from 'react-redux';
 
 
 const menuItems = [
@@ -81,6 +83,7 @@ const menuItems = [
 ];
 
 const Sidebar =  () => {
+  const dispatch = useDispatch();
   const router = useRouter();
   return (
     <div className={styles.container}>
@@ -108,11 +111,12 @@ const Sidebar =  () => {
         ))}
       </ul>
 
-        <div className="px-10">
+        <div className="px-5">
               <div className="flex gap-4 cursor-pointer" onClick={e=>{
                 router.replace("/sign-in")
                 let user={login:false}
-                localStorage.setItem("user",JSON.stringify(user))
+                localStorage.removeItem("user");
+                dispatch(setUser(user));
               }}>
                 <Image
                   src="/assets/logout.svg"
@@ -120,7 +124,7 @@ const Sidebar =  () => {
                   width={24}
                   height={24}
                 />
-                <span className=" text-[#fff]  max-lg:hidden">logout</span>
+                <span className=" text-[#fff] hover:text-[#ed143d]  max-lg:hidden">logout</span>
               </div>
             </div>
     </div>

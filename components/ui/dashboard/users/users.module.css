@@ -14,7 +14,7 @@
 .addButton{
   padding: 10px;
   background-color: #5d57c9;
-  color: var(--text);
+  color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -47,7 +47,7 @@
 .button{
   padding: 5px 10px;
   border-radius: 5px;
-  color: var(--text);
+  color: #fff;
   border: none;
   cursor: pointer;
 }
