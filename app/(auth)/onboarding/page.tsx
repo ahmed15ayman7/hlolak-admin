@@ -19,10 +19,10 @@ const Onboarding =  () => {
   const [refrish, setrefrish] = useState<any>(null);
   let navigate =useRouter()
   useEffect(() => {
+    let user=JSON.parse(`${localStorage.getItem('user')}`)
+    if(!user||user?.login===false) navigate.replace("/sign-in")
+      console.log(user.email)
     const fetchData = async () => {
-      let user=JSON.parse(`${localStorage.getItem('user')}`)
-      if(!user||user?.login===false) navigate.replace("/sign-in")
-        console.log(user.email)
       try {
         if(user.email!==undefined){
           const userInfo = JSON.parse(`${await fetchUser(user.email)}`);
