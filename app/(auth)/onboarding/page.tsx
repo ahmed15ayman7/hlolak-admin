@@ -1,10 +1,11 @@
 "use client"
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import AccountProfile from "../../../components/forms/AccountProfile";
 import React from "react";
 import { fetchUser } from '@/lib/actions/user.actions';
+import { selectUser } from '@/lib/redux/userSlice';
+import { useSelector } from 'react-redux';
 interface usData {
   _id: string | undefined;
   email: string | undefined;
@@ -18,15 +19,14 @@ const Onboarding =  () => {
   const [userInfo, setUserInfo] = useState<any>(null);
   const [refrish, setrefrish] = useState<any>(null);
   let navigate =useRouter()
+  const user = useSelector(selectUser);
   useEffect(() => {
-    let userJson = Cookies.get('user');
-    let user=userJson?JSON.parse(`${userJson}`):null;
-    if(!user||user?.login===false) navigate.replace("/sign-in")
-      console.log(user.email)
     const fetchData = async () => {
       try {
-        if(user.email!==undefined){
-          const userInfo = JSON.parse(`${await fetchUser(user.email)}`);
+      if(!user) navigate.replace("/sign-in")
+        console.log(user?.email)
+        if(user?.email!==undefined){
+          const userInfo = JSON.parse(`${await fetchUser(user?.email)}`);
           setUserInfo(userInfo)
           if (userInfo?.onboarding) navigate.replace("/");
         }

@@ -7,6 +7,7 @@ import "../globals.css";
 import ProviderRedux from "@/lib/redux/ProviderRedux";
 import type { Metadata } from "next";
 import "../globals.css";
+import MiddelWare from "@/lib/redux/MiddelWare";
 export const metadata: Metadata = {
   title: "HLOLAK-WORK",
   description: "HLOLAK-WORK",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <ProviderRedux>
         <body className={styles.body}>
+        <MiddelWare/>
           <div className={styles.container}>
             <div className={styles.menu}>
               <Sidebar />

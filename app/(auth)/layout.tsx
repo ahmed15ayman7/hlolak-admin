@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
 import ProviderRedux from "@/lib/redux/ProviderRedux";
+import MiddelWare from "@/lib/redux/MiddelWare";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="en">
       <ProviderRedux>
         <body className={inter.className + " bg-[#151c2c] "}>
+        <MiddelWare/>
           <div className=" min-h-screen flex w-full items-center justify-center">
             {children}
           </div>

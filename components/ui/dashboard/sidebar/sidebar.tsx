@@ -2,7 +2,6 @@
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
-import Cookies from 'js-cookie';
 import {
   MdDashboard,
   MdSupervisedUserCircle,
@@ -16,7 +15,7 @@ import {
   MdLogout,
 } from "react-icons/md";
 import { useRouter } from "next/navigation";
-import { setUser } from "@/lib/redux/userSlice";
+import { clearUser } from "@/lib/redux/userSlice";
 import { useDispatch } from 'react-redux';
 
 
@@ -115,9 +114,7 @@ const Sidebar =  () => {
         <div className="px-5">
               <div className="flex gap-4 cursor-pointer" onClick={e=>{
                 router.replace("/sign-in")
-                let user={login:false}
-                Cookies.remove("user");
-                dispatch(setUser(user));
+                dispatch(clearUser());
               }}>
                 <Image
                   src="/assets/logout.svg"

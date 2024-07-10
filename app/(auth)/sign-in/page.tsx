@@ -47,7 +47,6 @@ export default function Login() {
     try {
       let req = await LoginF(data);
       if (req.message === "Login successful") {
-        localStorage.setItem("user", JSON.stringify(req?.user));
         dispatch(setUser(req?.user));
         if(req?.user.type==="admin"){
           router.replace("/dashboard");
