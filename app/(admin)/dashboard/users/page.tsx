@@ -49,7 +49,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
           </tr>
         </thead>
         <tbody>
-          {users && count?users.map((user) => (
+          {users ?users.map((user) => (
             <tr key={user.id}>
               <td>
                 <div className={styles.user}>
@@ -100,7 +100,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
     </tr>}
         </tbody>
       </table>
-      <Pagination count={count} />
+      {count &&<Pagination count={count} />}
     </div>
     
   );

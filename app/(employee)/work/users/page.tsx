@@ -100,7 +100,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
     </tr>}
         </tbody>
       </table>
-      <Pagination count={count} />
+      {count &&<Pagination count={count} />}
     </div>
     
   );
