@@ -1,8 +1,8 @@
 "use client"
+import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import AccountProfile from "../../../components/forms/AccountProfile";
-import { redirect } from "next/navigation";
 import React from "react";
 import { fetchUser } from '@/lib/actions/user.actions';
 interface usData {
@@ -19,7 +19,8 @@ const Onboarding =  () => {
   const [refrish, setrefrish] = useState<any>(null);
   let navigate =useRouter()
   useEffect(() => {
-    let user=JSON.parse(`${localStorage.getItem('user')}`)
+    let userJson = Cookies.get('user');
+    let user=userJson?JSON.parse(`${userJson}`):null;
     if(!user||user?.login===false) navigate.replace("/sign-in")
       console.log(user.email)
     const fetchData = async () => {
@@ -27,7 +28,7 @@ const Onboarding =  () => {
         if(user.email!==undefined){
           const userInfo = JSON.parse(`${await fetchUser(user.email)}`);
           setUserInfo(userInfo)
-          if (userInfo?.onboarding) redirect("/");
+          if (userInfo?.onboarding) navigate.replace("/");
         }
       } catch (error) {
         

@@ -1,8 +1,9 @@
 "use client";
+import Cookies from 'js-cookie';
 import { createSlice } from '@reduxjs/toolkit';
-
+let userJson = Cookies.get('user');
 const initialState = {
-  user: JSON.parse(`${localStorage.getItem("user")}`), // Initial state for user
+  user: userJson?JSON.parse(`${userJson}`):null, // Initial state for user
 };
 
 export const userSlice = createSlice({

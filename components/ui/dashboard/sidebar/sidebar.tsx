@@ -2,6 +2,7 @@
 import Image from "next/image";
 import MenuLink from "./menuLink/menuLink";
 import styles from "./sidebar.module.css";
+import Cookies from 'js-cookie';
 import {
   MdDashboard,
   MdSupervisedUserCircle,
@@ -115,7 +116,7 @@ const Sidebar =  () => {
               <div className="flex gap-4 cursor-pointer" onClick={e=>{
                 router.replace("/sign-in")
                 let user={login:false}
-                localStorage.removeItem("user");
+                Cookies.remove("user");
                 dispatch(setUser(user));
               }}>
                 <Image
