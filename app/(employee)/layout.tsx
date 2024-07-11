@@ -24,7 +24,7 @@ export default function RootLayout({
         <MiddelWare/>
           <div className={styles.container}>
             <div className={styles.menu}>
-              <Sidebar />
+              <Sidebar type={"employee"}/>
             </div>
             <div className={styles.content}>
               <Navbar />

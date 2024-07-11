@@ -3,59 +3,56 @@ import { connectDB } from "@/mongoose";
 import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
 import User from "../models/user.models";
-import bcrypt from 'bcrypt';
-import { signUpSchema,loginSchema } from '@/lib/validations/authSchemas';
+import bcrypt from "bcrypt";
+import { signUpSchema, loginSchema } from "@/lib/validations/authSchemas";
 import { redirect } from "next/navigation";
 
-
 export async function Regester(data: any) {
-        try {
-            connectDB();
-            const { email, password } = signUpSchema.parse(data);
-            
-            const existingUser = await User.findOne({ email });
-            if (existingUser) {
-              return {message:"Email already in use" };
-            }
-            
-            const hashedPassword = await bcrypt.hash(password, 10);
-            
-            const newUser = new User({
-              email,
-              password: hashedPassword,
-            });
-            
-           let user = await newUser.save();
-            
-            return {message:"true",user:user}
-          } catch (error:any) {
-            return  {message:`${error.errors}` };
-          }
-          
-        }
-        export async function LoginF(data: any) {
-          try {
-            connectDB();
-            const { email, password } = loginSchema.parse(data);
-    const user = await User.findOne({ email: email});
+  try {
+    connectDB();
+    const { email, password } = signUpSchema.parse(data);
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return { message: "Email already in use" };
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+    });
+
+    let user = await newUser.save();
+
+    return { message: "true", user: user };
+  } catch (error: any) {
+    return { message: `${error.errors}` };
+  }
+}
+export async function LoginF(data: any) {
+  try {
+   await connectDB();
+    const { email, password } = loginSchema.parse(data);
+    const user = await User.findOne({ email: email });
     if (!user) {
-      console.log( "Invalid email or password" )
-      return {message:"Invalid email or password" }
+      console.log("Invalid email or password");
+      return { message: "Invalid email or password" };
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      console.log("Invalid  password")
-      return  {message: "Invalid password"}
+      console.log("Invalid  password");
+      return { message: "Invalid password" };
     }
-    
-    console.log( "Login successful")
-    return {message:"Login successful",user:user }
-  } catch (error:any) {
+
+    console.log("Login successful");
+    return { message: "Login successful", user: user };
+  } catch (error: any) {
     console.log(error);
-    return  {message:`${error}`} ;
+    return { message: `${error}` };
   }
-  
 }
 
 interface props {
@@ -66,27 +63,26 @@ interface props {
   image: string;
   phone: string;
   path: string;
-  type:string;
+  type: string;
 }
 export interface UserData {
   _id: string;
   id: string;
   username: string;
-  email:string;
+  email: string;
   name: string;
   image: string;
   phone: string;
   onboarding: boolean;
 }
 export interface Result {
-  _id: string|undefined;
-  email: string|undefined;
-  name: string|undefined;
-  image: string|undefined;
-  id: string|undefined;
-  type: string|undefined;
-  phone: string|undefined;
-  
+  _id: string | undefined;
+  email: string | undefined;
+  name: string | undefined;
+  image: string | undefined;
+  id: string | undefined;
+  type: string | undefined;
+  phone: string | undefined;
 }
 export async function updateUser({
   userId,
@@ -100,10 +96,10 @@ export async function updateUser({
 }: props): Promise<void> {
   connectDB();
   try {
-  let user=  await User.findOneAndUpdate(
-       {email:email},
+    let user = await User.findOneAndUpdate(
+      { email: email },
       {
-        type:type,
+        type: type,
         username: username,
         name: name,
         image: image,
@@ -116,7 +112,7 @@ export async function updateUser({
     if (path.includes("/profile/edit")) {
       revalidatePath(path);
     }
-    return user
+    return user;
   } catch (error: any) {
     console.log(`failed to update user: ${error.message}`);
   }
@@ -124,14 +120,14 @@ export async function updateUser({
 export async function fetchUser(email: string | undefined) {
   try {
     connectDB();
-    let userInfo: UserData | null = await User.findOne({ email: email })
+    let userInfo: UserData | null = await User.findOne({ email: email });
 
     if (!userInfo) {
       console.log("user not found");
       console.log("found user with id ");
     }
-    
-    return JSON.stringify( userInfo);
+
+    return JSON.stringify(userInfo);
   } catch (error: any) {
     console.log(`not found user: ${error.message}`);
   }
@@ -141,7 +137,7 @@ export async function fetchAllUser({
   pageNum = 1,
   pageSize = 20,
   sortBy = "desc",
-  userId
+  userId,
 }: {
   searchString: string;
   userId: string;
@@ -153,7 +149,7 @@ export async function fetchAllUser({
     connectDB();
     let skipAmount = (pageNum - 1) * pageSize;
     let regex = new RegExp(searchString, "i");
-    let query: FilterQuery<typeof User> = { _id: { $ne:userId  } };
+    let query: FilterQuery<typeof User> = { _id: { $ne: userId } };
     if (searchString.trim() !== "") {
       query.$or = [
         { name: { $regex: regex } },
@@ -161,14 +157,14 @@ export async function fetchAllUser({
         { sport: { $regex: regex } },
       ];
     }
-    let users = await User.find(query )
+    let users = await User.find(query)
       .sort({ createdAt: "desc" })
       .skip(skipAmount)
       .limit(pageSize)
       .exec();
     const totalUsers = await User.countDocuments(query);
     let isNext = +totalUsers > skipAmount + users.length;
-    return {count:totalUsers, users, isNext};
+    return { count: totalUsers, users, isNext };
   } catch (error: any) {
     console.log(`not found user: ${error.message}`);
   }
@@ -176,17 +172,32 @@ export async function fetchAllUser({
 export async function fetchUserPosts(userId: string) {
   connectDB();
   try {
-    let posts: Result | null = await User.findOne({ id: userId })
+    let posts: Result | null = await User.findOne({ id: userId });
 
     return posts;
   } catch (error: any) {
     console.log(`not found user: ${error.message}`);
   }
 }
-// admin 
+// admin
 
-export const addUser = async ({name, username, email, password, phone, type, image }:{name:string, username:string, email:string, password:string, phone:string, type:string, image:string }) => {
-
+export const addUser = async ({
+  name,
+  username,
+  email,
+  password,
+  phone,
+  type,
+  image,
+}: {
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  phone: string;
+  type: string;
+  image: string;
+}) => {
   try {
     connectDB();
 
@@ -214,13 +225,9 @@ export const addUser = async ({name, username, email, password, phone, type, ima
   redirect("/dashboard/users");
 };
 
-
-
-
-
-
-
-export const deleteUser = async (formData: Iterable<readonly [PropertyKey, any]>) => {
+export const deleteUser = async (
+  formData: Iterable<readonly [PropertyKey, any]>
+) => {
   const { id } = Object.fromEntries(formData);
 
   try {
@@ -234,9 +241,7 @@ export const deleteUser = async (formData: Iterable<readonly [PropertyKey, any]>
   revalidatePath("/dashboard/products");
 };
 
-
-
-export const fetchUsers = async (q:string, page:number) => {
+export const fetchUsers = async (q: string, page: number) => {
   const regex = new RegExp(q, "i");
 
   const ITEM_PER_PAGE = 2;
@@ -253,4 +258,3 @@ export const fetchUsers = async (q:string, page:number) => {
     throw new Error("Failed to fetch users!");
   }
 };
-

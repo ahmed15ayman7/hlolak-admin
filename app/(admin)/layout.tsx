@@ -22,13 +22,14 @@ export default function RootLayout({
         <MiddelWare/>
           <div className={styles.container}>
             <div className={styles.menu}>
-              <Sidebar />
+              <Sidebar type={"admin"} />
             </div>
             <div className={styles.content}>
               <Navbar />
               <div className={"min-h-[80vh]"}>{children}</div>
               <Footer />
             </div>
+            
           </div>
         </body>
       </ProviderRedux>

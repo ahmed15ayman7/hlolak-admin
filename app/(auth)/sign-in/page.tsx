@@ -46,7 +46,8 @@ export default function Login() {
   const onSubmit = async (data: LoginFormValues) => {
     try {
       let req = await LoginF(data);
-      if (req.message === "Login successful") {
+      if (req?.message === "Login successful") {
+        console.log(req?.message);
         dispatch(setUser(req?.user));
         if(req?.user.type==="admin"){
           router.replace("/dashboard");
@@ -54,11 +55,9 @@ export default function Login() {
         if(req?.user.type==="employee"){
           router.replace("/work");
         }
-        if(req?.user.type==="user"){
-          router.replace("/");
-        }
       } else {
-        setfirst(req.message);
+        console.log(req?.message);
+        setfirst(req?.message);
       }
     } catch (error) {
       console.log(error);
