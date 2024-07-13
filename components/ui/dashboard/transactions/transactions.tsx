@@ -1,102 +1,66 @@
+"use client"
 import Image from "next/image";
 import styles from "./transactions.module.css";
+import Link from "next/link";
+import { deleteService } from "@/lib/actions/service.actions";
 
-const Transactions = () => {
+const Transactions = ({services}:{services:any[]}) => {
+
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Latest Transactions</h2>
+      <h2 className={styles.title}>Services</h2>
       <table className={styles.table}>
         <thead>
           <tr>
             <td>Name</td>
             <td>Status</td>
-            <td>Date</td>
+            <td>created At</td>
             <td>Amount</td>
+            <td>Service Type</td>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {services.map(e=>
+
+          
+          <tr key={e}>
             <td>
               <div className={styles.user}>
-                <Image
+              <Image
                   src="/noavatar.png"
                   alt=""
                   width={40}
                   height={40}
                   className={styles.userImage}
                 />
-                Ahmed Ayman
+                {e.name}
               </div>
             </td>
             <td>
-              <span className={`${styles.status} ${styles.pending}`}>
-                Pending
+              <span className={`${styles.status} ${e.state==="pending"? styles.pending:e.state==="done"?styles.done:e.state==="cancelled"?styles.cancellede:e.state==="created"?styles.created:''}`}>
+                {e.state}
               </span>
             </td>
-            <td>14.02.2024</td>
-            <td>$3.200</td>
+            <td>{e.createdAt?.toString().slice(4, 16)}</td>
+            <td>{e.salary}</td>
+            <td>{e.provided_service_type}</td>
+            <td>
+                <div className={styles.buttons}>
+                  <Link href={`/dashboard/services/${e.id}`}>
+                    <button className={`${styles.button} ${styles.view}`}>
+                      View
+                    </button>
+                  </Link>
+                  <form action={deleteService}>
+                    <input type="hidden" name="id" value={(e._id)} />
+                    <button className={`${styles.button} ${styles.delete}`}>
+                      Delete
+                    </button>
+                  </form>
+                </div>
+              </td>
           </tr>
-          <tr>
-            <td>
-              <div className={styles.user}>
-                <Image
-                  src="/noavatar.png"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.userImage}
-                />
-                Ahmed Ayman
-              </div>
-            </td>
-            <td>
-              <span className={`${styles.status} ${styles.done}`}>Done</span>
-            </td>
-            <td>14.02.2024</td>
-            <td>$3.200</td>
-          </tr>
-          <tr>
-            <td>
-              <div className={styles.user}>
-                <Image
-                  src="/noavatar.png"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.userImage}
-                />
-                Ahmed Ayman
-              </div>
-            </td>
-            <td>
-              <span className={`${styles.status} ${styles.cancelled}`}>
-                Cancelled
-              </span>
-            </td>
-            <td>14.02.2024</td>
-            <td>$3.200</td>
-          </tr>
-          <tr>
-            <td>
-              <div className={styles.user}>
-                <Image
-                  src="/noavatar.png"
-                  alt=""
-                  width={40}
-                  height={40}
-                  className={styles.userImage}
-                />
-                Ahmed Ayman
-              </div>
-            </td>
-            <td>
-              <span className={`${styles.status} ${styles.pending}`}>
-                Pending
-              </span>
-            </td>
-            <td>14.02.2024</td>
-            <td>$3.200</td>
-          </tr>
+        )}
         </tbody>
       </table>
     </div>

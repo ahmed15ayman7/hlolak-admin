@@ -12,7 +12,7 @@ const user = JSON.parse(userInfo?userInfo:'')
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div className={styles.imgContainer}>
-          <Image src={user.image || "/noavatar.png"} alt="" fill />
+          <Image src={"/noavatar.png"} alt="" fill />
         </div>
         {user.username}
       </div>
@@ -21,14 +21,16 @@ const user = JSON.parse(userInfo?userInfo:'')
         // action={updateUser}
         className={styles.form}>
           <input type="hidden" name="id" value={user._id}/>
+          <label>name</label>
+          <input type="text" name="name" placeholder={user.name} value={user.name} />
           <label>Username</label>
-          <input type="text" name="username" placeholder={user.username} />
+          <input type="text" name="username" placeholder={user.username} value={user.username} />
           <label>Email</label>
-          <input type="email" name="email" placeholder={user.email} />
+          <input type="email" name="email" placeholder={user.email}  value={user.email}/>
           <label>Password</label>
-          <input type="password" name="password" />
+          <input type="password" name="password"  />
           <label>Phone</label>
-          <input type="text" name="phone" placeholder={user.phone} />
+          <input type="text" name="phone" placeholder={user.phone} value={user.phone} />
           {/* <label>Address</label> */}
           {/* <textarea type="text" name="address" placeholder={user.address} /> */}
           {/* <label>Is Admin?</label> */}

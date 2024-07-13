@@ -25,7 +25,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
       setCount(services?.count)
       setServices(services?.services)
     }
-    // getUsers();
+    getUsers();
     // console.log(user);
   },[])
   return (
@@ -37,7 +37,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
         </Link>
       </div>
       {/* <Transactions services={services!}/> */}
-      {/* {count &&<Pagination count={count} />} */}
+      {count &&<Pagination count={count} />}
     </div>
     
   );

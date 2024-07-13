@@ -6,7 +6,7 @@
 
 .title{
   margin-bottom: 20px;
-  font-weight: 200;
+  font-weight: bold;
   color: var(--textSoft);
 }
 
@@ -46,4 +46,35 @@
 
 .cancelled{
   background-color: #f7737375;
+}
+.created{
+  background-color: #095d0375;
+}
+.view{
+  background-color: teal;
+}
+
+.delete{
+  background-color: crimson;
+}
+.addButton{
+  padding: 10px;
+  background-color: #5d57c9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.buttons{
+  display: flex;
+  gap: 10px;
+}
+
+.button{
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #fff;
+  border: none;
+  cursor: pointer;
 }

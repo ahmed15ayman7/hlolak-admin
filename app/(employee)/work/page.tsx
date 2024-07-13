@@ -1,27 +1,30 @@
-"use client";
-import { cards } from "@/constant/data";
-import Card from "@/components/ui/dashboard/card/card";
+import CardsTot from "@/constant/data";
 import Chart from "@/components/ui/dashboard/chart/chart";
 import styles from "@/components/ui/dashboard/dashboard.module.css";
 import Rightbar from "@/components/ui/dashboard/rightbar/rightbar";
 import Transactions from "@/components/ui/dashboard/transactions/transactions";
-const Dashboard = () => {
+import { fetchAllServices, getAllServices } from "@/lib/actions/service.actions";
+const Dashboard = async() => {
+  let servicesCount= await getAllServices()
+  let services= await fetchAllServices({searchString:'',pageNum:1,pageSize:5})
+  let done = services?.services.filter(service => service.state==="done")
   return (
     <div className={styles.wrapper}>
       <div className={styles.main}>
         <div className={styles.cards}>
-          {cards.map((item) => (
-            <Card item={item} key={item.id} />
-          ))}
+          
+            <CardsTot services={servicesCount?servicesCount:0} done={done?.length!} />
+          
         </div>
-        <Transactions />
+        <Transactions services={services?.services!}  />
         <Chart />
       </div>
       <div className={styles.side}>
-        <Rightbar />
-        </div>
+        {/* <Rightbar /> */}
+        
+      </div>
     </div>
   );
 };
-
+export const dynamic = "force-dynamic";
 export default Dashboard;

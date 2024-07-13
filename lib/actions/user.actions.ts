@@ -1,4 +1,5 @@
 "use server";
+import { pusherServer } from "../pusher";
 import { connectDB } from "@/mongoose";
 import { FilterQuery, SortOrder } from "mongoose";
 import { revalidatePath } from "next/cache";
@@ -31,9 +32,12 @@ export async function Regester(data: any) {
     return { message: `${error.errors}` };
   }
 }
+export async function testPusher(data: any) {
+  pusherServer.trigger("task", "RoomName", "message");
+}
 export async function LoginF(data: any) {
   try {
-   await connectDB();
+    await connectDB();
     const { email, password } = loginSchema.parse(data);
     const user = await User.findOne({ email: email });
     if (!user) {
@@ -67,7 +71,6 @@ interface props {
 }
 export interface UserData {
   _id: string;
-  id: string;
   username: string;
   email: string;
   name: string;
@@ -120,7 +123,9 @@ export async function updateUser({
 export async function fetchUser(email: string | undefined) {
   try {
     connectDB();
-    let userInfo: UserData | null = await User.findOne({ email: email });
+    let userInfo: UserData | null = await User.findOne({
+      $or: [{ email: email }, { _id: email }],
+    });
 
     if (!userInfo) {
       console.log("user not found");
@@ -241,18 +246,11 @@ export const deleteUser = async (
   revalidatePath("/dashboard/products");
 };
 
-export const fetchUsers = async (q: string, page: number) => {
-  const regex = new RegExp(q, "i");
-
-  const ITEM_PER_PAGE = 2;
-
+export const fetchUsersCount = async () => {
   try {
     await connectDB();
-    const count = await User.countDocuments();
-    const users = await User.find({ username: { $regex: regex } })
-      .limit(ITEM_PER_PAGE)
-      .skip(ITEM_PER_PAGE * (page - 1));
-    return { count, users };
+    const count = await User.countDocuments({ type: { $ne: "admin" } });
+    return count;
   } catch (err) {
     console.log(err);
     throw new Error("Failed to fetch users!");
