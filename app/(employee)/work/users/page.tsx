@@ -2,7 +2,7 @@
 import Pagination from "@/components/ui/dashboard/pagination/pagination";
 import Search from "@/components/ui/dashboard/search/search";
 import styles from "@/components/ui/dashboard/users/users.module.css";
-import { deleteUser, fetchUsers } from "@/lib/actions/user.actions";
+import { deleteUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
 import Link from "next/link";
 import { getUserByRedux } from "@/lib/redux/dispatch";

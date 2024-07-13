@@ -25,7 +25,7 @@ const SocketComp = () => {
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     
-    await testPusher()
+    // await testPusher()
     setText("");
   };
   return <div onClick={handleSubmit}>SocketComp</div>;
