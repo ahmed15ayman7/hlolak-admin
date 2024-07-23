@@ -2,30 +2,37 @@ import Image from "next/image";
 import styles from "./rightbar.module.css";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
 
-const Rightbar = () => {
+const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
   return (
     <div className={styles.container}>
       <div className={styles.item}>
         <div className={styles.bgContainer}>
-          {/* <Image className={styles.bg} src="/astronaut.png" alt="" fill /> */}
         </div>
         <div className={styles.text}>
-          <span className={styles.notification}>🔥 Available Now</span>
+          <div className="flex justify-between gap-16" >
+          <p className={styles.notification}>🔥 TOP 5 Employee</p>
+          <p className={styles.notification}>Done</p>
+        </div>
+          {topEmpp.map((e,i)=>
+        e.type==="employee"&&
+        <div className="flex justify-between" key={i}>
           <h3 className={styles.title}>
-            How to use the new version of the admin dashboard?
+            {e.name}
           </h3>
-          <span className={styles.subtitle}>Takes 4 minutes to learn</span>
+            
           <p className={styles.desc}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Reprehenderit eius libero perspiciatis recusandae possimus.
+            {e.servicesDone?e.servicesDone:0}
           </p>
+        </div>
+        )}
+          {/* <span className={styles.subtitle}>Takes 4 minutes to learn</span> */}
           <button className={styles.button}>
             <MdPlayCircleFilled />
-            Watch
+            Show All
           </button>
         </div>
       </div>
-      <div className={styles.item}>
+      {/* <div className={styles.item}>
         <div className={styles.text}>
           <span className={styles.notification}>🚀 Coming Soon</span>
           <h3 className={styles.title}>
@@ -42,7 +49,7 @@ const Rightbar = () => {
             Learn
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

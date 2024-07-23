@@ -12,6 +12,5 @@ const serviceSchema = new mongoose.Schema({
   state: { type: String,default: 'created' },
   step: { type: String,default: 1 },
 });
-
  const Service = mongoose.models?.Service || mongoose.model('Service', serviceSchema);
  export default Service;

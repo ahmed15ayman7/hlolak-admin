@@ -1,9 +1,9 @@
 import { MdSupervisedUserCircle } from "react-icons/md";
 import styles from "./card.module.css";
 
-const Card = ({ item }:{ item:{title:string,number:number,change:number} }) => {
+const Card = ({ item,setType,type }:{ item:{title:string,number:number,change:number,},setType:any,type:string }) => {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} ${ type===item.title.split(" ")[1].toLocaleLowerCase()? styles.active:""}`} onClick={()=>setType(item.title.split(" ")[1].toLocaleLowerCase())}>
       <MdSupervisedUserCircle size={24} />
       <div className={styles.texts}>
         <span className={styles.title}>{item.title}</span>

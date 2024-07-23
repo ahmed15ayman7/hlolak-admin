@@ -29,7 +29,6 @@ export default function RootLayout({
               <div className={"min-h-[80vh]"}>{children}</div>
               <Footer />
             </div>
-            
           </div>
         </body>
       </ProviderRedux>

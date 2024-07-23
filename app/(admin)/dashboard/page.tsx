@@ -4,23 +4,28 @@ import styles from "@/components/ui/dashboard/dashboard.module.css";
 import Rightbar from "@/components/ui/dashboard/rightbar/rightbar";
 import Transactions from "@/components/ui/dashboard/transactions/transactions";
 import { fetchAllServices, getAllServices } from "@/lib/actions/service.actions";
+import { fetchAllUser } from "@/lib/actions/user.actions";
 const Dashboard = async() => {
   let servicesCount= await getAllServices()
   let services= await fetchAllServices({searchString:'',pageNum:1,pageSize:5})
   let done = services?.services.filter(service => service.state==="done")
+  let top5User=await fetchAllUser({searchString:'',pageNum:1,pageSize:5})
+  console.log(top5User)
   return (
     <div className={styles.wrapper}>
       <div className={styles.main}>
         <div className={styles.cards}>
           
-            <CardsTot services={servicesCount?servicesCount:0} done={done?.length!} />
+            {/* <CardsTot setType={setType} services={servicesCount?servicesCount:0}  /> */}
           
         </div>
-        <Transactions services={services?.services!}  />
+        <Transactions services={services?.services!} isDash />
         <Chart />
       </div>
       <div className={styles.side}>
-        {/* <Rightbar /> */}
+        <Rightbar
+         topEmpp={top5User?.users!}
+          />
       </div>
     </div>
   );

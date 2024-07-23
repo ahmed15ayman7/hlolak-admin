@@ -17,7 +17,10 @@ import {
   MdOutlineSettings,
   MdHelpCenter,
   MdLogout,
+  MdImageSearch,
 } from "react-icons/md";
+import {IoIosImages } from "react-icons/io";
+import {FaMicroblog } from "react-icons/fa";
 export const menuItems1 = [
   {
     title: "Pages",
@@ -28,57 +31,57 @@ export const menuItems1 = [
         icon: <MdDashboard />,
       },
       {
-        title: "Users",
+        title: "Employees",
         path: "/dashboard/users",
-        icon: <MdSupervisedUserCircle />,
+        icon: <MdPeople />,
       },
       {
         title: "Services",
         path: "/dashboard/services",
         icon: <MdShoppingBag />,
       },
-      {
-        title: "Transactions",
-        path: "/dashboard/transactions",
-        icon: <MdAttachMoney />,
-      },
     ],
   },
   {
-    title: "Analytics",
+    title: "Data",
     list: [
       {
-        title: "Revenue",
-        path: "/dashboard/revenue",
+        title: "Offers",
+        path: "/dashboard/offers",
+        icon: <MdAttachMoney />,
+      },
+      {
+        title: "Blogs",
+        path: "/dashboard/blogs",
         icon: <MdWork />,
       },
       {
-        title: "Reports",
-        path: "/dashboard/reports",
-        icon: <MdAnalytics />,
+        title: "Gallery",
+        path: "/dashboard/gallery",
+        icon: <IoIosImages />,
       },
       {
-        title: "Teams",
-        path: "/dashboard/teams",
-        icon: <MdPeople />,
+        title: "Opinions",
+        path: "/dashboard/opinions",
+        icon: <FaMicroblog />,
       },
     ],
   },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/dashboard/settings",
-        icon: <MdOutlineSettings />,
-      },
-      {
-        title: "Help",
-        path: "/dashboard/help",
-        icon: <MdHelpCenter />,
-      },
-    ],
-  },
+  // {
+  //   title: "User",
+  //   list: [
+  //     {
+  //       title: "Settings",
+  //       path: "/dashboard/settings",
+  //       icon: <MdOutlineSettings />,
+  //     },
+  //     {
+  //       title: "Help",
+  //       path: "/dashboard/help",
+  //       icon: <MdHelpCenter />,
+  //     },
+  //   ],
+  // },
 ];
 export const menuItems2 = [
   {

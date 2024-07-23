@@ -6,21 +6,21 @@ export let getUserByRedux=(router: { replace: (arg0: string) => void; },path:str
 }else if (user){
     if (!user?.onboarding) {
         if(path==="/onboarding"){
-            console.log(user);
+            console.log(user.type);
         }else{
             router.replace("/onboarding");
         }
     } else {
         if (user.type==="admin") {
             if(path.includes("dashboard")){
-                console.log(user);
+                console.log(user.type);
             }else{
                 router.replace("/dashboard");
             }
         }
         if (user.type==="employee") {
             if(path.includes("work")){
-                console.log(user);
+                console.log(user.type);
             }else{
                 router.replace("/work");
             }

@@ -142,28 +142,28 @@ export async function fetchAllUser({
   pageNum = 1,
   pageSize = 20,
   sortBy = "desc",
-  userId,
+  userId
 }: {
   searchString: string;
-  userId: string;
   pageNum: number;
   pageSize: number;
+  userId?: string;
   sortBy?: SortOrder;
 }) {
   try {
     connectDB();
     let skipAmount = (pageNum - 1) * pageSize;
     let regex = new RegExp(searchString, "i");
-    let query: FilterQuery<typeof User> = { _id: { $ne: userId } };
+    let query: FilterQuery<typeof User> = userId ?{_id:{$ne:userId}}:{};
     if (searchString.trim() !== "") {
       query.$or = [
         { name: { $regex: regex } },
         { username: { $regex: regex } },
-        { sport: { $regex: regex } },
+        { type: { $regex: regex } },
       ];
     }
-    let users = await User.find(query)
-      .sort({ createdAt: "desc" })
+    let users:UserData[]|undefined|null = await User.find(query)
+      .sort({ servicesDone: -1})
       .skip(skipAmount)
       .limit(pageSize)
       .exec();
@@ -174,16 +174,7 @@ export async function fetchAllUser({
     console.log(`not found user: ${error.message}`);
   }
 }
-export async function fetchUserPosts(userId: string) {
-  connectDB();
-  try {
-    let posts: Result | null = await User.findOne({ id: userId });
 
-    return posts;
-  } catch (error: any) {
-    console.log(`not found user: ${error.message}`);
-  }
-}
 // admin
 
 export const addUser = async ({
@@ -223,7 +214,7 @@ export const addUser = async ({
     await newUser.save();
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to create user!");
+    console.error("Failed to create user!");
   }
 
   revalidatePath("/dashboard/users");
@@ -238,9 +229,10 @@ export const deleteUser = async (
   try {
     connectDB();
     await User.findByIdAndDelete(id);
+    revalidatePath("/dashboard/users")
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to delete user!");
+    console.error("Failed to delete user!");
   }
 
   revalidatePath("/dashboard/products");
@@ -253,6 +245,6 @@ export const fetchUsersCount = async () => {
     return count;
   } catch (err) {
     console.log(err);
-    throw new Error("Failed to fetch users!");
+    console.error("Failed to fetch users!");
   }
 };

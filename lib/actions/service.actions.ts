@@ -1,9 +1,10 @@
-// services/services.actions.ts
+"use server"
 import { connectDB } from "@/mongoose";
-import mongoose, { FilterQuery, SortOrder } from "mongoose";
+import { FilterQuery, SortOrder } from "mongoose";
 import Service from "../models/service.models";
 import User from "../models/user.models";
 import { revalidatePath } from "next/cache";
+import { UserData } from "./user.actions";
 
 export interface IService {
   _id: string;
@@ -13,7 +14,7 @@ export interface IService {
   salary: string;
   provided_service_type: string;
   has_debts: string;
-  employee: mongoose.Schema.Types.ObjectId[];
+  employee: UserData[];
   createdAt: Date;
   state: string;
   step: string;
@@ -30,6 +31,7 @@ interface AddServiceParams {
 interface AssignEmployeeParams {
   serviceId: string;
   employeeId: string;
+  path: string;
 }
 
 export const addService = async ({
@@ -58,7 +60,10 @@ export const addService = async ({
     console.error("Failed to create service!");
   }
 };
-export const updateServiceState = async (serviceId: string, newState: 'pending' | 'canceled' | 'done') => {
+export const updateServiceState = async (
+  serviceId: string,
+  newState: "pending" | "canceled" | "done"
+) => {
   try {
     await connectDB();
 
@@ -81,6 +86,7 @@ export const updateServiceState = async (serviceId: string, newState: 'pending' 
 export const assignEmployeeToService = async ({
   serviceId,
   employeeId,
+  path
 }: AssignEmployeeParams) => {
   try {
     await connectDB();
@@ -90,10 +96,11 @@ export const assignEmployeeToService = async ({
     }
     const employee = await User.findById(employeeId);
     await employee.services.push(serviceId);
-    await service.employees.push(employeeId);
+    await service.employee.push(employeeId);
     await service.save();
     await employee.save();
-    return service;
+    revalidatePath(path)
+    // return service;
   } catch (err) {
     console.error(err);
     console.error("Failed to assign employee to service!");
@@ -104,7 +111,6 @@ export async function fetchAllServices({
   pageNum = 1,
   pageSize = 20,
   sortBy = "desc",
-
 }: {
   searchString: string;
   pageNum: number;
@@ -115,7 +121,7 @@ export async function fetchAllServices({
     connectDB();
     let skipAmount = (pageNum - 1) * pageSize;
     let regex = new RegExp(searchString, "i");
-    let query: FilterQuery<typeof Service> = { };
+    let query: FilterQuery<typeof Service> = {};
     if (searchString.trim() !== "") {
       query.$or = [
         { name: { $regex: regex } },
@@ -126,39 +132,55 @@ export async function fetchAllServices({
       ];
     }
     let services = await Service.find(query)
-      .sort({ createdAt: "desc" })
-      .skip(skipAmount)
-      .limit(pageSize)
-      .exec();
+    .sort({ createdAt: "desc" })
+    .skip(skipAmount)
+    .limit(pageSize)
+    .exec();
+    
     const totalServices = await Service.countDocuments(query);
     let isNext = +totalServices > skipAmount + services.length;
-    return {count:totalServices, services, isNext};
+    return { count: totalServices, services, isNext };
   } catch (error: any) {
-    console.log(`not found user: ${error.message}`);
+    console.log(`not found All Services: ${error.message}`);
   }
 }
 export const getAllServices = async () => {
   try {
-    await connectDB();
+    connectDB();
     const services = await Service.countDocuments();
     return services;
   } catch (err) {
     console.error(err);
-    console.error('Failed to fetch services!');
-  }}
-  export const deleteService = async (
-    formData: Iterable<readonly [PropertyKey, any]>
-  ) => {
-    const { id } = Object.fromEntries(formData);
-  
-    try {
-      connectDB();
-      await Service.findByIdAndDelete(id);
-    } catch (err) {
-      console.log(err);
-      throw new Error("Failed to delete user!");
-    }
-  
-    revalidatePath("/dashboard");
-    revalidatePath("/dashboard/services");
-  };
+    console.error("Failed to fetch services!");
+  }
+};
+export const getService = async (id:string) => {
+  try {
+    connectDB();
+    const services:IService|null = await Service.findById(id).populate({
+      path:'employee',
+      model:User,
+      select:"_id name username"
+    }).lean()
+    return services;
+  } catch (err) {
+    console.error(err);
+    console.error("Failed to fetch service!");
+  }
+};
+export const deleteService = async (
+  formData: Iterable<readonly [PropertyKey, any]>
+) => {
+  const { id } = Object.fromEntries(formData);
+
+  try {
+    connectDB();
+    await Service.findByIdAndDelete(id);
+  } catch (err) {
+    console.log(err);
+    throw new Error("Failed to delete user!");
+  }
+
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/services");
+};
