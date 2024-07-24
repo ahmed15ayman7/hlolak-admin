@@ -26,6 +26,7 @@ import "react-phone-number-input/style.css";
 import {selectUser, setUser } from "@/lib/redux/userSlice";
 import { getUserByRedux } from "@/lib/redux/dispatch";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "../shared/Loader";
 interface props {
   userData: {
     _id: string | undefined;
@@ -43,79 +44,79 @@ const AccountProfile = ({ userData }: props) => {
   let path= usePathname()
   let [disable,SetDis]=useState(false)
   const user = useSelector(selectUser);
-  useEffect(()=>{
-    getUserByRedux(router,path,user)
-  
-  },[])
-  let { startUpload } = useUploadThing("mediaPost");
-  const [files, setFiles] = useState<File[]>([]);
-  let form = useForm<z.infer<typeof UserValidation>>({
-    resolver: zodResolver(UserValidation),
-    defaultValues: {
-      profile_photo: userData?.image || "",
-      name: userData?.name || "",
-      username: userData?.username ||'',
-      phone: userData.phone ||"",
-    },
-  });
-  function handleImageChange(
-    e: ChangeEvent<HTMLInputElement>,
-    fieldChange: (value: string) => void
-  ) {
-    e.preventDefault();
-    let readfile = new FileReader();
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      setFiles(Array.from(e.target.files));
-      if (!file.type.includes("image")) return;
-      readfile.onload = async (e) => {
-        const imageDataUrl = e.target?.result?.toString() || "";
-        fieldChange(imageDataUrl);
-      };
-      readfile.readAsDataURL(file);
-    }
-  }
-  
-  async function onSubmit(values: z.infer<typeof UserValidation>) {
-
-    let typeUser =values.username.trim().length>5? values.username.trim().slice(-5)==="admin"?"admin":"employee":"employee"
-    try {
-      console.log("Submit update user ");
-      const blob = values.profile_photo;
-      const hasImage = isBase64Image(blob);
-      if (hasImage) {
-        const imageRes = await startUpload(files);
-        if (imageRes && imageRes[0].url) {
-          values.profile_photo = imageRes[0].url;
-        }
+  let [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    getUserByRedux(router, path, user,setLoading);},[]);
+    let { startUpload } = useUploadThing("mediaPost");
+    const [files, setFiles] = useState<File[]>([]);
+    let form = useForm<z.infer<typeof UserValidation>>({
+      resolver: zodResolver(UserValidation),
+      defaultValues: {
+        profile_photo: userData?.image || "",
+        name: userData?.name || "",
+        username: userData?.username ||'',
+        phone: userData.phone ||"",
+      },
+    });
+    function handleImageChange(
+      e: ChangeEvent<HTMLInputElement>,
+      fieldChange: (value: string) => void
+    ) {
+      e.preventDefault();
+      let readfile = new FileReader();
+      if (e.target.files && e.target.files.length > 0) {
+        const file = e.target.files[0];
+        setFiles(Array.from(e.target.files));
+        if (!file.type.includes("image")) return;
+        readfile.onload = async (e) => {
+          const imageDataUrl = e.target?.result?.toString() || "";
+          fieldChange(imageDataUrl);
+        };
+        readfile.readAsDataURL(file);
       }
-       let user=  await updateUser({
+    }
+    
+    async function onSubmit(values: z.infer<typeof UserValidation>) {
+      
+      let typeUser =values.username.trim().length>5? values.username.trim().slice(-5)==="admin"?"admin":"employee":"employee"
+      try {
+        console.log("Submit update user ");
+        const blob = values.profile_photo;
+        const hasImage = isBase64Image(blob);
+        if (hasImage) {
+          const imageRes = await startUpload(files);
+          if (imageRes && imageRes[0].url) {
+            values.profile_photo = imageRes[0].url;
+          }
+        }
+        let user=  await updateUser({
           type:typeUser,
           email:userData.email,
-            userId: userData._id,
-            username: values.username,
-            name: values.name,
-            image: values.profile_photo,
-            phone: values.phone,
-            path: path,
-          })
-          dispatch(setUser(user));
-      if (path.includes("/profile/edit")) {
-        console.log("Submit update user ");
-        router.back();
-      } else {
-        if (typeUser==="admin") {
-          router.replace("/dashboard");
-        }else if (typeUser==="employee") {
-          router.replace("/tasks");
+          userId: userData._id,
+          username: values.username,
+          name: values.name,
+          image: values.profile_photo,
+          phone: values.phone,
+          path: path,
+        })
+        dispatch(setUser(user));
+        if (path.includes("/profile/edit")) {
+          console.log("Submit update user ");
+          router.back();
+        } else {
+          if (typeUser==="admin") {
+            router.replace("/dashboard");
+          }else if (typeUser==="employee") {
+            router.replace("/tasks");
+          }
         }
+      } catch (error: any) {
+        console.log("faild to update user:", error);
       }
-    } catch (error: any) {
-      console.log("faild to update user:", error);
     }
-  }
-  return (
-    <Form {...form}>
+    return (
+      <Form {...form}>
+      {loading&&<Loader is/>}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}

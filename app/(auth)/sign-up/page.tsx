@@ -19,6 +19,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {selectUser, setUser } from "@/lib/redux/userSlice";
 import { getUserByRedux } from "@/lib/redux/dispatch";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "@/components/shared/Loader";
 type SignUpFormValues = {
   email: string;
   password: string;
@@ -29,36 +30,36 @@ export default function Register() {
   let router = useRouter();
   let path= usePathname()
   const user = useSelector(selectUser);
-  useEffect(()=>{
-    getUserByRedux(router,path,user)
+  let [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    getUserByRedux(router, path, user,setLoading);},[]);
+    const [first, setfirst] = useState("");
+    const form = useForm<SignUpFormValues>({
+      resolver: zodResolver(signUpSchema),
+      defaultValues: {
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+    });
     
-  },[])
-  const [first, setfirst] = useState("");
-  const form = useForm<SignUpFormValues>({
-    resolver: zodResolver(signUpSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
-  });
-
-  const onSubmit = async (data: SignUpFormValues) => {
-    try {
-      let req = await Regester(data);
-      if (req.message === "true") {
-        localStorage.setItem("user", JSON.stringify(req.user));
-        router.replace("/onboarding")
-      } else {
-        setfirst(req.message);
+    const onSubmit = async (data: SignUpFormValues) => {
+      try {
+        let req = await Regester(data);
+        if (req.message === "true") {
+          localStorage.setItem("user", JSON.stringify(req.user));
+          router.replace("/onboarding")
+        } else {
+          setfirst(req.message);
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center ">
+    };
+    
+    return (
+      <div className="min-h-screen flex items-center justify-center ">
+        {loading&&<Loader is/>}
       <Form {...form}>
         <form
           method="post"

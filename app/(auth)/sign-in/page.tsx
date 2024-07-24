@@ -2,9 +2,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-import { useRouter,usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { loginSchema } from "@/lib/validations/authSchemas";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -16,10 +16,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { LoginF } from "@/lib/actions/user.actions";
-import {selectUser, setUser } from "@/lib/redux/userSlice";
+import { selectUser, setUser } from "@/lib/redux/userSlice";
 import { getUserByRedux } from "@/lib/redux/dispatch";
 import { useDispatch, useSelector } from "react-redux";
-
+import Loader from "@/components/shared/Loader";
 
 type LoginFormValues = {
   email: string;
@@ -29,12 +29,12 @@ type LoginFormValues = {
 export default function Login() {
   const dispatch = useDispatch();
   let router = useRouter();
-  let path= usePathname()
+  let path = usePathname();
   const user = useSelector(selectUser);
-  useEffect(()=>{
-    getUserByRedux(router,path,user)
-    
-  },[])
+  let [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    getUserByRedux(router, path, user, setLoading);
+  }, []);
   const [first, setfirst] = useState("");
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -49,10 +49,10 @@ export default function Login() {
       if (req?.message === "Login successful") {
         console.log(req?.message);
         dispatch(setUser(req?.user));
-        if(req?.user.type==="admin"){
+        if (req?.user.type === "admin") {
           router.replace("/dashboard");
         }
-        if(req?.user.type==="employee"){
+        if (req?.user.type === "employee") {
           router.replace("/work");
         }
       } else {
@@ -66,6 +66,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center ">
+      {loading && <Loader is />}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

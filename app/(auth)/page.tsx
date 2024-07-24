@@ -19,6 +19,7 @@ import { LoginF } from "@/lib/actions/user.actions";
 import {selectUser, setUser } from "@/lib/redux/userSlice";
 import { getUserByRedux } from "@/lib/redux/dispatch";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "@/components/shared/Loader";
 
 
 type LoginFormValues = {
@@ -31,10 +32,9 @@ export default function Page() {
   let router = useRouter();
   let path= usePathname()
   const user = useSelector(selectUser);
-  useEffect(()=>{
-    getUserByRedux(router,path,user)
-    
-  },[])
+  let [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    getUserByRedux(router, path, user,setLoading);},[]);
   const [first, setfirst] = useState("");
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -66,6 +66,7 @@ export default function Page() {
 
   return (
     <div className="min-h-screen flex items-center justify-center ">
+      {loading&&<Loader is/>}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
