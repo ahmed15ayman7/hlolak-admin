@@ -2,39 +2,29 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 // Resource: https://docs.uploadthing.com/api-reference/react#generatereacthelpers
 // Copy paste (be careful with imports)
 
-
-import { UTApi } from "uploadthing/server";
-
-
- 
-export const utapi = new UTApi();
 const f = createUploadthing();
- // Fake auth function
+// Fake auth function
 export const ourFileRouter = {
   // Example "profile picture upload" route - these can be named whatever you want!
-  profilePicture: f(["image"])
+  profilePicture: f(["image"]).onUploadComplete((data) =>
+    console.log("file", data)
+  ),
 
-    .onUploadComplete((data) => console.log("file", data)),
- 
   // This route takes an attached image OR video
-  messageAttachment: f(["image", "video"])
+  messageAttachment: f(["image", "video"]).onUploadComplete((data) =>
+    console.log("file", data)
+  ),
 
-    .onUploadComplete((data) => console.log("file", data)),
- 
   // Takes exactly ONE image up to 2MB
   strictImageAttachment: f({
     image: { maxFileSize: "2MB", maxFileCount: 5 },
-  })
+  }).onUploadComplete((data) => console.log("file", data)),
 
-    .onUploadComplete((data) => console.log("file", data)),
- 
   // Takes up to 4 2mb images and/or 1 256mb video
   mediaPost: f({
     image: { maxFileSize: "2MB", maxFileCount: 4 },
     video: { maxFileSize: "256MB", maxFileCount: 1 },
-  })
-
-    .onUploadComplete((data) => console.log("file", data)),
+  }).onUploadComplete((data) => console.log("file", data)),
 } satisfies FileRouter;
- 
+
 export type OurFileRouter = typeof ourFileRouter;
