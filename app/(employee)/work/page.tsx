@@ -13,7 +13,7 @@ const Dashboard = async() => {
       <div className={styles.main}>
         <div className={styles.cards}>
           
-            <CardsTot services={servicesCount?servicesCount:0} done={done?.length!} />
+            {/* <CardsTot services={servicesCount?servicesCount:0} done={done?.length!} /> */}
           
         </div>
         <Transactions services={services?.services!}  />
