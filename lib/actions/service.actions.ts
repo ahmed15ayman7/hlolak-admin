@@ -67,16 +67,14 @@ export const updateServiceState = async (
   try {
     await connectDB();
 
-    const updatedService = await Service.findByIdAndUpdate(
+    const updatedService:IService|undefined|null = await Service.findByIdAndUpdate(
       serviceId,
       { state: newState },
       { new: true }
-    );
-
+    ).lean();
     if (!updatedService) {
       console.error("Service not found");
     }
-
     return updatedService;
   } catch (error) {
     console.error(error);

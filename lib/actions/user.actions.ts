@@ -7,6 +7,8 @@ import User from "../models/user.models";
 import bcrypt from "bcrypt";
 import { signUpSchema, loginSchema } from "@/lib/validations/authSchemas";
 import { redirect } from "next/navigation";
+import Service from "../models/service.models";
+import { IService } from "./service.actions";
 
 export async function Regester(data: any) {
   try {
@@ -77,6 +79,7 @@ export interface UserData {
   image: string;
   phone: string;
   onboarding: boolean;
+  services: IService[];
 }
 export interface Result {
   _id: string | undefined;
@@ -137,12 +140,32 @@ export async function fetchUser(email: string | undefined) {
     console.log(`not found user: ${error.message}`);
   }
 }
+export async function fetchUserAndService(email: string | undefined) {
+  try {
+    connectDB();
+    let userInfo: UserData | null = await User.findOne({
+      $or: [{ email: email }, { _id: email }],
+    }).populate({
+      path: "services",
+      model: Service,
+    }).lean();
+
+    if (!userInfo) {
+      console.log("user not found");
+      console.log("found user with id ");
+    }
+
+    return userInfo;
+  } catch (error: any) {
+    console.log(`not found user: ${error.message}`);
+  }
+}
 export async function fetchAllUser({
   searchString = "",
   pageNum = 1,
   pageSize = 20,
   sortBy = "desc",
-  userId
+  userId,
 }: {
   searchString: string;
   pageNum: number;
@@ -154,7 +177,9 @@ export async function fetchAllUser({
     connectDB();
     let skipAmount = (pageNum - 1) * pageSize;
     let regex = new RegExp(searchString, "i");
-    let query: FilterQuery<typeof User> = userId ?{_id:{$ne:userId}}:{};
+    let query: FilterQuery<typeof User> = userId
+      ? { _id: { $ne: userId } }
+      : {};
     if (searchString.trim() !== "") {
       query.$or = [
         { name: { $regex: regex } },
@@ -162,8 +187,8 @@ export async function fetchAllUser({
         { type: { $regex: regex } },
       ];
     }
-    let users:UserData[]|undefined|null = await User.find(query)
-      .sort({ servicesDone: -1})
+    let users: UserData[] | undefined | null = await User.find(query)
+      .sort({ servicesDone: -1 })
       .skip(skipAmount)
       .limit(pageSize)
       .exec();
@@ -229,7 +254,7 @@ export const deleteUser = async (
   try {
     connectDB();
     await User.findByIdAndDelete(id);
-    revalidatePath("/dashboard/users")
+    revalidatePath("/dashboard/users");
   } catch (err) {
     console.log(err);
     console.error("Failed to delete user!");

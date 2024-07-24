@@ -4,14 +4,14 @@ import styles from "./transactions.module.css";
 import Link from "next/link";
 import { deleteService } from "@/lib/actions/service.actions";
 
-const Transactions = ({services,isDash}:{services:any[],isDash?:boolean}) => {
+const Transactions = ({services,isDash,isWork,isTask}:{services:any[],isDash?:boolean,isWork?:boolean,isTask?:boolean}) => {
 
   return (
     <div className={`${styles.container} mt-3`}>
       <div className="flex justify-between">
       <h2 className={styles.title}>Services</h2>
-      {isDash&&
-      <Link href={`/dashboard/services/`}>
+      {(isDash||isWork)&&
+      <Link href={isWork?`/work/tasks/`:`/dashboard/services/`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       more
                     </button>
@@ -46,7 +46,7 @@ const Transactions = ({services,isDash}:{services:any[],isDash?:boolean}) => {
               </div>
             </td>
             <td>
-              <span className={`${styles.status} ${e.state==="pending"? styles.pending:e.state==="done"?styles.done:e.state==="cancelled"?styles.cancellede:e.state==="created"?styles.created:''}`}>
+              <span className={`${styles.status} ${e.state==="pending"? styles.pending:e.state==="done"?styles.done:e.state==="canceled"?styles.cancellede:e.state==="created"?styles.created:''}`}>
                 {e.state}
               </span>
             </td>
@@ -56,17 +56,17 @@ const Transactions = ({services,isDash}:{services:any[],isDash?:boolean}) => {
             <td>{e.employee&&e.employee.length>0?"true":"false"}</td>
             <td>
                 <div className={styles.buttons}>
-                  <Link href={`/dashboard/services/${e._id}`}>
+                  <Link href={isTask?`/work/tasks/${e._id}`:`/dashboard/services/${e._id}`}>
                     <button className={`${styles.button} ${styles.view}`}>
                       View
                     </button>
                   </Link>
-                  <form action={deleteService}>
+                  {!isTask&&<form action={deleteService}>
                     <input type="hidden" name="id" value={(e._id)} />
                     <button className={`${styles.button} ${styles.delete}`}>
                       Delete
                     </button>
-                  </form>
+                  </form>}
                 </div>
               </td>
           </tr>

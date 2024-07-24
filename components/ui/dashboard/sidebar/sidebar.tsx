@@ -93,57 +93,47 @@ export const menuItems2 = [
         icon: <MdDashboard />,
       },
       {
-        title: "Users",
-        path: "/work/users",
-        icon: <MdSupervisedUserCircle />,
-      },
-      {
         title: "tasks",
         path: "/work/tasks",
         icon: <MdShoppingBag />,
       },
-      {
-        title: "Transactions",
-        path: "/work/transactions",
-        icon: <MdAttachMoney />,
-      },
     ],
   },
-  {
-    title: "Analytics",
-    list: [
-      {
-        title: "Revenue",
-        path: "/work/revenue",
-        icon: <MdWork />,
-      },
-      {
-        title: "Reports",
-        path: "/work/reports",
-        icon: <MdAnalytics />,
-      },
-      {
-        title: "Teams",
-        path: "/work/teams",
-        icon: <MdPeople />,
-      },
-    ],
-  },
-  {
-    title: "User",
-    list: [
-      {
-        title: "Settings",
-        path: "/work/settings",
-        icon: <MdOutlineSettings />,
-      },
-      {
-        title: "Help",
-        path: "/work/help",
-        icon: <MdHelpCenter />,
-      },
-    ],
-  },
+  // {
+  //   title: "Analytics",
+  //   list: [
+  //     {
+  //       title: "Revenue",
+  //       path: "/work/revenue",
+  //       icon: <MdWork />,
+  //     },
+  //     {
+  //       title: "Reports",
+  //       path: "/work/reports",
+  //       icon: <MdAnalytics />,
+  //     },
+  //     {
+  //       title: "Teams",
+  //       path: "/work/teams",
+  //       icon: <MdPeople />,
+  //     },
+  //   ],
+  // },
+  // {
+  //   title: "User",
+  //   list: [
+  //     {
+  //       title: "Settings",
+  //       path: "/work/settings",
+  //       icon: <MdOutlineSettings />,
+  //     },
+  //     {
+  //       title: "Help",
+  //       path: "/work/help",
+  //       icon: <MdHelpCenter />,
+  //     },
+  //   ],
+  // },
 ];
 
 const Sidebar = ({type}:{type:string}) => {

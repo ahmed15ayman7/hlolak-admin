@@ -84,7 +84,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         });
         let Employees: SetStateAction<UserData[] | undefined> = [];
         users?.users.forEach((a) => {
-          service?.employee.length>0? service?.employee.forEach((e) => {
+          service?.employee&&service?.employee.length>0? service?.employee.forEach((e) => {
             a._id === e?._id ? null: Employees.push(a) ;
           }): Employees.push(a);
         });

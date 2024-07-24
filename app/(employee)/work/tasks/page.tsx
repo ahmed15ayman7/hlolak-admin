@@ -10,9 +10,9 @@ import { selectUser } from "@/lib/redux/userSlice";
 import {  fetchAllServices } from "@/lib/actions/service.actions";
 import {  useSelector } from "react-redux";
 import Transactions from "@/components/ui/dashboard/transactions/transactions";
+import { UserData, fetchUserAndService } from "@/lib/actions/user.actions";
 const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
-  let [services,setServices] =useState<any[]>();
-  let [count,setCount] =useState<number>();
+  let [employee,setEmployee] =useState<UserData>();
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const user = useSelector(selectUser);
@@ -20,24 +20,21 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
   let router = useRouter();
   useEffect(()=>{
     getUserByRedux(router,path,user)
-    let getUsers=async()=>{
-      const  services  = await fetchAllServices({searchString:q,pageNum:+page,pageSize:20});
-      setCount(services?.count)
-      setServices(services?.services)
-    }
+    let getUsers = async () => {
+      let employee = await fetchUserAndService(user?._id);
+
+      setEmployee(employee!);
+    };
     getUsers();
     // console.log(user);
   },[])
   return (
     <div className={styles.container}>
-      <div className={styles.top}>
+      {/* <div className={styles.top}>
         <Search placeholder="Search for a service..." />
-        <Link href="/dashboard/users/add">
-          <button className={styles.addButton}>Add New</button>
-        </Link>
-      </div>
-      {/* <Transactions services={services!}/> */}
-      {count &&<Pagination count={count} />}
+      </div> */}
+      {employee?.services&&<Transactions services={employee?.services!} isTask />}
+      <Pagination count={employee?.services.length!} />
     </div>
     
   );
