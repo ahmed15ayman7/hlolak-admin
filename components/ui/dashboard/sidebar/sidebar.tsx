@@ -146,8 +146,9 @@ const Sidebar = ({ type }: { type: string }) => {
 
       notification.onclick = () => {
         if(msg.link) {
-          window.location.href =`http://localhost:3000${msg.link}`;
-          //  `https://hlolak-admin.vercel.app${msg.link}`;
+          window.location.href =
+           `https://hlolak-admin.vercel.app${msg.link}`;
+          // `http://localhost:3000${msg.link}`;
           window.focus();
         } 
       };
