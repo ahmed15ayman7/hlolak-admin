@@ -84,9 +84,9 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         });
         let Employees: SetStateAction<UserData[] | undefined> = [];
         users?.users.forEach((a) => {
-          service?.employee.forEach((e) => {
-            a._id !== e?._id ? Employees.push(a) : null;
-          });
+          service?.employee.length>0? service?.employee.forEach((e) => {
+            a._id === e?._id ? null: Employees.push(a) ;
+          }): Employees.push(a);
         });
         setEmployees(Employees);
       } catch (e) {
@@ -174,7 +174,11 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                       </SelectTrigger>
                       <SelectContent className="bg-gray-700 text-white">
                         <SelectGroup>
-                          <SelectLabel>{employees&&employees?.length>0 ?"Select Employee":"Not Avilable Employee"} </SelectLabel>
+                          <SelectLabel>
+                            {employees && employees?.length > 0
+                              ? "Select Employee"
+                              : "Not Avilable Employee"}{" "}
+                          </SelectLabel>
                           {employees?.map((employee, i) => (
                             <SelectItem
                               key={i}
@@ -191,9 +195,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                 )}
               />
 
-              <Button
-                type="submit"
-                className={`  ${styles.addButton} `}>
+              <Button type="submit" className={`  ${styles.addButton} `}>
                 Add
               </Button>
             </div>
