@@ -152,7 +152,8 @@ let menuItems= type==="admin" ? menuItems1:menuItems2
   const dispatch = useDispatch();
   const router = useRouter();
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container}  flex flex-col justify-between`}>
+      <div className="">
       <div className={styles.user}>
         {/* <Image
           className={styles.userImage}
@@ -176,9 +177,9 @@ let menuItems= type==="admin" ? menuItems1:menuItems2
           </li>
         ))}
       </ul>
-
-        <div className="px-5">
-              <div className="flex gap-4 cursor-pointer" onClick={e=>{
+</div>
+        <div className="fixed bottom-10">
+              <div className="flex gap-4 cursor-pointer " onClick={e=>{
                 router.replace("/sign-in")
                 dispatch(clearUser());
               }}>

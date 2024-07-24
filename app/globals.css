@@ -81,6 +81,10 @@
   --text: white;
   --textSoft: #b7bac1;
 }
+*{
+  box-sizing:border-box;
+
+}
 .overlay-background-image {
   width: 100%;
   height: 100%;
