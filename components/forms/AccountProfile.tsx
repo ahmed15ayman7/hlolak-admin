@@ -42,7 +42,7 @@ const AccountProfile = ({ userData }: props) => {
   const dispatch = useDispatch();
   let router = useRouter();
   let path= usePathname()
-  let [disable,SetDis]=useState(false)
+  // let [disable,SetDis]=useState(false)
   const user = useSelector(selectUser);
   let [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -77,7 +77,7 @@ const AccountProfile = ({ userData }: props) => {
     }
     
     async function onSubmit(values: z.infer<typeof UserValidation>) {
-      
+      setLoading(true);
       let typeUser =values.username.trim().length>5? values.username.trim().slice(-5)==="admin"?"admin":"employee":"employee"
       try {
         console.log("Submit update user ");
