@@ -5,6 +5,7 @@ import Service from "../models/service.models";
 import User from "../models/user.models";
 import { revalidatePath } from "next/cache";
 import { UserData } from "./user.actions";
+import { pusherServer } from "../pusher";
 
 export interface IService {
   _id: string;
@@ -62,7 +63,7 @@ export const addService = async ({
 };
 export const updateServiceState = async (
   serviceId: string,
-  newState: "pending" | "canceled" | "done"
+  newState: "pending" | "canceled" | "done",employeeName:string,serviceName:string
 ) => {
   try {
     await connectDB();
@@ -75,6 +76,13 @@ export const updateServiceState = async (
     if (!updatedService) {
       console.error("Service not found");
     }
+    let message={
+      name:employeeName,
+      content:`Serivice ${serviceName} is ${newState}`,
+      image:"/noavatar.png",
+      link:`/dashboard/services/${serviceId}`
+    }
+    pusherServer.trigger("AdminChannel","admin",message)
     return updatedService;
   } catch (error) {
     console.error(error);
@@ -99,6 +107,13 @@ export const assignEmployeeToService = async ({
     await employee.save();
     revalidatePath(path)
     // return service;
+    let message={
+      name:"Admin",
+      content:"New Task",
+      image:"/noavatar.png",
+      link:`/work/tasks/${serviceId}`
+    }
+    pusherServer.trigger("services",employeeId,message)
   } catch (err) {
     console.error(err);
     console.error("Failed to assign employee to service!");
