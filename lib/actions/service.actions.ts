@@ -205,3 +205,52 @@ export const deleteService = async (id: string) => {
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/services");
 };
+
+// تأكد من أن لديك اتصال صحيح بقاعدة البيانات
+
+const getData = async () => {
+  try{
+    connectDB();
+    const services = await Service.aggregate([
+      {
+        $group: {
+          _id: {
+            month: { $month: "$createdAt" },
+            state: "$state"
+          },
+          count: { $sum: 1 }
+        }
+      },
+      {
+        $group: {
+          _id: "$_id.month",
+          states: {
+            $push: {
+              state: "$_id.state",
+              count: "$count"
+            }
+          }
+        }
+      },
+      {
+        $sort: { _id: 1 }
+      }
+    ]);
+    
+    const formattedData = services.map(service => {
+      const data = { month: service._id, created: 0, done: 0, pending: 0, canceled: 0 };
+      service.states.forEach((state: { state: string | number; count: any; }) => {
+        //@ts-ignore
+        data[state.state] = state.count;
+      });
+      return data;
+    });
+    return formattedData;
+  }catch(e){
+    console.error(e)
+  }
+    
+
+};
+
+export default getData;
