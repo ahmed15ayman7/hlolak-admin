@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import CardPost from "../cards/cardPost";
-import { getAllTestimonials } from "@/lib/actions/testimonials.actions";
+import { deleteTestimonial, getAllTestimonials } from "@/lib/actions/testimonials.actions";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
@@ -94,10 +94,10 @@ const Test = ({
   }, [reload]);
   let hoverCards = [1, 2, 3];
   return (
-    <div className="blog text-gray-700 body-font flex items-center justify-center">
-      <div className="container max-w-[1000px] px-5 py-24 mx-auto">
+    <section className="blog text-gray-700 body-font flex items-center justify-center">
+      <div className="container max-w-[1000px] px-5 py-16 mx-auto">
         <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-[#bbbac1]">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">
             أراء من عملائنا
           </h1>
           <div className="flex">
@@ -148,6 +148,8 @@ const Test = ({
                     key={item.text}
                     className="w-[23%] max-md:w-[40%] max-sm:w-[47%] max-lg:w-1/4">
                     <CardPost
+                    deleteFunc={deleteTestimonial}
+                    id={item._id}
                       disc={item.text}
                       title={item.author}
                       time={format(item.date, "d/M/yyyy")}
@@ -175,6 +177,8 @@ const Test = ({
                 {testimonials2.map((item) => (
                   <div key={item?.text} className="p-4 max-md:p-2 max-sm:p-0">
                     <CardPost
+                    deleteFunc={deleteTestimonial}
+                    id={item._id}
                       disc={item.text}
                       title={item.author}
                       time={format(item.date, "d/M/yyyy")}
@@ -187,7 +191,7 @@ const Test = ({
           </>
         )}
       </div>
-    </div>
+    </section>
   );
 };
 

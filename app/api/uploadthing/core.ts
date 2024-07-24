@@ -1,5 +1,13 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
+// Resource: https://docs.uploadthing.com/api-reference/react#generatereacthelpers
+// Copy paste (be careful with imports)
 
+
+import { UTApi } from "uploadthing/server";
+
+
+ 
+export const utapi = new UTApi();
 const f = createUploadthing();
  // Fake auth function
 export const ourFileRouter = {

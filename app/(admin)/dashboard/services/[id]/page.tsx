@@ -27,6 +27,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { UserData, fetchAllUser } from "@/lib/actions/user.actions";
+import Loader from "@/components/shared/Loader";
 const ServicesPage = ({ params }: { params: { id: string } }) => {
   let [service, setServices] = useState<IService>();
   let [employees, setEmployees] = useState<UserData[]>();
@@ -37,9 +38,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       _id: "",
     },
   });
-  const user = useSelector(selectUser);
-  let path = usePathname();
-  let router = useRouter();
+
   const translateWorkField = (value: string) => {
     switch (value) {
       case "private_sector":
@@ -69,12 +68,16 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         return value;
     }
   };
+  const user = useSelector(selectUser);
+  let path = usePathname();
+  let router = useRouter();
+  let [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    getUserByRedux(router, path, user);
+    getUserByRedux(router, path, user,setLoading)
     let getAllServices = async () => {
       try {
         let service: IService | null | undefined = await getService(id);
-
+        
         setServices(service!);
         const users = await fetchAllUser({
           searchString: "employee",
@@ -83,7 +86,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           pageSize: 20,
         });
         let Employees: SetStateAction<UserData[] | undefined> = [];
-        users?.users.forEach((a) => {
+        users?.users?.forEach((a) => {
           service?.employee&&service?.employee.length>0? service?.employee.forEach((e) => {
             a._id === e?._id ? null: Employees.push(a) ;
           }): Employees.push(a);
@@ -108,6 +111,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   };
   return service ? (
     <div className="container mx-auto p-6  shadow-md rounded-lg">
+      {loading&&<Loader is/>}
       <h1 className="text-3xl font-extrabold text-white mb-6">
         {service.name}
       </h1>

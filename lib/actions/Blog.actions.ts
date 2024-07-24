@@ -41,7 +41,10 @@ export const addBlog = async ({ path, title, imageUrl,disc }: BlogParams) => {
   }
 };
 
-export const deleteBlog = async (id: string) => {
+export const deleteBlog = async (
+ id:string
+) => {
+
   try {
     await connectDB();
     const result = await Blog.deleteOne({ _id: id });

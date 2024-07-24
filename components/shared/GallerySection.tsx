@@ -1,5 +1,5 @@
 "use client";
-import { getAllGalleryItems, GalleryItem } from "@/lib/actions/Gallery.actions";
+import { getAllGalleryItems, GalleryItem, deleteGalleryItem } from "@/lib/actions/Gallery.actions";
 import React, { useEffect, useState } from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -9,6 +9,8 @@ import { format } from "date-fns";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { SkeletonCard } from "../cards/CardLoad";
+import { selectLoad } from "@/lib/redux/LoadSlice";
+import { useSelector } from "react-redux";
 
 const CustomLeftArrow = ({ onClick }: { onClick?: () => void }) => {
   return (
@@ -73,6 +75,7 @@ const PhotoGallery = ({
           : 1,
     },
   };
+  const load = useSelector(selectLoad);
   useEffect(() => {
     const fetchGalleryItems = async () => {
       try {
@@ -84,13 +87,13 @@ const PhotoGallery = ({
     };
 
     fetchGalleryItems();
-  }, [reload]);
+  }, [reload,load]);
 
   return (
     <section className="blog text-gray-700 body-font flex items-center justify-center">
-      <div className="container max-w-[1000px] px-5 py-24 mx-auto">
+      <div className="container max-w-[1000px] px-5 py-16 mx-auto">
         <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-700">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">
             معرض الصور
           </h1>
           <div className="flex">
@@ -140,6 +143,8 @@ const PhotoGallery = ({
               key={item.id}
               className="w-[23%] max-md:w-[40%] max-sm:w-[47%] max-lg:w-1/4">
                 <CardPost
+                deleteFunc={deleteGalleryItem}
+                id={item._id}
                   title={item.title}
                   img={item.imageUrl}
                   time={format(item.date, "d/M/yyyy")}
@@ -167,6 +172,8 @@ const PhotoGallery = ({
             {galleryItems2.map((item: any) => (
               <div key={item.id} className="p-4 max-md:p-2 max-sm:p-0">
                 <CardPost
+                deleteFunc={deleteGalleryItem}
+                id={item._id}
                   title={item.title}
                   img={item.imageUrl}
                   time={format(item.date, "d/M/yyyy")}

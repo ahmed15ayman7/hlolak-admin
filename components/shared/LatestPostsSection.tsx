@@ -1,11 +1,13 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import CardPost from "../cards/cardPost";
-import { BlogItem, getAllBlogs } from "@/lib/actions/Blog.actions";
+import { BlogItem, deleteBlog, getAllBlogs } from "@/lib/actions/Blog.actions";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { SkeletonCard } from "../cards/CardLoad";
 import { Button } from "../ui/button";
+import { selectLoad } from "@/lib/redux/LoadSlice";
+import { useSelector } from "react-redux";
 
 const LatestPostsSection = ({
   reload,
@@ -20,7 +22,8 @@ const LatestPostsSection = ({
 }) => {
   const navigation = useRouter();
   const [showMore, setShowMore] = useState(false);
-  const [Blogs, setBlogs] = useState<BlogItem[]>([]);
+  const [blog_posts, setBlogs] = useState<BlogItem[]>([]);
+  const load = useSelector(selectLoad);
   useEffect(() => {
     const fetchAllBlog = async () => {
       try {
@@ -32,35 +35,35 @@ const LatestPostsSection = ({
     };
 
     fetchAllBlog();
-  }, [reload]);
-  let blog_posts = [
-    {
-      title: "نصيحة عقارية",
-      imageUrl:
-        "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb01KIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d03ad87bc3f437b66ea62a326d6d24cfeb138d48/69913712-23a1-4597-b7c8-4974bed5e327.jpg",
-      date: "2024/05/25",
-      disc: "Lorem ipsum dolor sit amet, consectetur adip",
-    },
-    {
-      title: "نصيحة عقارية",
-      imageUrl:
-        "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb0lKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ac40b9758910715295369215c5b9025080f60c38/WhatsApp%20Image%202024-05-25%20at%205.33.41%20PM.jpeg",
-      date: "2024/05/25",
-      disc: "Lorem ipsum dolor sit amet, consectetur adip",
-    },
-    {
-      title: "الصفقة العقارية الناجحة",
-      imageUrl:
-        "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb0VKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--cfcd293d5d5fe124616ad636acad88e69e31c0eb/bb627dc8-7a29-4aee-a9db-95bc874d6629.jpg",
-      date: "2024/05/25",
-      disc: "Lorem ipsum dolor sit amet, consectetur adip",
-    },
-  ];
+  }, [reload,load]);
+  // let blog_posts = [
+  //   {
+  //     title: "نصيحة عقارية",
+  //     imageUrl:
+  //       "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb01KIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--d03ad87bc3f437b66ea62a326d6d24cfeb138d48/69913712-23a1-4597-b7c8-4974bed5e327.jpg",
+  //     date: "2024/05/25",
+  //     disc: "Lorem ipsum dolor sit amet, consectetur adip",
+  //   },
+  //   {
+  //     title: "نصيحة عقارية",
+  //     imageUrl:
+  //       "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb0lKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--ac40b9758910715295369215c5b9025080f60c38/WhatsApp%20Image%202024-05-25%20at%205.33.41%20PM.jpeg",
+  //     date: "2024/05/25",
+  //     disc: "Lorem ipsum dolor sit amet, consectetur adip",
+  //   },
+  //   {
+  //     title: "الصفقة العقارية الناجحة",
+  //     imageUrl:
+  //       "https://holoolak.com/rails/active_storage/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBb0VKIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--cfcd293d5d5fe124616ad636acad88e69e31c0eb/bb627dc8-7a29-4aee-a9db-95bc874d6629.jpg",
+  //     date: "2024/05/25",
+  //     disc: "Lorem ipsum dolor sit amet, consectetur adip",
+  //   },
+  // ];
   return (
-    <section className="blog text-gray-700 body-font mb-10">
-      <div className="container px-5 py-24 mx-auto">
+    <section className="blog text-gray-700 body-font flex items-center justify-center">
+      <div className="container max-w-[1000px] px-5 py-16 mx-auto">
         <div className="flex flex-wrap w-full mb-20 flex-col items-center text-center">
-          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-[#bbbac1]">
+          <h1 className="sm:text-3xl text-2xl font-medium title-font mb-2 text-white">
             اخر التدوينات
           </h1>
           <div className="flex">
@@ -110,6 +113,8 @@ const LatestPostsSection = ({
                     key={item}
                     className="w-[23%] max-md:w-[40%] max-sm:w-[47%] max-lg:w-1/4">
                     <CardPost
+                    deleteFunc={deleteBlog}
+                    id={item._id}
                       title={item.title}
                       img={item.imageUrl}
                       time={format(item.date, "d/M/yyyy")}

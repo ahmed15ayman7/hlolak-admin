@@ -29,7 +29,9 @@ export const addTestimonial = async ({
 };
 
 // Function to delete a testimonial by ID
-export const deleteTestimonial = async (id: string) => {
+export const deleteTestimonial =  async (
+  id:string
+ ) => {
   try {
     await connectDB();
     const result = await Testimonial.findByIdAndDelete(id);
@@ -39,7 +41,6 @@ export const deleteTestimonial = async (id: string) => {
     console.error("Failed to delete testimonial!");
   }
 };
-
 // Function to get all testimonials
 export const getAllTestimonials = async () => {
   try {

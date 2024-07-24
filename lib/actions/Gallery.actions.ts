@@ -2,7 +2,6 @@
 import { connectDB } from "@/mongoose";
 import GalleryItem from "../models/galleryItem.models";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 interface AddGalleryItemParams {
   title: string;
@@ -42,7 +41,9 @@ export const addGalleryItem = async ({
   }
 };
 
-export const deleteGalleryItem = async (id: string) => {
+export const deleteGalleryItem =   async (
+  id:string
+ ) => {
   try {
     await connectDB();
     const result = await GalleryItem.deleteOne({_id: id });
@@ -51,6 +52,7 @@ export const deleteGalleryItem = async (id: string) => {
     } else {
       console.log("Item not found");
     }
+
   } catch (err) {
     console.error(err);
     console.error("Failed to delete gallery item!");

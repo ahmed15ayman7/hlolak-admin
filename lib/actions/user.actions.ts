@@ -191,9 +191,10 @@ export async function fetchAllUser({
       .sort({ servicesDone: -1 })
       .skip(skipAmount)
       .limit(pageSize)
-      .exec();
+      .lean()
+      // .exec();
     const totalUsers = await User.countDocuments(query);
-    let isNext = +totalUsers > skipAmount + users.length;
+    let isNext = users? +totalUsers > skipAmount + users.length:false;
     return { count: totalUsers, users, isNext };
   } catch (error: any) {
     console.log(`not found user: ${error.message}`);

@@ -40,7 +40,9 @@ export const addOffers = async ({ path, title, imageUrl,disc }: OffersParams) =>
   }
 };
 
-export const deleteOffers = async (id: string) => {
+export const deleteOffers =  async (
+  id:string
+ ) => {
   try {
     await connectDB();
     const result = await Offers.deleteOne({ _id: id });

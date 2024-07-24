@@ -11,6 +11,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { selectUser } from "@/lib/redux/userSlice";
 import { fetchAllUser } from "@/lib/actions/user.actions";
 import { useSelector } from "react-redux";
+import Loader from "@/components/shared/Loader";
 const UsersPage = ({
   searchParams,
 }: {
@@ -18,13 +19,14 @@ const UsersPage = ({
 }) => {
   let [users, setUsers] = useState<any[]>();
   let [count, setCount] = useState<number>();
+  let [loading, setLoading] = useState<boolean>(true);
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const user = useSelector(selectUser);
   let path = usePathname();
   let router = useRouter();
   useEffect(() => {
-    getUserByRedux(router, path, user);
+    getUserByRedux(router, path, user,setLoading);
     let getUsers = async () => {
       const users = await fetchAllUser({
         searchString: q,
@@ -33,13 +35,14 @@ const UsersPage = ({
         pageSize: 20,
       });
       setCount(users?.count);
-      setUsers(users?.users);
+      setUsers(users?.users!);
     };
     getUsers();
     // console.log(user);
   }, [q,page]);
   return (
     <div className={styles.container}>
+      {loading&&<Loader is/>}
       <div className={styles.top}>
         <Search placeholder="Search for a user..." />
         <Link href="/dashboard/users/add">

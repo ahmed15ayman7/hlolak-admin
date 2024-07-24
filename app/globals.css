@@ -110,3 +110,33 @@
 .account-form_input {
   @apply border border-[#1F1F22] bg-[#ffffff] text-[#000000] !important;
 }
+.swiper-wrapper{
+  justify-content:center;
+
+}
+.custom-arrow {
+  background-color: #ab994e !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+.custom-left {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+.react-multi-carousel-track  {
+  justify-content:center;
+}
+
+.custom-right {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}

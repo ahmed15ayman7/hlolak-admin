@@ -6,9 +6,7 @@ import Transactions from "@/components/ui/dashboard/transactions/transactions";
 import { fetchAllServices, getAllServices } from "@/lib/actions/service.actions";
 import { fetchAllUser } from "@/lib/actions/user.actions";
 const Dashboard = async() => {
-  let servicesCount= await getAllServices()
   let services= await fetchAllServices({searchString:'',pageNum:1,pageSize:5})
-  let done = services?.services.filter(service => service.state==="done")
   let top5User=await fetchAllUser({searchString:'',pageNum:1,pageSize:5})
   console.log(top5User)
   return (

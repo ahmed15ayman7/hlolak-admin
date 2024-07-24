@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { connectDB } from "@/mongoose";
 import { FilterQuery, SortOrder } from "mongoose";
 import Service from "../models/service.models";
@@ -19,6 +19,10 @@ export interface IService {
   createdAt: Date;
   state: string;
   step: string;
+  notes: {
+    note: string;
+    name: string;
+  }[];
 }
 interface AddServiceParams {
   name: string;
@@ -63,26 +67,31 @@ export const addService = async ({
 };
 export const updateServiceState = async (
   serviceId: string,
-  newState: "pending" | "canceled" | "done",employeeName:string,serviceName:string
+  newState: "pending" | "canceled" | "done",
+  employeeName: string,
+  serviceName: string,
+  note: string
 ) => {
   try {
     await connectDB();
-
-    const updatedService:IService|undefined|null = await Service.findByIdAndUpdate(
-      serviceId,
-      { state: newState },
-      { new: true }
-    ).lean();
+    let q =
+      newState === "done" ? { state: newState, step: 2 } : { state: newState };
+    const updatedService: IService | undefined | null =
+      await Service.findByIdAndUpdate(serviceId, q, { new: true }).lean();
+    const updatedService2 = await Service.findById(serviceId);
     if (!updatedService) {
       console.error("Service not found");
     }
-    let message={
-      name:employeeName,
-      content:`Serivice ${serviceName} is ${newState}`,
-      image:"/noavatar.png",
-      link:`/dashboard/services/${serviceId}`
-    }
-    pusherServer.trigger("AdminChannel","admin",message)
+    note.length > 0 &&
+      (await updatedService2?.notes.push({ note: note, name: employeeName }));
+    note.length > 0 && (await updatedService2?.save());
+    let message = {
+      name: employeeName,
+      content: `Serivice ${serviceName} is ${newState}`,
+      image: "/noavatar.png",
+      link: `/dashboard/services/${serviceId}`,
+    };
+    pusherServer.trigger("AdminChannel", "admin", message);
     return updatedService;
   } catch (error) {
     console.error(error);
@@ -92,7 +101,7 @@ export const updateServiceState = async (
 export const assignEmployeeToService = async ({
   serviceId,
   employeeId,
-  path
+  path,
 }: AssignEmployeeParams) => {
   try {
     await connectDB();
@@ -105,15 +114,15 @@ export const assignEmployeeToService = async ({
     await service.employee.push(employeeId);
     await service.save();
     await employee.save();
-    revalidatePath(path)
+    revalidatePath(path);
     // return service;
-    let message={
-      name:"Admin",
-      content:"New Task",
-      image:"/noavatar.png",
-      link:`/work/tasks/${serviceId}`
-    }
-    pusherServer.trigger("services",employeeId,message)
+    let message = {
+      name: "Admin",
+      content: "New Task",
+      image: "/noavatar.png",
+      link: `/work/tasks/${serviceId}`,
+    };
+    pusherServer.trigger("services", employeeId, message);
   } catch (err) {
     console.error(err);
     console.error("Failed to assign employee to service!");
@@ -145,11 +154,12 @@ export async function fetchAllServices({
       ];
     }
     let services = await Service.find(query)
-    .sort({ createdAt: "desc" })
-    .skip(skipAmount)
-    .limit(pageSize)
-    .exec();
-    
+      .sort({ createdAt: "desc" })
+      .skip(skipAmount)
+      .limit(pageSize)
+      .lean()
+      .exec();
+
     const totalServices = await Service.countDocuments(query);
     let isNext = +totalServices > skipAmount + services.length;
     return { count: totalServices, services, isNext };
@@ -160,32 +170,30 @@ export async function fetchAllServices({
 export const getAllServices = async () => {
   try {
     connectDB();
-    const services = await Service.countDocuments();
+    const services = await Service.find().lean();
     return services;
   } catch (err) {
     console.error(err);
     console.error("Failed to fetch services!");
   }
 };
-export const getService = async (id:string) => {
+export const getService = async (id: string) => {
   try {
     connectDB();
-    const services:IService|null = await Service.findById(id).populate({
-      path:'employee',
-      model:User,
-      select:"_id name username"
-    }).lean()
+    const services: IService | null = await Service.findById(id)
+      .populate({
+        path: "employee",
+        model: User,
+        select: "_id name username",
+      })
+      .lean();
     return services;
   } catch (err) {
     console.error(err);
     console.error("Failed to fetch service!");
   }
 };
-export const deleteService = async (
-  formData: Iterable<readonly [PropertyKey, any]>
-) => {
-  const { id } = Object.fromEntries(formData);
-
+export const deleteService = async (id: string) => {
   try {
     connectDB();
     await Service.findByIdAndDelete(id);

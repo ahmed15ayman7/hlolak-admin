@@ -7,8 +7,13 @@ import { IService, getService, updateServiceState } from "@/lib/actions/service.
 import { useSelector } from "react-redux";
 import styles from "@/components/ui/dashboard/transactions/transactions.module.css";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import Loader from "@/components/shared/Loader";
 const ServicesPage = ({ params }: { params: { id: string } }) => {
   let [service, setServices] = useState<IService>();
+  let [note, setNote] = useState<string>("");
+  let [loading, setLoading] = useState(true);
   const id = params.id;
 
   const user = useSelector(selectUser);
@@ -44,7 +49,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
     }
   };
   useEffect(() => {
-    getUserByRedux(router, path, user);
+    getUserByRedux(router, path, user,setLoading);
     let getAllServices = async () => {
       try {
         let service: IService | null | undefined = await getService(id);
@@ -57,8 +62,9 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   }, []);
   const onsubmit = async (data: "pending" | "canceled" | "done") => {
     try {
-     let services:IService|null|undefined= await updateServiceState(service?._id!,data,user.name,service?.name!)
+     let services:IService|null|undefined= await updateServiceState(service?._id!,data,user.name,service?.name!,note)
      setServices(services!)
+     setNote("")
     } catch (error) {
       console.error(error);
     }
@@ -67,6 +73,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
     <div
       className="container mx-auto p-6  shadow-md rounded-lg"
       style={{ direction: "rtl" }}>
+        {loading&&<Loader is/>}
       <h1 className="text-3xl text-center font-extrabold text-white mb-20">
         {service.name}
       </h1>
@@ -108,7 +115,11 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           </span>
         </p>
       </div>
-      <div className="mb-6 flex flex-col md:flex-row items-start justify-center md:items-center mt-20  gap-20">
+      <div className="w-full px-48">
+        <Label htmlFor="note">اضافة ملاحظة</Label>
+            <Input id="note"  className="w-full text-[#000000]" onChange={e=>setNote(e.target.value)} value={note} />
+      </div>
+      <div className="mb-6 flex flex-col md:flex-row items-start justify-center md:items-center mt-5  gap-20">
         <Button type="submit" className={`  ${styles.done} `}
         onClick={()=>onsubmit("done")}
         >
@@ -116,9 +127,8 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         </Button>
         <Button type="submit" className={`  ${styles.cancellede} `}
           onClick={()=>onsubmit("canceled")}
-          
           >
-          Canseled
+          Reject
         </Button>
         <Button type="submit" className={`  ${styles.pending} `}
           onClick={()=>onsubmit("pending")}

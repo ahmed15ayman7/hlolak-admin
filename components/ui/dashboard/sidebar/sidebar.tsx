@@ -137,16 +137,19 @@ const Sidebar = ({ type }: { type: string }) => {
   const showNotification = (msg: any) => {
     if (Notification.permission === "granted") {
       const notification = new Notification(
-        `New message from ${msg.sender.name}`,
+        `New message from ${msg.name}`,
         {
           body: msg.content,
-          icon: msg.sender.image,
+          icon: msg.image,
         }
       );
 
       notification.onclick = () => {
-        window.location.href = `https://hlolak-admin.vercel.app/${msg.link}`;
-        window.focus();
+        if(msg.link) {
+          window.location.href =`http://localhost:3000${msg.link}`;
+          //  `https://hlolak-admin.vercel.app${msg.link}`;
+          window.focus();
+        } 
       };
     }
   };
