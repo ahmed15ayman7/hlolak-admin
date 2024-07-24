@@ -72,6 +72,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   let path = usePathname();
   let router = useRouter();
   let [loading, setLoading] = useState<boolean>(true);
+  
   useEffect(() => {
     getUserByRedux(router, path, user,setLoading)
     let getAllServices = async () => {
@@ -110,38 +111,40 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
     }
   };
   return service ? (
-    <div className="container mx-auto p-6  shadow-md rounded-lg">
+    <div className="container mx-auto p-6  shadow-md rounded-lg" style={{direction:"rtl"}}>
       {loading&&<Loader is/>}
-      <h1 className="text-3xl font-extrabold text-white mb-6">
+      <h1 className="text-3xl font-extrabold text-center text-white mb-6 ">
         {service.name}
       </h1>
-      <div className="mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">Mobile:</strong> {service.mobile}
+      <div className="mb-6 grid  grid-cols-1 md:grid-cols-2 gap-20">
+        <p className="text-lg text-center text-gray-300">
+          <strong className="text-white px-2">رقم الجوال:</strong> {service.mobile}
         </p>
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">Employer:</strong>{" "}
+        <p className="text-lg text-center text-gray-300">
+          <strong className="text-white px-2">جهة العمل:</strong>{" "}
           {translateWorkField(service.employer)}
         </p>
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">Salary:</strong> {service.salary}
+        <p className="text-lg text-center text-gray-300">
+          <strong className="text-white px-2">المرتب:</strong> {service.salary}
         </p>
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">Service Type:</strong>{" "}
+        <p className="text-lg text-center text-gray-300">
+          <strong className="text-white px-2">نوع الخدمه:</strong>{" "}
           {translateServiceType(service.provided_service_type)}
         </p>
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">Has Debts:</strong> {service.has_debts}
+        <p className="text-lg text-center text-gray-300">
+          <strong className="text-white px-2">
+        هل يوجد عليه التزامات أو ديون؟:
+          </strong>{"     "} {service.has_debts==="yes"?"نعم":"لا"}
         </p>
-        <p className="text-lg text-gray-300">
-          <strong className="text-white">State:</strong>{" "}
+        <p className="text-lg text-center text-gray-300 px-2">
+          <strong className="text-white">الحاله:</strong>
           <span
             className={`${styles.status} ${
               service.state === "pending"
                 ? styles.pending
                 : service.state === "done"
                 ? styles.done
-                : service.state === "cancelled"
+                : service.state === "canceled"
                 ? styles.cancellede
                 : service.state === "created"
                 ? styles.created
@@ -151,7 +154,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           </span>
         </p>
         <p className="text-lg text-gray-300">
-          <strong className="text-white">Step:</strong>{" "}
+          <strong className="text-white text-center">المرحلة:</strong>{" "}
           {service.step ? service.step : 1}
         </p>
       </div>
@@ -207,7 +210,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         </Form>
       </div>
 
-      <h2 className="text-2xl font-bold text-white mb-4">Employees</h2>
+      <h2 className="text-2xl font-bold text-white mb-4">اضافة موظف</h2>
       <ul className="space-y-2">
         {service.employee && service.employee.length > 0 ? (
           service.employee.map((empId, i) => (
@@ -224,10 +227,11 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           ))
         ) : (
           <li className="bg-gray-700 text-gray-300 p-3 rounded shadow-sm">
-            no employee
+            لم يتم اختيار موظف بعد
           </li>
         )}
       </ul>
+        <h2 className="text-2xl font-bold text-white my-4">الملاحظات</h2>
       <ul className="space-y-2">
         {service.notes && service.notes.length > 0 ? (
           service.notes.map((empId, i) => (
@@ -241,7 +245,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           ))
         ) : (
           <li className="bg-gray-700 text-gray-300 p-3 rounded shadow-sm">
-            no employee
+            لا يوجد ملاحظات 
           </li>
         )}
       </ul>

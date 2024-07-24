@@ -9,7 +9,7 @@ const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
         <div className={styles.bgContainer}>
         </div>
         <div className={styles.text}>
-          <div className="flex justify-between gap-16" >
+          <div className="flex justify-between gap-5" >
           <p className={styles.notification}>🔥 TOP 5 Employee</p>
           <p className={styles.notification}>Done</p>
         </div>
@@ -19,7 +19,6 @@ const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
           <h3 className={styles.title}>
             {e.name}
           </h3>
-            
           <p className={styles.desc}>
             {e.servicesDone?e.servicesDone:0}
           </p>

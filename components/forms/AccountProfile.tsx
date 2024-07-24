@@ -46,7 +46,7 @@ const AccountProfile = ({ userData }: props) => {
   const user = useSelector(selectUser);
   let [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    getUserByRedux(router, path, user,setLoading);},[]);
+    getUserByRedux(router, path, user,setLoading);},[user]);
     let { startUpload } = useUploadThing("mediaPost");
     const [files, setFiles] = useState<File[]>([]);
     let form = useForm<z.infer<typeof UserValidation>>({
@@ -104,11 +104,11 @@ const AccountProfile = ({ userData }: props) => {
           console.log("Submit update user ");
           router.back();
         } else {
-          if (typeUser==="admin") {
-            router.replace("/dashboard");
-          }else if (typeUser==="employee") {
-            router.replace("/tasks");
-          }
+          // if (typeUser==="admin") {
+          //   router.replace("/dashboard");
+          // }else if (typeUser==="employee") {
+          //   router.replace("/work");
+          // }
         }
       } catch (error: any) {
         console.log("faild to update user:", error);
@@ -221,7 +221,7 @@ const AccountProfile = ({ userData }: props) => {
           )}
           />
         
-        <Button onClick={()=>{SetDis(true)}} disabled={disable} type="submit" className="p-2 w-full bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 ">
+        <Button type="submit" className="p-2 w-full bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 ">
           Submit
         </Button>
       </form>

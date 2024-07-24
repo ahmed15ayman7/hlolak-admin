@@ -32,7 +32,7 @@ export default function Register() {
   const user = useSelector(selectUser);
   let [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    getUserByRedux(router, path, user,setLoading);},[]);
+    getUserByRedux(router, path, user,setLoading);},[user]);
     const [first, setfirst] = useState("");
     const form = useForm<SignUpFormValues>({
       resolver: zodResolver(signUpSchema),

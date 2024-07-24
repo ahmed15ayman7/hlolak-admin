@@ -4,6 +4,7 @@ import Search from "@/components/ui/dashboard/search/search";
 import styles from "@/components/ui/dashboard/users/users.module.css";
 import { deleteUser } from "@/lib/actions/user.actions";
 import Image from "next/image";
+import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { getUserByRedux } from "@/lib/redux/dispatch";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import { selectUser } from "@/lib/redux/userSlice";
 import { fetchAllUser } from "@/lib/actions/user.actions";
 import { useSelector } from "react-redux";
 import Loader from "@/components/shared/Loader";
+import { setLoad,selectLoad } from "@/lib/redux/LoadSlice";
 const UsersPage = ({
   searchParams,
 }: {
@@ -19,12 +21,14 @@ const UsersPage = ({
 }) => {
   let [users, setUsers] = useState<any[]>();
   let [count, setCount] = useState<number>();
+  const load = useSelector(selectLoad);
   let [loading, setLoading] = useState<boolean>(true);
   const q = searchParams?.q || "";
   const page = searchParams?.page || 1;
   const user = useSelector(selectUser);
   let path = usePathname();
   let router = useRouter();
+  let dispatch = useDispatch();
   useEffect(() => {
     getUserByRedux(router, path, user,setLoading);
     let getUsers = async () => {
@@ -39,7 +43,7 @@ const UsersPage = ({
     };
     getUsers();
     // console.log(user);
-  }, [q,page]);
+  }, [q,page,load]);
   return (
     <div className={styles.container}>
       {loading&&<Loader is/>}
@@ -61,8 +65,9 @@ const UsersPage = ({
           </tr>
         </thead>
         <tbody>
-          {users ? (
+          {users  ? (
             users.map((user, i) => (
+              user.type!=="admin"&&
               <tr key={i}>
                 <td>
                   <div className={styles.user}>
@@ -87,12 +92,15 @@ const UsersPage = ({
                         View
                       </button>
                     </Link>
-                    <form action={deleteUser}>
-                      <input type="hidden" name="id" value={user._id} />
-                      <button className={`${styles.button} ${styles.delete}`}>
-                        Delete
-                      </button>
-                    </form>
+
+                      <button
+                      className={`${styles.button} ${styles.delete}`}
+                      onClick={async () => {
+                        await deleteUser(user._id!);
+                        dispatch(setLoad(Math.random()));
+                      }}>
+                      delete
+                    </button>
                   </div>
                 </td>
               </tr>

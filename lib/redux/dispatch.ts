@@ -1,7 +1,14 @@
 export let getUserByRedux=(router: { replace: (arg0: string) => void; },path:string,user: any,setLoading:any)=>{
   if (!user) {
     if (path!=="/sign-up") {
-        router.replace("/sign-in");
+        if(path==="/sign-in"){
+            setLoading(false)
+        }else{
+            router.replace("/sign-in");
+        }
+    }
+    if(path==="/sign-up"){
+        setLoading(false)
     }
 }else if (user){
     if (!user?.onboarding) {

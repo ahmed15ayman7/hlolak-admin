@@ -99,10 +99,10 @@ export async function updateUser({
   image,
   path,
   phone,
-}: props): Promise<void> {
+}: props) {
   connectDB();
   try {
-    let user = await User.findOneAndUpdate(
+    let user:UserData|null= await User.findOneAndUpdate(
       { email: email },
       {
         type: type,
@@ -113,12 +113,12 @@ export async function updateUser({
         phone: phone,
       },
       { upsert: true }
-    );
+    ).lean();
     console.log("Successfully updated user");
     if (path.includes("/profile/edit")) {
       revalidatePath(path);
     }
-    return user;
+    return user
   } catch (error: any) {
     console.log(`failed to update user: ${error.message}`);
   }
@@ -248,9 +248,9 @@ export const addUser = async ({
 };
 
 export const deleteUser = async (
-  formData: Iterable<readonly [PropertyKey, any]>
+  id:string
 ) => {
-  const { id } = Object.fromEntries(formData);
+
 
   try {
     connectDB();

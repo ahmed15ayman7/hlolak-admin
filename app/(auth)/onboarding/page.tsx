@@ -26,7 +26,7 @@ const Onboarding =  () => {
       if(!user) navigate.replace("/sign-in")
         console.log(user?.email)
         if(user?.email!==undefined){
-          const userInfo = JSON.parse(`${await fetchUser(user?.email)}`);
+          const userInfo = JSON.parse(`${await fetchUser(user?._id)}`);
           setUserInfo(userInfo)
           if (userInfo?.onboarding) navigate.replace("/");
         }
@@ -52,8 +52,8 @@ const Onboarding =  () => {
       <div className="px-10 fixed rounded-full lg:right-2  -right-4 top-10">
         {/* <SignOutbutton /> */}
       </div>
-      <h1 className="font-bold text-[#000000]">Onboarding</h1>
-      <p className=" text-gray-500 my-6">
+      <h1 className="font-bold text-[#ffffff]">Onboarding</h1>
+      <p className=" text-gray-200 my-6">
         This is where you will be able to create a new account.
       </p>
       <div className="bg-gray-100  lg:p-10 p-2 ">

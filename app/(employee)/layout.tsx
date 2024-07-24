@@ -27,7 +27,7 @@ export default function RootLayout({
               <Sidebar type={"employee"}/>
             </div>
             <div className={styles.content}>
-              <Navbar />
+              {/* <Navbar /> */}
               <div className={"min-h-[80vh]"}>{children}</div>
               <Footer />
             </div>

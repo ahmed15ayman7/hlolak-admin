@@ -34,7 +34,7 @@ export default function Login() {
   let [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     getUserByRedux(router, path, user, setLoading);
-  }, []);
+  }, [user]);
   const [first, setfirst] = useState("");
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
