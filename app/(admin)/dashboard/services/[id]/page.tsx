@@ -228,6 +228,23 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           </li>
         )}
       </ul>
+      <ul className="space-y-2">
+        {service.notes && service.notes.length > 0 ? (
+          service.notes.map((empId, i) => (
+            <li
+              key={i}
+              className="bg-gray-700 text-gray-300 flex justify-between items-center p-3 rounded shadow-sm">
+              <p>{empId.note}</p>
+              <p>{empId.name}</p>
+              
+            </li>
+          ))
+        ) : (
+          <li className="bg-gray-700 text-gray-300 p-3 rounded shadow-sm">
+            no employee
+          </li>
+        )}
+      </ul>
     </div>
   ) : (
     <></>
