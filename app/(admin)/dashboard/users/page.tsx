@@ -60,7 +60,6 @@ const UsersPage = ({
             <td>Email</td>
             <td>Created At</td>
             <td>Type</td>
-            <td>Status</td>
             <td>phone</td>
           </tr>
         </thead>

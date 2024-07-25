@@ -74,7 +74,7 @@ const Transactions = ({
               <td>{e.createdAt?.toString().slice(4, 16)}</td>
               <td>{e.salary}</td>
               <td>{e.provided_service_type}</td>
-              <td>{e.employee && e.employee.length > 0 ? "true" : "false"}</td>
+              <td>{e.employee && e.employee.length > 0&&e.state !== "canceled"&&e.state !== "done" ? "true" : "false"}</td>
               <td>
                 <div className={styles.buttons}>
                   <Link

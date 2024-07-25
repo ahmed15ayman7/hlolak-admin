@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/dialog";
 import { addOffers } from "@/lib/actions/Offers.actions";
 import { Textarea } from "../ui/textarea";
+import { addBlog } from "@/lib/actions/Blog.actions";
 const AddBlogForm = ({ setReload }: { setReload: any }) => {
   let path = usePathname();
   const [files, setFiles] = useState<File[]>([]);
@@ -45,7 +46,7 @@ const AddBlogForm = ({ setReload }: { setReload: any }) => {
           values.imageUrl = imageRes[0].url;
         }
       }
-      await addOffers({
+      await addBlog({
         imageUrl: values.imageUrl,
         title: values.title,
         disc: values.text,

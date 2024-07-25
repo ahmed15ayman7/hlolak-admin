@@ -81,7 +81,7 @@ const OffersSection = ({
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
-                {add ? "الغاء الاضافه" : " اضافة صوره "}
+                {add ? "الغاء الاضافه" : " اضافة عرض "}
               </h3>
             </Button>
             <Button
