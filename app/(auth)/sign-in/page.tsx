@@ -128,7 +128,7 @@ export default function Login() {
             className="p-2 w-full bg-slate-900 text-slate-50 hover:bg-slate-900/90 dark:bg-slate-50 dark:text-slate-900 dark:hover:bg-slate-50/90 ">
             Login
           </Button>
-          <div className="cl-footerAction cl-footerAction__signIn 🔒️ cl-internal-1rpdi70">
+          {/* <div className="cl-footerAction cl-footerAction__signIn 🔒️ cl-internal-1rpdi70">
             <span
               className="cl-footerActionText 🔒️ cl-internal-kyvqj0"
               data-localization-key="signIn.start.actionText">
@@ -140,7 +140,7 @@ export default function Login() {
               href="/sign-up">
               Sign up
             </Link>
-          </div>
+          </div> */}
         </form>
       </Form>
     </div>
