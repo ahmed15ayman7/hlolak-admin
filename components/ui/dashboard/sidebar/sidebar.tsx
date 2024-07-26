@@ -5,6 +5,7 @@ import styles from "./sidebar.module.css";
 import { useRouter } from "next/navigation";
 import { clearUser, selectUser } from "@/lib/redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setLoad } from "@/lib/redux/LoadSlice";
 
 import {
   MdDashboard,
@@ -134,26 +135,26 @@ export const menuItems2 = [
 
 const Sidebar = ({ type }: { type: string }) => {
   const user = useSelector(selectUser);
-  const showNotification = (msg: any) => {
-    if (Notification.permission === "granted") {
-      const notification = new Notification(
-        `New message from ${msg.name}`,
-        {
-          body: msg.content,
-          icon: msg.image,
-        }
-      );
-
-      notification.onclick = () => {
-        if(msg.link) {
-          window.location.href =
-           `https://hlolak-admin.vercel.app${msg.link}`;
-          // `http://localhost:3000${msg.link}`;
-          window.focus();
-        } 
-      };
-    }
-  };
+const showNotification = (msg: any) => {
+  if (Notification.permission === "granted") {
+    const notification = new Notification(
+      `New message from ${msg.name}`,
+      {
+        body: msg.content,
+        icon: msg.image,
+      }
+    );
+    dispatch(setLoad(Math.random()));
+    notification.onclick = () => {
+      if(msg.link) {
+        window.location.href =
+        `https://hlolak-admin.vercel.app${msg.link}`;
+        // `http://localhost:3000${msg.link}`;
+        window.focus();
+      } 
+    };
+  }
+};
   useEffect(() => {
     if(type === "admin"){
 

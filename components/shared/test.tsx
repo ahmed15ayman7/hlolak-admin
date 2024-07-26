@@ -153,7 +153,7 @@ const Test = ({
                       disc={item.text}
                       title={item.author}
                       time={format(item.date, "d/M/yyyy")}
-                      link={isPage ? `/opinion?id=${item._id}` : "/opinion"}
+                      link={isPage ? `/dashboard/opinion?id=${item._id}` : "/opinion"}
                     />
                   </div>
                 ))}
@@ -182,7 +182,7 @@ const Test = ({
                       disc={item.text}
                       title={item.author}
                       time={format(item.date, "d/M/yyyy")}
-                      link={isPage ? `/opinion?id=${item._id}` : "/opinion"}
+                      link={isPage ? `/dashboard/opinion?id=${item._id}` : "/dashboard/opinion"}
                     />
                   </div>
                 ))}

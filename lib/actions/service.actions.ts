@@ -70,7 +70,8 @@ export const updateServiceState = async (
   newState: "pending" | "canceled" | "done",
   employeeName: string,
   serviceName: string,
-  note: string
+  note: string,
+  employeeId: string,
 ) => {
   try {
     await connectDB();
@@ -81,6 +82,10 @@ export const updateServiceState = async (
     const updatedService2 = await Service.findById(serviceId);
     if (!updatedService) {
       console.error("Service not found");
+    }
+    if (newState === "done" ) {
+      let employee= await User.findById(employeeId)
+      await employee.servicesDone.push(serviceId);
     }
     note.length > 0 &&
       (await updatedService2?.notes.push({ note: note, name: employeeName }));

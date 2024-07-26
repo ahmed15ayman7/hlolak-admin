@@ -77,7 +77,7 @@ const OffersSection = ({
                 if (isPage) {
                   setAdd(!add);
                 } else {
-                  navigation.push("/galleries");
+                  navigation.push("/dashboard/offers");
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
@@ -90,7 +90,7 @@ const OffersSection = ({
                 if (isPage) {
                   setShowMore(!showMore);
                 } else {
-                  navigation.push("/galleries");
+                  navigation.push("/dashboard/offers");
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
@@ -122,7 +122,7 @@ const OffersSection = ({
                   title={item.title}
                   img={item.imageUrl}
                   time={format(item.date, "d/M/yyyy")}
-                  link={`/blog_posts?id=${item._id}`}
+                  link={`/dashboard/offers?id=${item._id}`}
                 />
               </div>
             ))}

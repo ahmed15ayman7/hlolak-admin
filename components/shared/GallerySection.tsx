@@ -103,7 +103,7 @@ const PhotoGallery = ({
                 if (isPage) {
                   setAdd(!add);
                 } else {
-                  navigation.push("/galleries");
+                  navigation.push("/dashboard/gallery");
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
@@ -148,7 +148,7 @@ const PhotoGallery = ({
                   title={item.title}
                   img={item.imageUrl}
                   time={format(item.date, "d/M/yyyy")}
-                  link={`/gallery?id=${item._id}`}
+                  link={`/dashboard/gallery?id=${item._id}`}
                   />
               </div>
             ))}
@@ -177,7 +177,7 @@ const PhotoGallery = ({
                   title={item.title}
                   img={item.imageUrl}
                   time={format(item.date, "d/M/yyyy")}
-                  link={`/gallery/${item.id}`}
+                  link={`/dashboard/gallery?id=${item.id}`}
                   />
               </div>
             ))}

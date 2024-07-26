@@ -1,6 +1,8 @@
+"use client"
 import Image from "next/image";
 import styles from "./rightbar.module.css";
 import { MdPlayCircleFilled, MdReadMore } from "react-icons/md";
+
 
 const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
   return (
@@ -20,7 +22,7 @@ const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
             {e.name}
           </h3>
           <p className={styles.desc}>
-            {e.servicesDone?e.servicesDone:0}
+            {e.servicesDone.length?e.servicesDone.length:0}
           </p>
         </div>
         )}

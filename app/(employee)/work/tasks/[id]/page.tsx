@@ -62,7 +62,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   }, []);
   const onsubmit = async (data: "pending" | "canceled" | "done") => {
     try {
-     let services:IService|null|undefined= await updateServiceState(service?._id!,data,user.name,service?.name!,note)
+     let services:IService|null|undefined = await updateServiceState(service?._id!,data,user.name,service?.name!,note,user._id)
      setServices(services!)
      setNote("")
     } catch (error) {

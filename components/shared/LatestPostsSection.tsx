@@ -73,7 +73,7 @@ const LatestPostsSection = ({
                 if (isPage) {
                   setAdd(!add);
                 } else {
-                  navigation.push("/galleries");
+                  navigation.push("/dashboard/blogs");
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
@@ -86,7 +86,7 @@ const LatestPostsSection = ({
                 if (isPage) {
                   setShowMore(!showMore);
                 } else {
-                  navigation.push("/galleries");
+                  navigation.push("/dashboard/blogs");
                 }
               }}>
               <h3 className="text-sm font-medium title-font text-[#bbbac1] underline">
@@ -118,7 +118,7 @@ const LatestPostsSection = ({
                       title={item.title}
                       img={item.imageUrl}
                       time={format(item.date, "d/M/yyyy")}
-                      link={`/blog_posts?id=${item._id}`}
+                      link={`/dashboard/blogs?id=${item._id}`}
                     />
                   </div>
                 ))}

@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
   password: { type: "string", required: true },
   image: { type: "string" },
   onboarding: { type: "boolean", default: false },
-  servicesDone: { type: Number, default: 0 },
+  servicesDone: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
   services: [{ type: mongoose.Schema.Types.ObjectId, ref: "Service" }],
   updatedAt: {
     type: Date,

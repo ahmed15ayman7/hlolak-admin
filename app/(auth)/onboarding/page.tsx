@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 // import { useRouter } from 'next/navigation';
 // import { useState, useEffect } from 'react';
 // import AccountProfile from "../../../components/forms/AccountProfile";
@@ -15,7 +15,7 @@
 //   image: string | undefined;
 //   phone: string| undefined;
 // }
-// const Onboarding =  () => {
+const Onboarding =  () => {
 //   const [userInfo, setUserInfo] = useState<any>(null);
 //   const [refrish, setrefrish] = useState<any>(null);
 //   let navigate =useRouter()
@@ -47,20 +47,20 @@
 //     image: "/preview.webp" || userInfo?.image,
 //     phone: userInfo?.phone,
 //   };
-//   return (
-//     <main className=" px-1 mx-auto py-12 flex flex-col max-w-3xl">
-//       <div className="px-10 fixed rounded-full lg:right-2  -right-4 top-10">
-//         {/* <SignOutbutton /> */}
-//       </div>
-//       <h1 className="font-bold text-[#ffffff]">Onboarding</h1>
-//       <p className=" text-gray-200 my-6">
-//         This is where you will be able to create a new account.
-//       </p>
-//       <div className="bg-gray-100  lg:p-10 p-2 ">
-//         <AccountProfile userData={userData} />
-//       </div>
-//     </main>
-//   );
-// };
+  return (<></>
+    // <main className=" px-1 mx-auto py-12 flex flex-col max-w-3xl">
+    //   <div className="px-10 fixed rounded-full lg:right-2  -right-4 top-10">
+    //     {/* <SignOutbutton /> */}
+    //   </div>
+    //   <h1 className="font-bold text-[#ffffff]">Onboarding</h1>
+    //   <p className=" text-gray-200 my-6">
+    //     This is where you will be able to create a new account.
+    //   </p>
+    //   <div className="bg-gray-100  lg:p-10 p-2 ">
+    //     <AccountProfile userData={userData} />
+    //   </div>
+    // </main>
+  );
+};
 
-// export default Onboarding;
+export default Onboarding;

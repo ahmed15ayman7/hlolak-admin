@@ -11,14 +11,16 @@ export let getUserByRedux=(router: { replace: (arg0: string) => void; },path:str
         setLoading(false)
     }
 }else if (user){
-    if (!user?.onboarding) {
-        if(path==="/onboarding"){
-            console.log(user.type);
-            setLoading(false)
-        }else{
-            router.replace("/onboarding");
-        }
-    } else {
+    // if 
+    // (!user?.onboarding) {
+    //     if(path==="/onboarding"){
+    //         console.log(user.type);
+    //         setLoading(false)
+    //     }else{
+    //         router.replace("/onboarding");
+    //     }
+    // } else 
+    // {
         if (user.type==="admin") {
             if(path.includes("dashboard")){
                 console.log(user.type);
@@ -38,4 +40,4 @@ export let getUserByRedux=(router: { replace: (arg0: string) => void; },path:str
 
     }
   }
-}
+// }

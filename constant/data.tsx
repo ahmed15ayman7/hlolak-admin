@@ -21,12 +21,6 @@
       number: 6.642,
       change: 18,
     },
-    {
-      id: 4,
-      title: "Services canceled",
-      number: 6.642,
-      change: 18,
-    },
   ];
   const CardsTot = ({created,
     done,
@@ -39,8 +33,7 @@
       pending:number,setType:any}) => {
     cards[0].number=created;
     cards[1].number=pending;
-    cards[2].number=done;
-    cards[3].number=canceled;
+    cards[2].number=done+canceled;
     return (
       cards.map((item) => (
         <Card item={item}  type={type}

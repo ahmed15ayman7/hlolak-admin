@@ -31,9 +31,7 @@ const ServicesPage = ({
     type === "created"
       ? setServices(created)
       : type === "done"
-      ? setServices(done)
-      : type === "canceled"
-      ? setServices(canceled)
+      ? setServices([...done,...canceled])
       : type === "pending"
       ? setServices(pending)
       : setServices(created);
