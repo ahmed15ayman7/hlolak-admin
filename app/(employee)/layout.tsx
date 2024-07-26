@@ -21,7 +21,7 @@ export default function RootLayout({
     // <html lang="en">
       // {/* <ProviderRedux> */}
         // <body className={styles.body}>
-        <MiddelWare/>
+        // <MiddelWare/>
           <div className={styles.container}>
             <div className={styles.menu}>
               <Sidebar type={"employee"}/>

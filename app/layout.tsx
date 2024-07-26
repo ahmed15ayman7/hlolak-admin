@@ -37,7 +37,7 @@ export default function RootLayout({
         <body className={`${styles.body}` + " bg-[#151c2c] "}>
       <ProviderRedux>
         <MiddelWare/>
-          <div className=" min-h-screen flex w-full items-center justify-center">
+          <div className=" w-full ">
             {children}
             {/* <SocketComp/> */}
           </div>

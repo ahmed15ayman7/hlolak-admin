@@ -33,15 +33,15 @@ export default function RootLayout({
 }) {
   return (
     // <html lang="en">
-      {/* <ProviderRedux> */}
-        {/* <body className={inter.className + " bg-[#151c2c] "}> */}
-        {/* <MiddelWare/> */}
+      // {/* <ProviderRedux> */}
+        // {/* <body className={inter.className + " bg-[#151c2c] "}> */}
+        // {/* <MiddelWare/> */}
           <div className=" min-h-screen flex w-full items-center justify-center">
             {children}
             {/* <SocketComp/> */}
           </div>
-        {/* </body> */}
-      {/* </ProviderRedux> */}
+        // {/* </body> */}
+      // {/* </ProviderRedux> */}
     // </html>
   );
 }
