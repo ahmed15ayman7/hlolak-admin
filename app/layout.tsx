@@ -4,6 +4,7 @@ import "./globals.css";
 import ProviderRedux from "@/lib/redux/ProviderRedux";
 import MiddelWare from "@/lib/redux/MiddelWare";
 // import SocketComp from "@/lib/realtime/SocketComp";
+import styles from "@/components/ui/dashboard/dashboard.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -33,15 +34,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+        <body className={`${styles.body}` + " bg-[#151c2c] "}>
       <ProviderRedux>
-        <body className={inter.className + " bg-[#151c2c] "}>
         <MiddelWare/>
           <div className=" min-h-screen flex w-full items-center justify-center">
             {children}
             {/* <SocketComp/> */}
           </div>
-        </body>
       </ProviderRedux>
+        </body>
     </html>
   );
 }

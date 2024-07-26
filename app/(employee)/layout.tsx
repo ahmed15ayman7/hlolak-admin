@@ -18,9 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <ProviderRedux>
-        <body className={styles.body}>
+    // <html lang="en">
+      // {/* <ProviderRedux> */}
+        // <body className={styles.body}>
         <MiddelWare/>
           <div className={styles.container}>
             <div className={styles.menu}>
@@ -32,8 +32,8 @@ export default function RootLayout({
               <Footer />
             </div>
           </div>
-        </body>
-      </ProviderRedux>
-    </html>
+        // </body>
+      // </ProviderRedux>
+    // </html>
   );
 }

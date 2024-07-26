@@ -16,11 +16,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <ProviderRedux>
-        <body className={styles.body}>
-        <MiddelWare/>
-          <div className={styles.container}>
+    // <html lang="en">
+        // <body className={styles.body}>
+      //  <ProviderRedux> 
+          <section className={` w-full ${styles.container}`}>
             <div className={styles.menu}>
               <Sidebar type={"admin"} />
             </div>
@@ -29,9 +28,10 @@ export default function RootLayout({
               <div className={"min-h-[80vh]"}>{children}</div>
               <Footer />
             </div>
-          </div>
-        </body>
-      </ProviderRedux>
-    </html>
+        {/* <MiddelWare/> */}
+          </section>
+      // </ProviderRedux> 
+        // {/* </body> */}
+    // {/* </html> */}
   );
 }
