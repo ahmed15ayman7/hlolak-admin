@@ -25,7 +25,7 @@ const Dashboard = ({
     getUserByRedux(router, path, user, setLoading);
     let getUsers = async () => {
       let employee = await fetchUserAndService(user?._id);
-
+      
       setEmployee(employee!);
     };
     getUsers();
@@ -39,7 +39,7 @@ const Dashboard = ({
         </div>
         {employee?.services && (
           <Transactions
-            services={employee?.services.slice(+page - 1, +page * 5)}
+            services={employee?.services.filter(e=>e.state!=="done").slice(+page - 1, +page * 5)}
             isWork
             isTask
           />

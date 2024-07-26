@@ -37,6 +37,7 @@ interface AddServiceParams {
 interface AssignEmployeeParams {
   serviceId: string;
   employeeId: string;
+  newState: string;
   path: string;
 }
 
@@ -107,6 +108,7 @@ export const updateServiceState = async (
 export const assignEmployeeToService = async ({
   serviceId,
   employeeId,
+  newState,
   path,
 }: AssignEmployeeParams) => {
   try {
@@ -114,6 +116,9 @@ export const assignEmployeeToService = async ({
     const service = await Service.findById(serviceId);
     if (!service) {
       console.error("Service not found!");
+    }
+    if(newState==="done"){
+      await Service.findByIdAndUpdate(serviceId,{state:"pending"});
     }
     const employee = await User.findById(employeeId);
     await employee.services.push(serviceId);

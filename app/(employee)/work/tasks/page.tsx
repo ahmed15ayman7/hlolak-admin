@@ -36,7 +36,7 @@ const UsersPage =  ({ searchParams }:{searchParams:{q:string,page:string}}) => {
       {/* <div className={styles.top}>
         <Search placeholder="Search for a service..." />
       </div> */}
-      {employee?.services&&<Transactions services={employee?.services.slice((+page-1)*5,+page*5)} isTask />}
+      {employee?.services&&<Transactions services={employee?.services.filter(e=>e.state!=="done").slice((+page-1)*5,+page*5)} isTask />}
       <Pagination count={employee?.services.length!} />
     </div>
     

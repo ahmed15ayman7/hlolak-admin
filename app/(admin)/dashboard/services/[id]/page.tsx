@@ -28,7 +28,10 @@ import {
 } from "@/components/ui/select";
 import { UserData, fetchAllUser } from "@/lib/actions/user.actions";
 import Loader from "@/components/shared/Loader";
+import { setLoad,selectLoad } from "@/lib/redux/LoadSlice";
+import { useDispatch } from "react-redux";
 const ServicesPage = ({ params }: { params: { id: string } }) => {
+  let dispatch = useDispatch();
   let [service, setServices] = useState<IService>();
   let [employees, setEmployees] = useState<UserData[]>();
   const id = params.id;
@@ -72,7 +75,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   let path = usePathname();
   let router = useRouter();
   let [loading, setLoading] = useState<boolean>(true);
-
+  const load = useSelector(selectLoad);
   useEffect(() => {
     getUserByRedux(router, path, user, setLoading);
     let getAllServices = async () => {
@@ -100,14 +103,16 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       }
     };
     getAllServices();
-  }, []);
+  }, [load]);
   const onsubmit = async (data: z.infer<typeof ADDEmpValidation>) => {
     try {
       await assignEmployeeToService({
         serviceId: id,
+        newState: service?.state!,
         employeeId: data._id,
         path: path,
       });
+      dispatch(setLoad(Math.random()));
     } catch (error) {
       console.error(error);
     }
@@ -250,7 +255,9 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                 <span
                   className={`${styles.status} ${
                     empId.state === "done"
-                      ? styles.done
+                      ? styles.done:
+                    empId.state === "pending"
+                      ? styles.pending
                       : empId.state === "canceled"
                       ? styles.cancellede
                       : ""
