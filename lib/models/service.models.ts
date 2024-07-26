@@ -11,7 +11,7 @@ const serviceSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   state: { type: String, default: "created" },
   step: { type: String, default: 1 },
-  notes: [{ note: { type: String }, name: { type: String } }],
+  notes: [{ note: { type: String }, name: { type: String },state:{type:String} }],
 });
 const Service =
   mongoose.models?.Service || mongoose.model("Service", serviceSchema);

@@ -72,13 +72,13 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   let path = usePathname();
   let router = useRouter();
   let [loading, setLoading] = useState<boolean>(true);
-  
+
   useEffect(() => {
-    getUserByRedux(router, path, user,setLoading)
+    getUserByRedux(router, path, user, setLoading);
     let getAllServices = async () => {
       try {
         let service: IService | null | undefined = await getService(id);
-        
+
         setServices(service!);
         const users = await fetchAllUser({
           searchString: "employee",
@@ -88,9 +88,11 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         });
         let Employees: SetStateAction<UserData[] | undefined> = [];
         users?.users?.forEach((a) => {
-          service?.employee&&service?.employee.length>0? service?.employee.forEach((e) => {
-            a._id === e?._id ? null: Employees.push(a) ;
-          }): Employees.push(a);
+          service?.employee && service?.employee.length > 0
+            ? service?.employee.forEach((e) => {
+                a._id === e?._id ? null : Employees.push(a);
+              })
+            : Employees.push(a);
         });
         setEmployees(Employees);
       } catch (e) {
@@ -111,14 +113,17 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
     }
   };
   return service ? (
-    <div className="container mx-auto p-6  shadow-md rounded-lg" style={{direction:"rtl"}}>
-      {loading&&<Loader is/>}
+    <div
+      className="container mx-auto p-6  shadow-md rounded-lg"
+      style={{ direction: "rtl" }}>
+      {loading && <Loader is />}
       <h1 className="text-3xl font-extrabold text-center text-white mb-6 ">
         {service.name}
       </h1>
       <div className="mb-6 grid  grid-cols-1 md:grid-cols-2 gap-20">
         <p className="text-lg text-center text-gray-300">
-          <strong className="text-white px-2">رقم الجوال:</strong> {service.mobile}
+          <strong className="text-white px-2">رقم الجوال:</strong>{" "}
+          {service.mobile}
         </p>
         <p className="text-lg text-center text-gray-300">
           <strong className="text-white px-2">جهة العمل:</strong>{" "}
@@ -133,8 +138,9 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         </p>
         <p className="text-lg text-center text-gray-300">
           <strong className="text-white px-2">
-        هل يوجد عليه التزامات أو ديون؟:
-          </strong>{"     "} {service.has_debts==="yes"?"نعم":"لا"}
+            هل يوجد عليه التزامات أو ديون؟:
+          </strong>
+          {"     "} {service.has_debts === "yes" ? "نعم" : "لا"}
         </p>
         <p className="text-lg text-center text-gray-300 px-2">
           <strong className="text-white">الحاله:</strong>
@@ -231,7 +237,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           </li>
         )}
       </ul>
-        <h2 className="text-2xl font-bold text-white my-4">الملاحظات</h2>
+      <h2 className="text-2xl font-bold text-white my-4">الملاحظات</h2>
       <ul className="space-y-2">
         {service.notes && service.notes.length > 0 ? (
           service.notes.map((empId, i) => (
@@ -239,13 +245,25 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
               key={i}
               className="bg-gray-700 text-gray-300 flex justify-between items-center p-3 rounded shadow-sm">
               <p>{empId.note}</p>
+              {empId.state&&<p className="text-lg text-center text-gray-300 px-2">
+                <strong className="text-white">الحاله:</strong>
+                <span
+                  className={`${styles.status} ${
+                    empId.state === "done"
+                      ? styles.done
+                      : empId.state === "canceled"
+                      ? styles.cancellede
+                      : ""
+                  }`}>
+                  {empId.state}
+                </span>
+              </p>}
               <p>{empId.name}</p>
-              
             </li>
           ))
         ) : (
           <li className="bg-gray-700 text-gray-300 p-3 rounded shadow-sm">
-            لا يوجد ملاحظات 
+            لا يوجد ملاحظات
           </li>
         )}
       </ul>

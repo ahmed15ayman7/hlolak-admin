@@ -65,6 +65,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
      let services:IService|null|undefined = await updateServiceState(service?._id!,data,user.name,service?.name!,note,user._id)
      setServices(services!)
      setNote("")
+     service?router.replace("/work/tasks"):""
     } catch (error) {
       console.error(error);
     }

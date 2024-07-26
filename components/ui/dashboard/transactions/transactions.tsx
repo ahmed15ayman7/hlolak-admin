@@ -41,7 +41,7 @@ const Transactions = ({
           </tr>
         </thead>
         <tbody>
-          {services.map((e, i) => (
+          {services.map((e, i) =>e.state!=="done"&& (
             <tr key={i} className="text-center">
               <td>
                 <div className={styles.user}>
@@ -74,7 +74,7 @@ const Transactions = ({
               <td>{e.createdAt?.toString().slice(4, 16)}</td>
               <td>{e.salary}</td>
               <td>{e.provided_service_type}</td>
-              <td>{e.employee && e.employee.length > 0&&e.state !== "canceled"&&e.state !== "done" ? "true" : "false"}</td>
+              <td>{e.employee && e.employee.length > 0&&e.state === "pending" ? "true" : "false"}</td>
               <td>
                 <div className={styles.buttons}>
                   <Link

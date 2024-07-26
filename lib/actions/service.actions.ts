@@ -21,6 +21,7 @@ export interface IService {
   step: string;
   notes: {
     note: string;
+    state:string;
     name: string;
   }[];
 }
@@ -87,8 +88,8 @@ export const updateServiceState = async (
       let employee= await User.findById(employeeId)
       await employee.servicesDone.push(serviceId);
     }
-    note.length > 0 &&
-      (await updatedService2?.notes.push({ note: note, name: employeeName }));
+    note.length > 0 && newState === "pending"&&
+      (await updatedService2?.notes.push({ note: note, name: employeeName, state: newState}));
     note.length > 0 && (await updatedService2?.save());
     let message = {
       name: employeeName,
