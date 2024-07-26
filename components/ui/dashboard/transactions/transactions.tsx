@@ -41,7 +41,7 @@ const Transactions = ({
           </tr>
         </thead>
         <tbody>
-          {services.map((e, i) =>e.state!=="done"&& (
+          {services.map((e, i) =>e.state!=="done"&&(isTask||isWork)&& (
             <tr key={i} className="text-center">
               <td>
                 <div className={styles.user}>
