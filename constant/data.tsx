@@ -6,18 +6,21 @@
     {
       id: 1,
       title: "Services Created",
+      title2: "المحتسبات الجديده",
       number: 10.928,
       change: 12,
     },
     {
       id: 2,
       title: "Services pending",
+      title2: "تحت المراجعة",
       number: 8.236,
       change: -2,
     },
     {
       id: 3,
       title: "Services done",
+      title2: "الارشيف",
       number: 6.642,
       change: 18,
     },

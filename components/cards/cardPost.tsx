@@ -4,6 +4,7 @@ import { MdDelete } from "react-icons/md";
 import styles from "../ui/dashboard/transactions/transactions.module.css";
 import { useDispatch } from "react-redux";
 import { setLoad } from "@/lib/redux/LoadSlice";
+
 const CardPost = ({
   id,
   title,
@@ -22,36 +23,40 @@ const CardPost = ({
   time: string;
 }) => {
   const dispatch = useDispatch();
+
   return (
     <div
-      className="p-4 py-8 max-sm:p-2 max-sm:py-4 relative md:mb-0 mb-6 flex flex-col justify-center items-center "
-      style={{ direction: "rtl" }}>
-      <div className=" absolute bottom-3 left-0 p-4">
+      className="p-4 py-8 max-sm:p-2 max-sm:py-4 relative md:mb-0 mb-6 flex flex-col justify-center items-center animate-fade-in"
+      style={{ direction: "rtl" }}
+    >
+      <div className="absolute bottom-3 left-0 p-4 animate-fade-up">
         <button
           className={`${styles.button} ${styles.delete}`}
           onClick={async () => {
             await deleteFunc(id);
             dispatch(setLoad(Math.random()));
-          }}>
+          }}
+        >
           <MdDelete color="#ffffff" />
         </button>
       </div>
       <Link className="w-full" href={link}>
         {img && (
           <div
-            className={`bg-gray-300 h-56  w-full rounded-lg shadow-md bg-cover bg-center`}
+            className="bg-gray-300 h-56 w-full rounded-lg shadow-md bg-cover bg-center animate-fade-up-right"
             style={{ backgroundImage: `url(${img})` }}
-            data-aos="fade-up-right"></div>
+          ></div>
         )}
         {disc && (
           <p
-            className={`flex items-center justify-center bg-gray-200 h-56 w-full rounded-lg shadow-md bg-cover bg-center text-center`}>
+            className="flex items-center justify-center bg-gray-200 h-56 w-full rounded-lg shadow-md bg-cover bg-center text-center animate-fade-up-right"
+          >
             {disc}
           </p>
         )}
         <div
-          className={` w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5`}
-          data-aos="fade-up-left">
+          className="w-full bg-white -mt-10 shadow-lg rounded-lg overflow-hidden p-5 animate-fade-up-left"
+        >
           <h4 className="font-medium text-start" style={{ direction: "rtl" }}>
             {title}
           </h4>
@@ -59,7 +64,8 @@ const CardPost = ({
             <time
               dateTime="2024-05-25T15:00:52Z"
               data-local="time"
-              data-format="%Y/%m/%d">
+              data-format="%Y/%m/%d"
+            >
               {time}
             </time>
           </div>

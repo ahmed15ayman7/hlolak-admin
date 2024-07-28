@@ -11,7 +11,7 @@ const Dashboard = async() => {
   let top5User=await fetchAllUser({searchString:'',pageNum:1,pageSize:5})
   console.log(top5User)
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} >
       <div className={styles.main}>
         <div className={styles.cards}>
           

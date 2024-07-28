@@ -20,45 +20,45 @@ import { useEffect } from "react";
 import { pusherClient } from "@/lib/pusher";
 export const menuItems1 = [
   {
-    title: "Pages",
+    title: "الصفحات الاساسيه",
     list: [
       {
-        title: "Dashboard",
+        title: "اللوحة",
         path: "/dashboard",
         icon: <MdDashboard />,
       },
       {
-        title: "Employees",
+        title: "الموظفين",
         path: "/dashboard/users",
         icon: <MdPeople />,
       },
       {
-        title: "Services",
+        title: "المحتسبات",
         path: "/dashboard/services",
         icon: <MdShoppingBag />,
       },
     ],
   },
   {
-    title: "Data",
+    title: "البيانات الفرعيه",
     list: [
       {
-        title: "Offers",
+        title: "العروض العقاريه",
         path: "/dashboard/offers",
         icon: <MdAttachMoney />,
       },
       {
-        title: "Blogs",
+        title: "المدونات",
         path: "/dashboard/blogs",
         icon: <MdWork />,
       },
       {
-        title: "Gallery",
+        title: "معرض الصور",
         path: "/dashboard/gallery",
         icon: <IoIosImages />,
       },
       {
-        title: "Opinions",
+        title: "الاراء",
         path: "/dashboard/opinions",
         icon: <FaMicroblog />,
       },
@@ -82,15 +82,15 @@ export const menuItems1 = [
 ];
 export const menuItems2 = [
   {
-    title: "Pages",
+    title: "الصفحات الاساسيه",
     list: [
       {
-        title: "Work",
+        title: "اللوحه",
         path: "/work",
         icon: <MdDashboard />,
       },
       {
-        title: "tasks",
+        title: "المحتسبات",
         path: "/work/tasks",
         icon: <MdShoppingBag />,
       },
@@ -207,7 +207,7 @@ const showNotification = (msg: any) => {
         /> */}
           <div className={styles.userDetail}>
             {/* <span className={styles.username}>{user.username}</span> */}
-            <span className={styles.userTitle}>Administrator</span>
+            <span className={styles.userTitle}>{type === "admin"?"المشرف":"الموظف"}</span>
           </div>
         </div>
         <ul className={styles.list}>
@@ -230,7 +230,7 @@ const showNotification = (msg: any) => {
           }}>
           <Image src="/assets/logout.svg" alt="logout" width={24} height={24} />
           <span className=" text-[#fff] hover:text-[#ed143d]  max-lg:hidden">
-            logout
+            تسجيل الخروج
           </span>
         </div>
       </div>

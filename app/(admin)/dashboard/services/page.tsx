@@ -81,7 +81,7 @@ const ServicesPage = ({
   }, [q, page, load]);
   console.log(q);
   return (
-    <div className="p-5">
+    <div className="p-5" >
       {loading && <Loader is />}
       <div className={styles.main}>
         <div className={styles.cards}>
@@ -97,10 +97,10 @@ const ServicesPage = ({
       </div>
       <div className={styles.container}>
         <div className={styles.top}>
-          {/* <Search placeholder="Search for a service..." /> */}
+          <Search placeholder="البحث برقم الجوال" />
           <p></p>
           <Link href="/dashboard/users/add">
-            <button className={styles.addButton}>Add New</button>
+            <button className={styles.addButton}>اضافة</button>
           </Link>
         </div>
         <div className={styles.wrapper}>

@@ -158,10 +158,7 @@ export async function fetchAllServices({
     if (searchString.trim() !== "") {
       query.$or = [
         { name: { $regex: regex } },
-        { username: { $regex: regex } },
-        { state: { $regex: regex } },
-        { provided_service_type: { $regex: regex } },
-        { step: { $regex: regex } },
+        { mobile: { $regex: regex } },
       ];
     }
     let services = await Service.find(query)

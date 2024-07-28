@@ -12,8 +12,8 @@ const Rightbar = ({topEmpp}:{topEmpp:any[]}) => {
         </div>
         <div className={styles.text}>
           <div className="flex justify-between gap-5" >
-          <p className={styles.notification}>🔥 TOP 5 Employee</p>
-          <p className={styles.notification}>Done</p>
+          <p className={styles.notification}>🔥 اول خمس موظفين</p>
+          <p className={styles.notification}>عدد</p>
         </div>
           {topEmpp.map((e,i)=>
         e.type==="employee"&&

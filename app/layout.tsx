@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-        <body className={`${styles.body}` + " bg-[#151c2c] "}>
+        <body className={`${styles.body}` + " bg-[#151c2c] "} dir="rtl">
       <ProviderRedux>
         <MiddelWare/>
           <div className=" w-full ">
