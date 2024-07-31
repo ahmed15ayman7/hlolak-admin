@@ -13,6 +13,7 @@ import Transactions from "@/components/ui/dashboard/transactions/transactions";
 import CardsTot from "@/constant/data";
 import Loader from "@/components/shared/Loader";
 import { selectLoad } from "@/lib/redux/LoadSlice";
+import UploadExcelForm from "@/components/forms/AddServicesExcel";
 const ServicesPage = ({
   searchParams,
 }: {
@@ -24,9 +25,9 @@ const ServicesPage = ({
   let [canceled, setcanceled] = useState<any[]>([]);
   let [pending, setpending] = useState<any[]>([]);
   let [count, setCount] = useState<number>();
-  let [type, setType] = useState<string>("");
   const q = searchParams.q || "";
   const page = searchParams.page || "1";
+  let [type, setType] = useState<string>("normal");
   useEffect(() => {
     type === "created"
       ? setServices(created)
@@ -72,14 +73,13 @@ const ServicesPage = ({
         setdone(done1);
         setpending(pending1);
         setcanceled(canceled1);
-        console.log(created1);
+        // console.log(created1);
       } catch (e) {
         console.log(e);
       }
     };
     getServices();
   }, [q, page, load]);
-  console.log(q);
   return (
     <div className="p-5" >
       {loading && <Loader is />}
@@ -99,16 +99,19 @@ const ServicesPage = ({
         <div className={styles.top}>
           <Search placeholder="البحث برقم الجوال" />
           <p></p>
+          <div className="flex gap-5">
+          <UploadExcelForm/>
           <Link href="/dashboard/users/add">
             <button className={styles.addButton}>اضافة</button>
           </Link>
+          </div>
         </div>
         <div className={styles.wrapper}>
           <div className={styles.side}>{/* <Rightbar /> */}</div>{" "}
         </div>
       </div>
       {services && <Transactions services={services!} />}
-      {count && <Pagination count={count} />}
+      {count && type==="normal"&& <Pagination count={count} />}
     </div>
   );
 };

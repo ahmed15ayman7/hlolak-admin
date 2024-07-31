@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/select";
 import { UserData, fetchAllUser } from "@/lib/actions/user.actions";
 import Loader from "@/components/shared/Loader";
-import { setLoad,selectLoad } from "@/lib/redux/LoadSlice";
+import { setLoad, selectLoad } from "@/lib/redux/LoadSlice";
 import { useDispatch } from "react-redux";
 const ServicesPage = ({ params }: { params: { id: string } }) => {
   let dispatch = useDispatch();
@@ -76,6 +76,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   let router = useRouter();
   let [loading, setLoading] = useState<boolean>(true);
   const load = useSelector(selectLoad);
+  let employes= service?.employeeExl?[...service.employee,service.employeeExl]:service?.employee
   useEffect(() => {
     getUserByRedux(router, path, user, setLoading);
     let getAllServices = async () => {
@@ -175,7 +176,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           <form
             className="simple_form p-6 pt-0  w-full rounded overflow-scroll sm:shadow-2xl"
             onSubmit={form.handleSubmit(onsubmit)}>
-            <h2 className="text-2xl font-bold text-white mb-4">Add Employee</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">اضافة موظف</h2>
             <div className="flex gap-3">
               <FormField
                 control={form.control}
@@ -221,19 +222,19 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         </Form>
       </div>
 
-      <h2 className="text-2xl font-bold text-white mb-4">اضافة موظف</h2>
+      <h2 className="text-2xl font-bold text-white mb-4">الموظفين</h2>
       <ul className="space-y-2">
-        {service.employee && service.employee.length > 0 ? (
-          service.employee.map((empId, i) => (
+        {employes && employes.length > 0 ? (
+          employes.map((empId, i) => (
             <li
               key={i}
               className="bg-gray-700 text-gray-300 flex justify-between items-center p-3 rounded shadow-sm">
               <p>{empId.name}</p>
-              <Link href={`/dashboard/users/${empId._id}`}>
+             {empId._id&& <Link href={`/dashboard/users/${empId._id}`}>
                 <button className={`${styles.button} ${styles.view}`}>
                   View
                 </button>
-              </Link>
+              </Link>}
             </li>
           ))
         ) : (
@@ -250,21 +251,25 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
               key={i}
               className="bg-gray-700 text-gray-300 flex justify-between items-center p-3 rounded shadow-sm">
               <p>{empId.note}</p>
-              {empId.state&&<p className="text-lg text-center text-gray-300 px-2">
-                <strong className="text-white">الحاله:</strong>
-                <span
-                  className={`${styles.status} ${
-                    empId.state === "done"
-                      ? styles.done:
-                    empId.state === "pending"
-                      ? styles.pending
-                      : empId.state === "canceled"
-                      ? styles.cancellede
-                      : ""
-                  }`}>
-                  {empId.state}
-                </span>
-              </p>}
+              {empId.state && (
+                <p className="text-lg text-center text-gray-300 px-2">
+                  <strong className="text-white">الحاله:</strong>
+                  <span
+                    className={`${styles.status} ${
+                      empId.state === "done"
+                        ? styles.done
+                        : empId.state === "pending"
+                        ? styles.pending
+                        : empId.state === "canceled"
+                        ? styles.cancellede
+                        : service.state === "created"
+                        ? styles.created
+                        : ""
+                    }`}>
+                    {empId.state}
+                  </span>
+                </p>
+              )}
               <p>{empId.name}</p>
             </li>
           ))

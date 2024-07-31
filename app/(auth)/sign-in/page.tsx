@@ -72,12 +72,12 @@ export default function Login() {
           onSubmit={form.handleSubmit(onSubmit)}
           className="bg-[#fff] p-6 flex flex-col gap-3 px-10 rounded shadow-md">
           <div className="flex flex-col   space-y-2 text-center">
-            <h1 className="text-3xl text-body-bold tracking-tight text-[#212126] cl-internal-1tpvhd8">
-              Sign in to HLOLAK
+            <h1 className="text-3xl text-body-bold tracking-tight mb-5 text-[#212126] cl-internal-1tpvhd8">
+              تسجيل الدخول
             </h1>
-            <p className="text-sm py-4 text-muted-foreground">
-              Welcome back! Please sign in to continue
-            </p>
+            {/* <p className="text-sm py-4 text-muted-foreground">
+              
+            </p> */}
           </div>
           <div className="mb-4">
             <FormField
@@ -86,7 +86,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full items-center gap-2">
                   <FormLabel className="flex self-start">
-                    Email address
+                    البريد الالكتروني
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -107,7 +107,7 @@ export default function Login() {
               name="password"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full items-center gap-2">
-                  <FormLabel className="flex self-start">Password</FormLabel>
+                  <FormLabel className="flex self-start">الرقم السري</FormLabel>
                   <FormControl>
                     <Input
                       type="password"

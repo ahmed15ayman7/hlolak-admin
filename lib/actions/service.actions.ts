@@ -21,9 +21,14 @@ export interface IService {
   step: string;
   notes: {
     note: string;
-    state:string;
+    state: string;
     name: string;
   }[];
+  communication: string;
+  employeeExl: {
+    name: string;
+    _id: undefined;
+  };
 }
 interface AddServiceParams {
   name: string;
@@ -32,6 +37,14 @@ interface AddServiceParams {
   salary: number;
   provided_service_type: string;
   has_debts: string;
+}
+interface AddServiceEXcelParams {
+  name: string;
+  mobile: string;
+  employee: string;
+  communication: string;
+  notes: { name: string; note: string; state: string };
+  state: string;
 }
 
 interface AssignEmployeeParams {
@@ -67,13 +80,34 @@ export const addService = async ({
     console.error("Failed to create service!");
   }
 };
+export const addServiceEXcel = async (services: AddServiceEXcelParams[]) => {
+  try {
+    await connectDB();
+    services.forEach(async service => {
+      const newService = new Service({
+        name:service.name,
+        mobile:service.mobile,
+        employeeExl: {
+          name: service.employee,
+        },
+        communication:service.communication,
+        notes:service.notes,
+        state:service.state,
+      });
+      await newService.save();
+    })
+  } catch (err) {
+    console.error(err);
+    console.error("Failed to create service!");
+  }
+};
 export const updateServiceState = async (
   serviceId: string,
   newState: "pending" | "canceled" | "done",
   employeeName: string,
   serviceName: string,
   note: string,
-  employeeId: string,
+  employeeId: string
 ) => {
   try {
     await connectDB();
@@ -85,12 +119,17 @@ export const updateServiceState = async (
     if (!updatedService) {
       console.error("Service not found");
     }
-    if (newState === "done" ) {
-      let employee= await User.findById(employeeId)
+    if (newState === "done") {
+      let employee = await User.findById(employeeId);
       await employee.servicesDone.push(serviceId);
     }
-    note.length > 0 && newState === "pending"&&
-      (await updatedService2?.notes.push({ note: note, name: employeeName, state: newState}));
+    note.length > 0 &&
+      newState === "pending" &&
+      (await updatedService2?.notes.push({
+        note: note,
+        name: employeeName,
+        state: newState,
+      }));
     note.length > 0 && (await updatedService2?.save());
     let message = {
       name: employeeName,
@@ -117,8 +156,8 @@ export const assignEmployeeToService = async ({
     if (!service) {
       console.error("Service not found!");
     }
-    if(newState==="done"){
-      await Service.findByIdAndUpdate(serviceId,{state:"pending"});
+    if (newState === "done") {
+      await Service.findByIdAndUpdate(serviceId, { state: "pending" });
     }
     const employee = await User.findById(employeeId);
     await employee.services.push(serviceId);
@@ -156,10 +195,7 @@ export async function fetchAllServices({
     let regex = new RegExp(searchString, "i");
     let query: FilterQuery<typeof Service> = {};
     if (searchString.trim() !== "") {
-      query.$or = [
-        { name: { $regex: regex } },
-        { mobile: { $regex: regex } },
-      ];
+      query.$or = [{ name: { $regex: regex } }, { mobile: { $regex: regex } }];
     }
     let services = await Service.find(query)
       .sort({ createdAt: "desc" })
@@ -217,17 +253,17 @@ export const deleteService = async (id: string) => {
 // تأكد من أن لديك اتصال صحيح بقاعدة البيانات
 
 const getData = async () => {
-  try{
+  try {
     connectDB();
     const services = await Service.aggregate([
       {
         $group: {
           _id: {
             month: { $month: "$createdAt" },
-            state: "$state"
+            state: "$state",
           },
-          count: { $sum: 1 }
-        }
+          count: { $sum: 1 },
+        },
       },
       {
         $group: {
@@ -235,30 +271,36 @@ const getData = async () => {
           states: {
             $push: {
               state: "$_id.state",
-              count: "$count"
-            }
-          }
-        }
+              count: "$count",
+            },
+          },
+        },
       },
       {
-        $sort: { _id: 1 }
-      }
+        $sort: { _id: 1 },
+      },
     ]);
-    
-    const formattedData = services.map(service => {
-      const data = { month: service._id, created: 0, done: 0, pending: 0, canceled: 0 };
-      service.states.forEach((state: { state: string | number; count: any; }) => {
-        //@ts-ignore
-        data[state.state] = state.count;
-      });
+
+    const formattedData = services.map((service) => {
+      const data = {
+        month: service._id,
+        created: 0,
+        done: 0,
+        pending: 0,
+        canceled: 0,
+      };
+      service.states.forEach(
+        (state: { state: string | number; count: any }) => {
+          //@ts-ignore
+          data[state.state] = state.count;
+        }
+      );
       return data;
     });
     return formattedData;
-  }catch(e){
-    console.error(e)
+  } catch (e) {
+    console.error(e);
   }
-    
-
 };
 
 export default getData;

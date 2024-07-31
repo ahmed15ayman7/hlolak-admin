@@ -3,7 +3,7 @@ import Chart from "@/components/ui/dashboard/chart/chart";
 import styles from "@/components/ui/dashboard/dashboard.module.css";
 import Rightbar from "@/components/ui/dashboard/rightbar/rightbar";
 import Transactions from "@/components/ui/dashboard/transactions/transactions";
-import getData, { fetchAllServices, getAllServices } from "@/lib/actions/service.actions";
+import getData, { fetchAllServices } from "@/lib/actions/service.actions";
 import { fetchAllUser } from "@/lib/actions/user.actions";
 const Dashboard = async() => {
   let services= await fetchAllServices({searchString:'',pageNum:1,pageSize:5})
@@ -21,11 +21,11 @@ const Dashboard = async() => {
         <Transactions services={services?.services!} isDash />
         <Chart data={data} />
       </div>
-      <div className={styles.side}>
+      {/* <div className={styles.side}>
         <Rightbar
          topEmpp={top5User?.users!}
           />
-      </div>
+      </div> */}
     </div>
   );
 };

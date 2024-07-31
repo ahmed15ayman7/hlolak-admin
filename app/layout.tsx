@@ -5,7 +5,8 @@ import ProviderRedux from "@/lib/redux/ProviderRedux";
 import MiddelWare from "@/lib/redux/MiddelWare";
 // import SocketComp from "@/lib/realtime/SocketComp";
 import styles from "@/components/ui/dashboard/dashboard.module.css";
-
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: {
@@ -39,6 +40,7 @@ export default function RootLayout({
         <MiddelWare/>
           <div className=" w-full ">
             {children}
+            <ToastContainer />
             {/* <SocketComp/> */}
           </div>
       </ProviderRedux>

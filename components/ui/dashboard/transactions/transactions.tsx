@@ -78,11 +78,11 @@ const Transactions = ({
                 </span>
               </td>
               <td>{format(e.createdAt, 'EEEE, d MMMM yyyy', { locale: ar })}</td>
-              <td>{translateWorkField(e.employer)}</td>
-              <td>{translateServiceType(e.provided_service_type)}</td>
+              <td>{e.employer?translateWorkField(e.employer):"----"}</td>
+              <td>{e.provided_service_type?translateServiceType(e.provided_service_type):"----"}</td>
               <td>
-                {e.employee &&
-                e.employee.length > 0 &&
+                {(e.employee &&
+                e.employee.length > 0||e.employeeExl) &&
                 e.state !== "done" &&
                 e.state !== "canceled"
                   ? "نعم"
