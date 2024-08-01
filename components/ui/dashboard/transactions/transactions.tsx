@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
-import { format } from 'date-fns';
-import { ar } from 'date-fns/locale';
+import { format } from "date-fns";
+import { ar } from "date-fns/locale";
 import styles from "./transactions.module.css";
 import Link from "next/link";
 import { IService, deleteService } from "@/lib/actions/service.actions";
 import { setLoad } from "@/lib/redux/LoadSlice";
 import { useDispatch } from "react-redux";
 import { MdDelete } from "react-icons/md";
-
+import { MdOutlineDescription } from "react-icons/md";
 const Transactions = ({
   services,
   isDash,
@@ -22,12 +22,14 @@ const Transactions = ({
 }) => {
   let dispatch = useDispatch();
   return (
-    <div className={`${styles.container} mt-3`}>
+    <div className={` ${styles.container} mt-3`}>
       <div className="flex justify-between">
         <h2 className={styles.title}>المحتسبات</h2>
         {(isDash || isWork) && (
           <Link href={isWork ? `/work/tasks/` : `/dashboard/services/`}>
-            <button className={`${styles.button} ${styles.view}`}>المزيد</button>
+            <button className={`${styles.button} ${styles.view}`}>
+              المزيد
+            </button>
           </Link>
         )}
       </div>
@@ -37,11 +39,11 @@ const Transactions = ({
             <td className="text-start">الاسم</td>
             <td>رقم الجوال</td>
             <td>الحاله</td>
-            <td>تاريخ الانشاء</td>
-            <td>جهة العمل</td>
-            <td>نوع الخدمه</td>
-            <td>لدى موظف</td>
-            <td>الافاده</td>
+            <td className="max-lg:hidden">تاريخ الانشاء</td>
+            <td className="max-lg:hidden">جهة العمل</td>
+            <td className="max-lg:hidden">نوع الخدمه</td>
+            <td className="max-sm:hidden">لدى موظف</td>
+            <td className="max-sm:hidden">الافاده</td>
           </tr>
         </thead>
         <tbody>
@@ -56,55 +58,66 @@ const Transactions = ({
                     height={40}
                     className={styles.userImage}
                   /> */}
-                  {e.name.split(" ").slice(0,2).join(" ")}
+                  {e.name.split(" ").slice(0, 2).join(" ")}
                 </div>
               </td>
-              <td>{e.mobile}
-              </td>
+              <td>{e.mobile}</td>
               <td>
-                <span
-                  className={`${styles.status} ${
+                <div className="flex justify-center gap-2">
+
+                <p
+                  className={`${styles.status} max-md:h-5 max-md:w-5  ${
                     e.state === "pending"
-                      ? styles.pending
-                      : e.state === "done"
-                      ? styles.done
-                      : e.state === "canceled"
-                      ? styles.cancellede
-                      : e.state === "created"
-                      ? styles.created
-                      : ""
+                    ? styles.pending
+                    : e.state === "done"
+                    ? styles.done
+                    : e.state === "canceled"
+                    ? styles.cancellede
+                    : e.state === "created"
+                    ? styles.created
+                    : ""
                   }`}>
-                  {translateState(e.state)}
-                </span>
+                  <span className="md:block hidden">
+                    {translateState(e.state)}
+                  </span>
+                </p>
+                    </div>
               </td>
-              <td>{format(e.createdAt, 'EEEE, d MMMM yyyy', { locale: ar })}</td>
-              <td>{e.employer?translateWorkField(e.employer):"----"}</td>
-              <td>{e.provided_service_type?translateServiceType(e.provided_service_type):"----"}</td>
-              <td>
-                {(e.employee &&
-                e.employee.length > 0||e.employeeExl) &&
+              <td className="max-lg:hidden">
+                {format(e.createdAt, "EEEE, d MMMM yyyy", { locale: ar })}
+              </td>
+              <td className="max-lg:hidden">
+                {e.employer ? translateWorkField(e.employer) : "----"}
+              </td>
+              <td className="max-lg:hidden">
+                {e.provided_service_type
+                  ? translateServiceType(e.provided_service_type)
+                  : "----"}
+              </td>
+              <td className="max-sm:hidden">
+                {((e.employee && e.employee.length > 0) || e.employeeExl) &&
                 e.state !== "done" &&
                 e.state !== "canceled"
                   ? "نعم"
                   : "لا"}
               </td>
-              <td>
+              <td className="max-sm:hidden">
                 <div className="flex flex-col gap-1">
                   {e.notes.map((note, i) => (
                     <div className="flex justify-between gap-2" key={i}>
-                      <p>
-                        <span
-                          className={`${styles.status} ${
-                            note.state === "pending"
-                              ? styles.pending
-                              : note.state === "done"
-                              ? styles.done
-                              : note.state === "canceled"
-                              ? styles.cancellede
-                              : note.state === "created"
-                              ? styles.created
-                              : ""
-                          }`}>
+                      <p
+                        className={`${styles.status} max-md:h-5 max-md:w-5 ${
+                          note.state === "pending"
+                            ? styles.pending
+                            : note.state === "done"
+                            ? styles.done
+                            : note.state === "canceled"
+                            ? styles.cancellede
+                            : note.state === "created"
+                            ? styles.created
+                            : ""
+                        }`}>
+                        <span className="md:block hidden">
                           {translateState(note.state)}
                         </span>
                       </p>
@@ -122,7 +135,10 @@ const Transactions = ({
                         : `/dashboard/services/${e._id}`
                     }>
                     <button className={`${styles.button} ${styles.view}`}>
-                      التفاصيل
+                      <span className="md:block hidden">التفاصيل</span>
+                      <span className="block md:hidden">
+                        <MdOutlineDescription />
+                      </span>
                     </button>
                   </Link>
                   {!isTask && (
@@ -132,7 +148,10 @@ const Transactions = ({
                         await deleteService(e._id);
                         dispatch(setLoad(Math.random()));
                       }}>
-                      حذف
+                      <span className="md:block hidden">حذف</span>
+                      <span className="block md:hidden">
+                        <MdDelete />
+                      </span>
                     </button>
                   )}
                 </div>

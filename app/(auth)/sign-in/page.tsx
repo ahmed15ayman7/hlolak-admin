@@ -70,7 +70,7 @@ export default function Login() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="bg-[#fff] p-6 flex flex-col gap-3 px-10 rounded shadow-md">
+          className="bg-[#fff] p-6 flex flex-col gap-3 px-10 rounded shadow-md w-96">
           <div className="flex flex-col   space-y-2 text-center">
             <h1 className="text-3xl text-body-bold tracking-tight mb-5 text-[#212126] cl-internal-1tpvhd8">
               تسجيل الدخول
@@ -85,7 +85,7 @@ export default function Login() {
               name="email"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full items-center gap-2">
-                  <FormLabel className="flex self-start">
+                  <FormLabel className="flex self-start text-[#000000]">
                     البريد الالكتروني
                   </FormLabel>
                   <FormControl>
@@ -107,7 +107,7 @@ export default function Login() {
               name="password"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full items-center gap-2">
-                  <FormLabel className="flex self-start">الرقم السري</FormLabel>
+                  <FormLabel className="flex self-start text-[#000000]">الرقم السري</FormLabel>
                   <FormControl>
                     <Input
                       type="password"

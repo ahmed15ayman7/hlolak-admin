@@ -76,7 +76,9 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   let router = useRouter();
   let [loading, setLoading] = useState<boolean>(true);
   const load = useSelector(selectLoad);
-  let employes= service?.employeeExl?[...service.employee,service.employeeExl]:service?.employee
+  let employes = service?.employeeExl
+    ? [...service.employee, service.employeeExl]
+    : service?.employee;
   useEffect(() => {
     getUserByRedux(router, path, user, setLoading);
     let getAllServices = async () => {
@@ -162,7 +164,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                 ? styles.created
                 : ""
             }`}>
-            {service.state}
+            {translateState(service.state)}
           </span>
         </p>
         <p className="text-lg text-gray-300">
@@ -230,11 +232,13 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
               key={i}
               className="bg-gray-700 text-gray-300 flex justify-between items-center p-3 rounded shadow-sm">
               <p>{empId.name}</p>
-             {empId._id&& <Link href={`/dashboard/users/${empId._id}`}>
-                <button className={`${styles.button} ${styles.view}`}>
-                  View
-                </button>
-              </Link>}
+              {empId._id && (
+                <Link href={`/dashboard/users/${empId._id}`}>
+                  <button className={`${styles.button} ${styles.view}`}>
+                    View
+                  </button>
+                </Link>
+              )}
             </li>
           ))
         ) : (
@@ -286,3 +290,19 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
 };
 
 export default ServicesPage;
+
+
+const translateState = (value: string) => {
+  switch (value) {
+    case "pending":
+      return "جارية";
+    case "canceled":
+      return "رُفضت";
+    case "done":
+      return "تمت";
+    case "created":
+      return "جديد";
+    default:
+      return value;
+  }
+};

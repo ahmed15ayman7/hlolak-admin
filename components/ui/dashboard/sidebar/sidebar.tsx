@@ -168,7 +168,7 @@ const showNotification = (msg: any) => {
       };
     }else{
       const subscribedChannel = pusherClient.subscribe("services");
-      subscribedChannel.bind(user._id, (msg: any) => {
+      subscribedChannel.bind(user?._id, (msg: any) => {
         // setMessages((prevMessages) => [...prevMessages, msg]);
         showNotification(msg);
       });
@@ -195,7 +195,7 @@ const showNotification = (msg: any) => {
   const dispatch = useDispatch();
   const router = useRouter();
   return (
-    <div className={`${styles.container}  flex flex-col justify-between`}>
+    <div className={`${styles.container}  flex flex-col justify-between `}>
       <div className="">
         <div className={styles.user}>
           {/* <Image
@@ -213,7 +213,7 @@ const showNotification = (msg: any) => {
         <ul className={styles.list}>
           {menuItems.map((cat) => (
             <li key={cat.title}>
-              <span className={styles.cat}>{cat.title}</span>
+              <span className={`${styles.cat} max-md:invisible`}>{cat.title}</span>
               {cat.list.map((item) => (
                 <MenuLink item={item} key={item.title} />
               ))}

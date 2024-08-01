@@ -1,5 +1,6 @@
 
 import Navbar from "@/components/ui/dashboard/navbar/navbar";
+import Header from "@/components/ui/dashboard/navbar/Header";
 import Sidebar from "@/components/ui/dashboard/sidebar/sidebar";
 import styles from "@/components/ui/dashboard/dashboard.module.css";
 import Footer from "@/components/ui/dashboard/footer/footer";
@@ -22,12 +23,13 @@ export default function RootLayout({
       // {/* <ProviderRedux> */}
         // <body className={styles.body}>
         // <MiddelWare/>
-          <div className={styles.container}>
-            <div className={styles.menu}>
+          <div className={`w-full ${styles.container} max-md:pt-20`}>
+            <div className={`${styles.menu} md:block hidden`}>
               <Sidebar type={"employee"}/>
             </div>
             <div className={styles.content}>
               {/* <Navbar /> */}
+              <Header type="employee" />
               <div className={"min-h-[80vh]"}>{children}</div>
               <Footer />
             </div>

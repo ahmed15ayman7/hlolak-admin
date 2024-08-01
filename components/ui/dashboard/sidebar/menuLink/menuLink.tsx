@@ -9,9 +9,14 @@ const MenuLink = ({item}:{item:{path:string,icon:JSX.Element,title:string}}) => 
   const pathname = usePathname()
 
   return (
-    <Link href={item.path} className={`${styles.container} ${pathname === item.path && styles.active}`}>
+    <Link href={item.path} className={`${styles.container} ${pathname === item.path && styles.active} max-lg:p-0 `}>
+      <span className="max-lg:scale-150">
       {item.icon}
+      </span>
+      <span className="max-lg:hidden">
+
       {item.title}
+      </span>
     </Link>
   )
 }
