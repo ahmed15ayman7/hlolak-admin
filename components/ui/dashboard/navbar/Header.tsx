@@ -67,7 +67,7 @@ const Header = ({ type }: { type: string }) => {
   return (
     <div className="fixed top-0 left-0 right-0 bg-[#182237] text-white flex justify-between items-center p-4 md:hidden">
       <span className="font-bold">{type === "admin"?"المشرف":"الموظف"}</span>
-      <ul className={`${styles.list} `}>
+      <ul className={`${styles.list} flex  `}>
           {menuItems.map((cat) => (
             <li key={cat.title}>
               <div className="flex gap-5">
