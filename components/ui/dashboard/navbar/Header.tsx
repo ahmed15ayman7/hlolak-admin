@@ -8,12 +8,15 @@ import { pusherClient } from "@/lib/pusher";
 import { useEffect } from "react";
 import styles from "../sidebar/sidebar.module.css";
 import { menuItems1, menuItems2 } from "../sidebar/sidebar";
+import CustomToast from "@/components/cards/CustomToast/CustomToast";
+import { toast } from "react-toastify";
 import MenuLink from "../sidebar/menuLink/menuLink";
 const Header = ({ type }: { type: string }) => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const router = useRouter();
   const showNotification = (msg: any) => {
+    toast(<CustomToast content={msg.content} link={`https://hlolak-admin.vercel.app${msg.link}`} name={msg.name} />)
     if (Notification.permission === "granted") {
       const notification = new Notification(`New message from ${msg.name}`, {
         body: msg.content,
@@ -67,7 +70,7 @@ const Header = ({ type }: { type: string }) => {
   return (
     <div className="fixed top-0 left-0 right-0 bg-[#182237] text-white flex justify-between items-center p-4 md:hidden">
       <span className="font-bold">{type === "admin"?"المشرف":"الموظف"}</span>
-      <ul className={`${styles.list} flex  `}>
+      <ul className={`${styles.list} flex `}>
           {menuItems.map((cat) => (
             <li key={cat.title}>
               <div className="flex gap-5">

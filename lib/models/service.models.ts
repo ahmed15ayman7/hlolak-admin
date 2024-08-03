@@ -20,9 +20,20 @@ const serviceSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   state: { type: String, default: "created" },
   step: { type: String, default: 1 },
+  loan_amount: { type: String },
+  installment: { type: String },
+  duration: { type: String },
   employeeExl: {
     name: { type: String },
   },
+  debtInstallments:[
+    {
+      id:{ type : Number},
+      debtInstallment:{ type : String},
+      totalDebt:{ type : String},
+      description:{ type : String},
+    }
+  ],
   communication: { type: String },
   notes: [
     {

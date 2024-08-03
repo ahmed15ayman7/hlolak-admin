@@ -58,6 +58,9 @@
 .delete{
   background-color: crimson;
 }
+.delete:hover{
+  background-color: #dc143c90;
+}
 .addButton{
   padding: 10px;
   background-color: #5d57c9;
@@ -65,6 +68,10 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.addButton:hover{
+  
+  background-color: #5d57c980;
 }
 
 .buttons{

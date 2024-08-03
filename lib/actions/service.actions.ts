@@ -29,15 +29,24 @@ export interface IService {
     name: string;
     _id: undefined;
   };
-  bank?: string;                   // New field
-  stop?: string;                   // New field
-  appointment_date?: string;      // New field
-  id_number?: string;             // New field
-  property_value?: string;        // New field
-  property_status?: string;       // New field
-  property_age?: string;          // New field
-  net_salary?: string;            // New field
-  gross_salary?: string;          // New field
+  debtInstallments: {
+    id: number;
+    debtInstallment: string;
+    totalDebt: string;
+    description: string;
+  }[];
+  bank?: string;
+  stop?: string;
+  loan_amount?: string;
+  installment?: string;
+  duration?: string;
+  appointment_date?: string;
+  id_number?: string;
+  property_value?: string;
+  property_status?: string;
+  property_age?: string;
+  net_salary?: string;
+  gross_salary?: string;
 }
 
 interface AddServiceParams {
@@ -132,26 +141,27 @@ export const updateServiceState = async (
     await connectDB();
     const updateQuery: any = {
       state: newState,
-      ...(newState === "done" ? { step: 2 }:{}),
-      ...(bank ? { bank }:{}),
-      ...(stop ? { stop }:{}),
-      ...(appointment_date ?{ appointment_date }:{}),
-      ...(id_number ? { id_number }:{}),
-      ...(property_value ? { property_value }:{}),
-      ...(property_status ? { property_status }:{}),
-      ...(property_age ? { property_age }:{}),
-      ...(net_salary ? { net_salary }:{}),
-      ...(gross_salary ? { gross_salary }:{}),
+      ...(newState === "done" ? { step: 2 } : {}),
+      ...(bank ? { bank } : {}),
+      ...(stop ? { stop } : {}),
+      ...(appointment_date ? { appointment_date } : {}),
+      ...(id_number ? { id_number } : {}),
+      ...(property_value ? { property_value } : {}),
+      ...(property_status ? { property_status } : {}),
+      ...(property_age ? { property_age } : {}),
+      ...(net_salary ? { net_salary } : {}),
+      ...(gross_salary ? { gross_salary } : {}),
     };
-    console.log(updateQuery)
-    // Perform the update
-    const updatedService:IService|null = await Service.findByIdAndUpdate(serviceId, updateQuery, { new: true }).lean();
+    console.log(updateQuery);
+    const updatedService: IService | null = await Service.findByIdAndUpdate(
+      serviceId,
+      updateQuery,
+      { new: true }
+    ).lean();
     if (!updatedService) {
       console.error("Service not found");
       return null;
     }
-
-    // Fetch the updated service to add notes
     if (newState === "done") {
       const employee = await User.findById(employeeId);
       if (employee) {
@@ -159,7 +169,7 @@ export const updateServiceState = async (
         await employee.save(); // Ensure the employee's servicesDone list is saved
       }
     }
-    
+
     if (note.length > 0) {
       const updatedService2 = await Service.findById(serviceId);
       updatedService2?.notes.push({
@@ -182,7 +192,91 @@ export const updateServiceState = async (
   } catch (error) {
     console.error(error);
     console.error("Failed to update service state");
-    throw error; // Re-throw the error to handle it at the caller level
+    throw error;
+  }
+};
+export const UpdateService = async ({
+  serviceId,
+  loan_amount,
+  installment,
+  duration,
+  bank,
+  stop,
+  appointment_date,
+  id_number,
+  property_value,
+  property_status,
+  property_age,
+  net_salary,
+  gross_salary,
+  mobile,
+  employer,
+  salary,
+  provided_service_type,
+  has_debts,
+  debtInstallments
+}: {
+  serviceId: string;
+  loan_amount?: string;
+  installment?: string;
+  duration?: string;
+  bank?: string,
+  stop?: string,
+  appointment_date?: string,
+  id_number?: string,
+  property_value?: string,
+  property_status?: string,
+  property_age?: string,
+  net_salary?: string,
+  gross_salary?: string,
+  mobile?: string,
+  employer?: string,
+  salary?: string,
+  provided_service_type?: string,
+  has_debts?: string,
+  debtInstallments?: {
+    id: number;
+    debtInstallment: string;
+    totalDebt: string;
+    description: string;
+  }[];
+}) => {
+  try {
+    await connectDB();
+    const updateQuery: any = {
+      ...(loan_amount ? { loan_amount } : {}),
+      ...(installment ? { installment } : {}),
+      ...(duration ? { duration } : {}),
+      ...(bank ? { bank } : {}),
+      ...(stop ? { stop } : {}),
+      ...(appointment_date ? { appointment_date } : {}),
+      ...(id_number ? { id_number } : {}),
+      ...(property_value ? { property_value } : {}),
+      ...(property_status ? { property_status } : {}),
+      ...(property_age ? { property_age } : {}),
+      ...(net_salary ? { net_salary } : {}),
+      ...(gross_salary ? { gross_salary } : {}),
+      ...(mobile ? { gross_salary } : {}),
+      ...(employer ? { gross_salary } : {}),
+      ...(provided_service_type ? { gross_salary } : {}),
+      ...(salary ? { gross_salary } : {}),
+      ...(has_debts ? { gross_salary } : {}),
+      ...(debtInstallments ? { debtInstallments } : {}),
+    };
+    console.log(updateQuery);
+    const updatedService: IService | null |undefined = await Service.findByIdAndUpdate(
+      serviceId,
+      updateQuery,
+      { new: true }
+    ).lean();
+    if (!updatedService) {
+      console.error("Service not found");
+      return null;
+    }
+    return updatedService;
+  } catch (error) {
+    console.error(error);
+    console.error("Failed to update service state");
   }
 };
 

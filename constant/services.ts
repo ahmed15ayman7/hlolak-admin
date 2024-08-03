@@ -42,3 +42,84 @@ export let servicesArray: services[]=[
   desc: "قرض يتم الحصول عليه بموجب رهن ممتلكات تعود للمقترض كضمان لسداد القرض.",
     },
 ]
+
+export const translateWorkField = (value: string) => {
+  switch (value) {
+    case "private_sector":
+      return "قطاع خاص";
+    case "retired":
+      return "متقاعد";
+    case "civilian":
+      return "مدني";
+    case "military":
+      return "عسكري";
+    default:
+      return value;
+  }
+};
+
+
+export const translateServiceType = (value: string) => {
+  switch (value) {
+    case "purchase":
+      return "شراء";
+    case "mortgage":
+      return "رهن";
+    case "self_construction":
+      return "بناء ذاتي";
+    case "co_applicant":
+      return "تضامن";
+    default:
+      return value;
+  }
+};
+
+export const translateState = (value: string) => {
+  switch (value) {
+    case "pending":
+      return "جارية";
+    case "canceled":
+      return "رُفضت";
+    case "done":
+      return "تمت";
+    case "created":
+      return "جديد";
+    default:
+      return value;
+  }
+};
+
+export const DataLableAndKeys = [
+  { label: "رقم الجوال", key: "mobile" },
+  { label: "جهة العمل", key: "employer" },
+  { label: "المرتب", key: "salary" },
+  { label: "نوع الخدمه", key: "provided_service_type" },
+  { label: "البنك", key: "bank" },
+  { label: "تاريخ الموعد", key: "appointment_date" },
+  { label: "رقم الهوية", key: "id_number" },
+  { label: "قيمة العقار", key: "property_value" },
+  { label: "حالة العقار", key: "property_status" },
+  { label: "عمر العقار", key: "property_age" },
+  { label: "الراتب الصافي", key: "net_salary" },
+  { label: "الراتب الإجمالي", key: "gross_salary" },
+  { label: "مبلغ التمويل", key: "loan_amount" },
+  { label: "القسط", key: "installment" },
+  { label: "المدة/شهر", key: "duration" },
+  { label: "هل يوجد ايقاف؟", key: "stop" },
+  { label: "هل يوجد عليه التزامات أو ديون؟", key: "has_debts" },
+];
+
+export const selectOptions = {
+  provided_service_type: [
+    { value: "purchase", label: "شراء" },
+    { value: "mortgage", label: "رهن" },
+    { value: "self_construction", label: "بناء ذاتي" },
+    { value: "co_applicant", label: "تضامن" },
+  ],
+  employer: [
+    { value: "private_sector", label: "قطاع خاص" },
+    { value: "retired", label: "متقاعد" },
+    { value: "civilian", label: "مدني" },
+    { value: "military", label: "عسكري" },
+  ],
+};

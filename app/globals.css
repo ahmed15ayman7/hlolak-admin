@@ -140,3 +140,6 @@
   right: 10px;
   transform: translateY(-50%);
 }
+.jjjj:hover .tooltip {
+  opacity: 1;
+}

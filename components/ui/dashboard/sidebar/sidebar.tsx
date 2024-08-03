@@ -6,7 +6,8 @@ import { useRouter } from "next/navigation";
 import { clearUser, selectUser } from "@/lib/redux/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoad } from "@/lib/redux/LoadSlice";
-
+import CustomToast from "@/components/cards/CustomToast/CustomToast";
+import { toast } from "react-toastify";
 import {
   MdDashboard,
   MdShoppingBag,
@@ -136,6 +137,7 @@ export const menuItems2 = [
 const Sidebar = ({ type }: { type: string }) => {
   const user = useSelector(selectUser);
 const showNotification = (msg: any) => {
+  toast(<CustomToast content={msg.content} link={`https://hlolak-admin.vercel.app${msg.link}`} name={msg.name} />)
   if (Notification.permission === "granted") {
     const notification = new Notification(
       `New message from ${msg.name}`,

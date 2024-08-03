@@ -14,11 +14,13 @@ import CardsTot from "@/constant/data";
 import Loader from "@/components/shared/Loader";
 import { selectLoad } from "@/lib/redux/LoadSlice";
 import UploadExcelForm from "@/components/forms/AddServicesExcel";
+
 const ServicesPage = ({
   searchParams,
 }: {
   searchParams: { q: string; page: string };
 }) => {
+
   let [services, setServices] = useState<any[]>();
   let [created, setcreated] = useState<any[]>([]);
   let [done, setdone] = useState<any[]>([]);

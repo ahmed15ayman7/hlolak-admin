@@ -9,6 +9,7 @@ import { setLoad } from "@/lib/redux/LoadSlice";
 import { useDispatch } from "react-redux";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineDescription } from "react-icons/md";
+import EmployeeForm from "@/components/forms/assignEmployeeToService";
 const Transactions = ({
   services,
   isDash,
@@ -64,24 +65,23 @@ const Transactions = ({
               <td>{e.mobile}</td>
               <td>
                 <div className="flex justify-center gap-2">
-
-                <p
-                  className={`${styles.status} max-md:h-5 max-md:w-5  ${
-                    e.state === "pending"
-                    ? styles.pending
-                    : e.state === "done"
-                    ? styles.done
-                    : e.state === "canceled"
-                    ? styles.cancellede
-                    : e.state === "created"
-                    ? styles.created
-                    : ""
-                  }`}>
-                  <span className="md:block hidden">
-                    {translateState(e.state)}
-                  </span>
-                </p>
-                    </div>
+                  <p
+                    className={`${styles.status} max-md:h-5 max-md:w-5  ${
+                      e.state === "pending"
+                        ? styles.pending
+                        : e.state === "done"
+                        ? styles.done
+                        : e.state === "canceled"
+                        ? styles.cancellede
+                        : e.state === "created"
+                        ? styles.created
+                        : ""
+                    }`}>
+                    <span className="md:block hidden">
+                      {translateState(e.state)}
+                    </span>
+                  </p>
+                </div>
               </td>
               <td className="max-lg:hidden">
                 {format(e.createdAt, "EEEE, d MMMM yyyy", { locale: ar })}
@@ -128,6 +128,14 @@ const Transactions = ({
               </td>
               <td>
                 <div className={styles.buttons}>
+                {!isTask && (
+              
+                        <EmployeeForm
+                          serviceId={e._id}
+                          employeesIn={e.employee}
+                          state={e.state}
+                          
+                        />)}
                   <Link
                     href={
                       isTask
@@ -142,17 +150,20 @@ const Transactions = ({
                     </button>
                   </Link>
                   {!isTask && (
-                    <button
-                      className={`${styles.button} ${styles.delete}`}
-                      onClick={async () => {
-                        await deleteService(e._id);
-                        dispatch(setLoad(Math.random()));
-                      }}>
-                      <span className="md:block hidden">حذف</span>
-                      <span className="block md:hidden">
-                        <MdDelete />
-                      </span>
-                    </button>
+                    <>
+                       
+                      <button
+                        className={`${styles.button} ${styles.delete}`}
+                        onClick={async () => {
+                          await deleteService(e._id);
+                          dispatch(setLoad(Math.random()));
+                        }}>
+                        <span className="md:block hidden">حذف</span>
+                        <span className="block md:hidden">
+                          <MdDelete />
+                        </span>
+                      </button>
+                    </>
                   )}
                 </div>
               </td>
