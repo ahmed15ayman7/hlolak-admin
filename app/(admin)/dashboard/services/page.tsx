@@ -103,7 +103,7 @@ const ServicesPage = ({
           <p></p>
           <div className="flex gap-5">
           <UploadExcelForm/>
-          <Link href="/dashboard/users/add">
+          <Link href="/dashboard/services/add">
             <button className={styles.addButton}>اضافة</button>
           </Link>
           </div>
