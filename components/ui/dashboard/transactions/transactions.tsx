@@ -10,6 +10,9 @@ import { useDispatch } from "react-redux";
 import { MdDelete } from "react-icons/md";
 import { MdOutlineDescription } from "react-icons/md";
 import EmployeeForm from "@/components/forms/assignEmployeeToService";
+import { useState } from "react";
+import { Checkbox } from "../../checkbox";
+
 const Transactions = ({
   services,
   isDash,
@@ -21,7 +24,45 @@ const Transactions = ({
   isWork?: boolean;
   isTask?: boolean;
 }) => {
-  let dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectAll, setSelectAll] = useState<boolean>(false);
+
+  const handleSelectService = (serviceId: string) => {
+    setSelectedServices((prevSelected) =>
+      prevSelected.includes(serviceId)
+        ? prevSelected.filter((id) => id !== serviceId)
+        : [...prevSelected, serviceId]
+    );
+  };
+
+  const handleSelectAll = () => {
+    if (selectAll) {
+      // Unselect all services
+      setSelectedServices([]);
+    } else {
+      // Select all services
+      const allServiceIds = services.map((service) => service._id);
+      setSelectedServices(allServiceIds);
+    }
+    setSelectAll(!selectAll);
+  };
+
+  const handleFormCompletion = () => {
+    setSelectedServices([]);
+    setSelectAll(false);
+  };
+
+  const combinedEmployeesIn = selectedServices.flatMap((serviceId) => {
+    const service = services.find((s) => s._id === serviceId);
+    return service ? service.employee : [];
+  });
+
+  const combinedStates = selectedServices.map((serviceId) => {
+    const service = services.find((s) => s._id === serviceId);
+    return service ? service.state : "";
+  });
+
   return (
     <div className={` ${styles.container} mt-3`}>
       <div className="flex justify-between">
@@ -36,7 +77,15 @@ const Transactions = ({
       </div>
       <table className={styles.table}>
         <thead>
+
           <tr className="text-center">
+           {!isTask && ( <td className="text-start">
+              <input
+                type="checkbox"
+                checked={selectAll}
+                onChange={handleSelectAll}
+              />
+            </td>)}
             <td className="text-start">الاسم</td>
             <td>رقم الجوال</td>
             <td>الحاله</td>
@@ -45,20 +94,34 @@ const Transactions = ({
             <td className="max-lg:hidden">نوع الخدمه</td>
             <td className="max-sm:hidden">لدى موظف</td>
             <td className="max-sm:hidden">الافاده</td>
+            {selectedServices.length > 0 && (
+              <td className="">
+        <EmployeeForm
+          serviceId={selectedServices}
+          employeesIn={combinedEmployeesIn}
+          state={combinedStates}
+          onComplete={handleFormCompletion}
+        />      
+            </td>
+      )}
           </tr>
         </thead>
         <tbody>
           {services.map((e: IService, i) => (
             <tr key={i} className="text-center">
+             {!isTask && ( <td>
+              {/* <Checkbox
+                  checked={selectedServices.includes(e._id)}
+                  onCheckedChange={() => handleSelectService(e._id)}
+                /> */}
+                <input
+                  type="checkbox"
+                  checked={selectedServices.includes(e._id)}
+                  onChange={() => handleSelectService(e._id)}
+                />
+              </td>)}
               <td>
                 <div className={styles.user}>
-                  {/* <Image
-                    src="/noavatar.png"
-                    alt=""
-                    width={40}
-                    height={40}
-                    className={styles.userImage}
-                  /> */}
                   {e.name.split(" ").slice(0, 2).join(" ")}
                 </div>
               </td>
@@ -128,14 +191,6 @@ const Transactions = ({
               </td>
               <td>
                 <div className={styles.buttons}>
-                {!isTask && (
-              
-                        <EmployeeForm
-                          serviceId={e._id}
-                          employeesIn={e.employee}
-                          state={e.state}
-                          
-                        />)}
                   <Link
                     href={
                       isTask
@@ -151,7 +206,6 @@ const Transactions = ({
                   </Link>
                   {!isTask && (
                     <>
-                       
                       <button
                         className={`${styles.button} ${styles.delete}`}
                         onClick={async () => {
@@ -171,6 +225,7 @@ const Transactions = ({
           ))}
         </tbody>
       </table>
+    
     </div>
   );
 };

@@ -34,13 +34,16 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
-  ServiceFormValues,
-  serviceSchema,
+  // ServiceFormValues,
+  ServiceFormValues2,
+  // serviceSchema,
+  serviceSchema2,
 } from "@/lib/validations/servicesSchemas";
 import Loader from "@/components/shared/Loader";
 import { toast } from "react-toastify";
 import { setLoad } from "@/lib/redux/LoadSlice";
 import { useDispatch } from "react-redux";
+import ServicesRevsionForm from "@/components/forms/servicesRevsion";
 const ServicesPage = ({ params }: { params: { id: string } }) => {
   const [service, setServices] = useState<IService>();
   const [loading, setLoading] = useState(true);
@@ -50,8 +53,8 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
   const path = usePathname();
   const router = useRouter();
 
-  const form = useForm<ServiceFormValues>({
-    resolver: zodResolver(serviceSchema),
+  const form = useForm<ServiceFormValues2>({
+    resolver: zodResolver(serviceSchema2),
     defaultValues: {
       name: "",
       mobile: "",
@@ -94,7 +97,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
 
     fetchService();
   }, [id, form]);
-  const onSubmit = async (data: ServiceFormValues) => {
+  const onSubmit = async (data: ServiceFormValues2) => {
     setLoading(true);
     const loadingToastId = toast.loading("Uploading file, please wait...");
     try {
@@ -131,7 +134,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       className="container mx-auto p-6 shadow-md rounded-lg"
       style={{ direction: "rtl" }}>
       {loading && <Loader is />}
-      <h1 className="text-3xl justify-center font-extrabold text-white mb-20 flex gap-5">
+      {/* <h1 className="text-3xl justify-center font-extrabold text-white mb-20 flex gap-5">
 
         <span
             className={`${styles.status} ${
@@ -148,11 +151,14 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
             {translateState(service.state)}
           </span>
               {service.name}
-      </h1>
+      </h1> */}
         {loading && <Loader is />}
+        <ServicesRevsionForm params={{
+        id: id
+      }}/>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             <FormField
               control={form.control}
               name="name"
@@ -444,7 +450,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                 </FormItem>
               )}
             />
-          </div>
+          </div> */}
           <div className="w-full px-4 mb-6">
             <FormField
               control={form.control}

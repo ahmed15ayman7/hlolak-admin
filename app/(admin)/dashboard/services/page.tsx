@@ -20,7 +20,6 @@ const ServicesPage = ({
 }: {
   searchParams: { q: string; page: string };
 }) => {
-
   let [services, setServices] = useState<any[]>();
   let [created, setcreated] = useState<any[]>([]);
   let [done, setdone] = useState<any[]>([]);

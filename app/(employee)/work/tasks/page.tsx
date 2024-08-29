@@ -11,6 +11,8 @@ import Transactions from "@/components/ui/dashboard/transactions/transactions";
 import { UserData, fetchUserAndService } from "@/lib/actions/user.actions";
 import Loader from "@/components/shared/Loader";
 import CardsTot from "@/constant/data";
+import UploadExcelForm from "@/components/forms/AddServicesExcel";
+import Link from "next/link";
 
 const UsersPage = ({
   searchParams,
@@ -87,8 +89,15 @@ const UsersPage = ({
         </div>
       </div>
       <div className={styles.container}>
-        <div className={styles.top}>
-          <Search placeholder="رقم الجوال" />
+      <div className={styles.top}>
+          <Search placeholder="البحث برقم الجوال" />
+          <p></p>
+          <div className="flex gap-5">
+          <UploadExcelForm/>
+          <Link href="/work/tasks/add">
+            <button className={styles.addButton}>اضافة</button>
+          </Link>
+          </div>
         </div>
         {services && (
           <Transactions
