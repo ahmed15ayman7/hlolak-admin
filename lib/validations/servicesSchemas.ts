@@ -62,6 +62,15 @@ export const editSchema = z.object({
   loan_amount: z.string().optional(),
   installment: z.string().optional(),
   duration: z.string().optional(),
+  loan_amount2: z.string().optional(),
+  installment2: z.string().optional(),
+  duration2: z.string().optional(),
+  loan_amount3: z.string().optional(),
+  installment3: z.string().optional(),
+  duration3: z.string().optional(),
+  loan_amount4: z.string().optional(),
+  installment4: z.string().optional(),
+  duration4: z.string().optional(),
 });
 export type EditSchemaKeys = keyof z.infer<typeof editSchema>;
 

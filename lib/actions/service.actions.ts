@@ -40,6 +40,15 @@ export interface IService {
   loan_amount?: string;
   installment?: string;
   duration?: string;
+  loan_amount2?: string;
+  installment2?: string;
+  duration2?: string;
+  loan_amount3?: string;
+  installment3?: string;
+  duration3?: string;
+  loan_amount4?: string;
+  installment4?: string;
+  duration4?: string;
   appointment_date?: string;
   id_number?: string;
   property_value?: string;
@@ -200,6 +209,15 @@ export const UpdateService = async ({
   loan_amount,
   installment,
   duration,
+  loan_amount2,
+  installment2,
+  duration2,
+  loan_amount3,
+  installment3,
+  duration3,
+  loan_amount4,
+  installment4,
+  duration4,
   bank,
   stop,
   appointment_date,
@@ -220,6 +238,19 @@ export const UpdateService = async ({
   loan_amount?: string;
   installment?: string;
   duration?: string;
+  
+  loan_amount2?: string;
+  installment2?: string;
+  duration2?: string;
+  
+  loan_amount3?: string;
+  installment3?: string;
+  duration3?: string;
+  
+  loan_amount4?: string;
+  installment4?: string;
+  duration4?: string;
+  
   bank?: string,
   stop?: string,
   appointment_date?: string,
@@ -247,6 +278,15 @@ export const UpdateService = async ({
       ...(loan_amount ? { loan_amount } : {}),
       ...(installment ? { installment } : {}),
       ...(duration ? { duration } : {}),
+      ...(loan_amount2 ? { loan_amount2 } : {}),
+      ...(installment2 ? { installment2 } : {}),
+      ...(duration2 ? { duration2 } : {}),
+      ...(loan_amount3 ? { loan_amount3 } : {}),
+      ...(installment3 ? { installment3 } : {}),
+      ...(duration3 ? { duration3 } : {}),
+      ...(loan_amount4 ? { loan_amount4 } : {}),
+      ...(installment4 ? { installment4 } : {}),
+      ...(duration4 ? { duration4 } : {}),
       ...(bank ? { bank } : {}),
       ...(stop ? { stop } : {}),
       ...(appointment_date ? { appointment_date } : {}),

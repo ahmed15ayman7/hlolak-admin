@@ -71,6 +71,18 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       property_age: service?.property_age || "",
       net_salary: service?.net_salary || "",
       gross_salary: service?.gross_salary || "",
+      loan_amount: service?.loan_amount || "",
+      installment: service?.installment || "",
+      duration: service?.duration || "",
+      loan_amount2: service?.loan_amount2 || "",
+      installment2: service?.installment2 || "",
+      duration2: service?.duration2 || "",
+      loan_amount3: service?.loan_amount3 || "",
+      installment3: service?.installment3 || "",
+      duration3: service?.duration3 || "",
+      loan_amount4: service?.loan_amount4 || "",
+      installment4: service?.installment4 || "",
+      duration4: service?.duration4 || "",
     },
   });
 
@@ -140,6 +152,15 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
         loan_amount: data.loan_amount,
         installment: data.installment,
         duration: data.duration,
+        loan_amount2: data.loan_amount2,
+        installment2: data.installment2,
+        duration2: data.duration2,
+        loan_amount3: data.loan_amount3,
+        installment3: data.installment3,
+        duration3: data.duration3,
+        loan_amount4: data.loan_amount4,
+        installment4: data.installment4,
+        duration4: data.duration4,
         bank: data.bank,
         stop: data.stop,
         appointment_date: data.appointment_date,
@@ -249,8 +270,14 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                           renderSelect(field, fieldItems.key)
                         ) : (
                           <Input
-                            {...field}
-                            className="form-input mt-1 block w-full "
+                          type="text"
+                            name={field.name}
+                            onChange={field.onChange}
+                            ref={field.ref}
+                            disabled={field.disabled}
+                            onBlur={field.onBlur}
+                            defaultValue={field.value}
+                            className="mt-1  w-full "
                           />
                         )}
                         <FormMessage />
@@ -293,6 +320,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                   )
               )}
             </div>
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
 
        

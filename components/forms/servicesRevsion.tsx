@@ -32,7 +32,7 @@ import { setLoad, selectLoad } from "@/lib/redux/LoadSlice";
 import { useDispatch } from "react-redux";
 import UpdateQST from "@/components/forms/updateQST";
 import {
-  DataLableAndKeys,
+  DataLableAndKeysUSER,
   selectOptions,
   translateServiceType,
   translateState,
@@ -44,6 +44,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FiEdit, FiCheck } from "react-icons/fi";
 import { toast } from "react-toastify";
+import LoanTable from "../shared/LoanTable";
 
 
 const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
@@ -179,7 +180,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
               className="simple_form p-6 pt-0 w-full rounded overflow-scroll sm:shadow-2xl"
               onSubmit={editForm.handleSubmit(handleSave)}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {DataLableAndKeys.map((fieldItems, index) =>(
+                {DataLableAndKeysUSER.map((fieldItems, index) =>(
                   <FormField
                     key={index}
                     control={editForm.control}
@@ -237,7 +238,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
         ) : (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {DataLableAndKeys.map(
+              {DataLableAndKeysUSER.map(
                 (field, index) =>
                   //@ts-ignore
                   service[field.key] && (
@@ -253,9 +254,8 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
                   )
               )}
             </div>
+            <LoanTable service={service}/>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 py-4">
-
-       
             <p className="text-lg text-center text-gray-300 px-2">
               <strong className="text-white">الحاله:</strong>
               <span
@@ -307,7 +307,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
           </>
         )}
       </div>
-      {/* <UpdateQST id={service._id} allData={service.debtInstallments} setLoading={setLoading} /> */}
+      <UpdateQST id={service._id} allData={service.debtInstallments} setLoading={setLoading} />
 
     </div>
   ) : (
