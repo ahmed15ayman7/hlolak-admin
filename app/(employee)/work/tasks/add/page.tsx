@@ -8,7 +8,7 @@ const Page = () => {
         <h1 className="text-[30px]" > اضافة محتسب جديد</h1>
     <div className="flex items-center w-full ">
         
-        <ServiceForm/>
+        <ServiceForm emp/>
     </div>
     </div>
   )

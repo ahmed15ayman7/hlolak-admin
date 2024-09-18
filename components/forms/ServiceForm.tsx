@@ -26,11 +26,15 @@ import { Label } from "../ui/label";
 import { serviceValidation } from "@/lib/validation";
 import { SelectGroup } from "@radix-ui/react-select";
 import { Button } from "../ui/button";
-import { addService } from "@/lib/actions/service.actions";
-import { useRouter } from "next/navigation";
+import { addService, assignEmployeeToService } from "@/lib/actions/service.actions";
+import { usePathname, useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
+import { selectUser } from "@/lib/redux/userSlice";
 
-const ServiceForm = ({ NameService }: { NameService?: string }) => {
+const ServiceForm = ({ NameService,emp }: { NameService?: string,emp?:boolean }) => {
   let navigation = useRouter();
+  let path=usePathname()
+  let user =useSelector(selectUser)
   let form = useForm<z.infer<typeof serviceValidation>>({
     resolver: zodResolver(serviceValidation),
     defaultValues: {
@@ -45,7 +49,7 @@ const ServiceForm = ({ NameService }: { NameService?: string }) => {
 
   async function onsubmit(data: z.infer<typeof serviceValidation>) {
     try {
-      await addService({
+    let service=  await addService({
         name: data.name,
         mobile: data.mobile,
         employer: data.employer,
@@ -53,9 +57,10 @@ const ServiceForm = ({ NameService }: { NameService?: string }) => {
         provided_service_type: data.provided_service_type,
         has_debts: data.has_debts,
       });
+      emp && await assignEmployeeToService({serviceId:service?._id,employeeId:user._id,path,newState:service.state})
       console.log("Service created successfully");
       form.reset();
-      navigation.replace("/services");
+      navigation.replace(emp?"/work/tasks":"/dashboard/services");
     } catch (error) {
       console.log("Failed to create service:", error);
     }
@@ -90,7 +95,6 @@ const ServiceForm = ({ NameService }: { NameService?: string }) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="mobile"
