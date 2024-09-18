@@ -92,14 +92,13 @@ export const translateState = (value: string) => {
 export const DataLableAndKeys = [
   { label: "رقم الجوال", key: "mobile" },
   { label: "جهة العمل", key: "employer" },
-  { label: "المرتب", key: "salary" },
+  { label: "الراتب", key: "salary" },
   { label: "نوع الخدمه", key: "provided_service_type" },
   { label: "البنك", key: "bank" },
   { label: "تاريخ الميلاد", key: "appointment_date" },
   { label: "رقم الهوية", key: "id_number" },
   { label: "قيمة العقار", key: "property_value" },
   { label: "حالة العقار", key: "property_status" },
-  { label: "عمر العقار", key: "property_age" },
   { label: "الراتب الصافي", key: "net_salary" },
   { label: "الراتب الإجمالي", key: "gross_salary" },
   { label: "مبلغ التمويل ١", key: "loan_amount" },
@@ -114,6 +113,7 @@ export const DataLableAndKeys = [
   { label: "مبلغ التمويل ٤", key: "loan_amount4" },
   { label: "القسط ٤", key: "installment4" },
   { label: "المدة/شهر ٤", key: "duration4" },
+  { label: " مدعوم ؟", key: "property_age" },
   { label: "هل يوجد ايقاف؟", key: "stop" },
   { label: "هل يوجد عليه التزامات أو ديون؟", key: "has_debts" },
 ];

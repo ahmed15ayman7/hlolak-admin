@@ -251,7 +251,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                           {fieldItems.label}
                         </Label>
                         {fieldItems.key === "has_debts" ||
-                        fieldItems.key === "stop" ? (
+                        fieldItems.key === "stop"||fieldItems.key === "property_age" ? (
                           <RadioGroup
                             className="flex justify-end"
                             defaultValue={field.value}
