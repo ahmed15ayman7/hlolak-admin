@@ -50,16 +50,27 @@ const ServiceForm = ({ NameService,emp }: { NameService?: string,emp?:boolean })
 
  let  onsubmit= async (data: z.infer<typeof serviceValidation>) =>{
     try {
-    let service=  await addService({
-        name: data.name,
-        mobile: data.mobile,
-        employer: data.employer,
-        employee:[user._id],
-        salary: +data.salary,
-        provided_service_type: data.provided_service_type,
-        has_debts: data.has_debts,
-      });
-      emp && await assignEmployeeToService({serviceId:service?._id,employeeId:user._id,path,newState:service.state})
+    // let service=  await addService({
+    //     name: data.name,
+    //     mobile: data.mobile,
+    //     employer: data.employer,
+    //     employee:[user._id],
+    //     salary: +data.salary,
+    //     provided_service_type: data.provided_service_type,
+    //     has_debts: data.has_debts,
+    //   });
+    const response = await fetch('/api/services', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...data,emp:emp,path,user}),
+    });
+  
+    if (!response.ok) {
+      throw new Error('Failed to add service');
+    }
+     
       console.log("Service created successfully");
       form.reset();
       navigation.replace(emp?"/work/tasks":"/dashboard/services");

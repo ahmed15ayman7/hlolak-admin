@@ -1,4 +1,4 @@
-"use client"
+
 import ServiceForm from '@/components/forms/ServiceForm'
 import React from 'react'
 

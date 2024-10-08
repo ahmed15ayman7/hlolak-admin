@@ -93,8 +93,8 @@ export const addService = async ({
   provided_service_type,
   has_debts,
 }: AddServiceParams) => {
+  await connectDB();
   try {
-    await connectDB();
 
     const newService = new Service({
       name,
