@@ -38,6 +38,7 @@ export interface IService {
   bank?: string;
   stop?: string;
   loan_amount?: string;
+  loan_amount1?: string;
   installment?: string;
   duration?: string;
   loan_amount2?: string;
@@ -62,6 +63,7 @@ interface AddServiceParams {
   name: string;
   mobile: string;
   employer: string;
+  employee?: string[];
   salary: number;
   provided_service_type: string;
   has_debts: string;
@@ -86,6 +88,7 @@ export const addService = async ({
   name,
   mobile,
   employer,
+  employee,
   salary,
   provided_service_type,
   has_debts,
@@ -96,6 +99,7 @@ export const addService = async ({
     const newService = new Service({
       name,
       mobile,
+      ...(employee ? { employee } : {}),
       employer,
       salary,
       provided_service_type,
@@ -207,6 +211,7 @@ export const updateServiceState = async (
 export const UpdateService = async ({
   serviceId,
   loan_amount,
+  loan_amount1,
   installment,
   duration,
   loan_amount2,
@@ -236,6 +241,7 @@ export const UpdateService = async ({
 }: {
   serviceId: string;
   loan_amount?: string;
+  loan_amount1?: string;
   installment?: string;
   duration?: string;
   
@@ -276,6 +282,7 @@ export const UpdateService = async ({
     await connectDB();
     const updateQuery: any = {
       ...(loan_amount ? { loan_amount } : {}),
+      ...(loan_amount1 ? { loan_amount } : {}),
       ...(installment ? { installment } : {}),
       ...(duration ? { duration } : {}),
       ...(loan_amount2 ? { loan_amount2 } : {}),

@@ -60,6 +60,7 @@ export const editSchema = z.object({
   net_salary: z.string().optional(),
   gross_salary: z.string().optional(),
   loan_amount: z.string().optional(),
+  loan_amount1: z.string().optional(),
   installment: z.string().optional(),
   duration: z.string().optional(),
   loan_amount2: z.string().optional(),

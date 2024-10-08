@@ -241,6 +241,29 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
               onSubmit={editForm.handleSubmit(handleSave)}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {DataLableAndKeys.map((fieldItems, index) =>(
+                  fieldItems.key==="loan_amount"?
+                  <div className="grid grid-cols-subgrid gap-4 col-span-3">
+                  <div className="col-start-2">
+                  <FormField
+                  key={index}
+                  control={editForm.control}
+                  name={fieldItems.key as EditSchemaKeys}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <Label className="text-lg text-white">
+                        {fieldItems.label}
+                      </Label>
+                        <Input
+                            {...field}
+                            className="form-input mt-1 block w-full "
+                          />
+                
+                       <FormMessage />
+                      </FormItem>
+                      )}/>
+                      </div>   
+                      </div>   
+                      :
                   <FormField
                     key={index}
                     control={editForm.control}
@@ -251,7 +274,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                           {fieldItems.label}
                         </Label>
                         {fieldItems.key === "has_debts" ||
-                        fieldItems.key === "stop"||fieldItems.key === "property_age" ? (
+                        fieldItems.key === "stop" ? (
                           <RadioGroup
                             className="flex justify-end"
                             defaultValue={field.value}
@@ -268,7 +291,8 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                         ) : //@ts-ignore
                         selectOptions[fieldItems.key] ? (
                           renderSelect(field, fieldItems.key)
-                        ) : (
+                        ) :
+                         (
                           <Input
                           type="text"
                             name={field.name}
@@ -286,7 +310,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
                   />
                 ))}
               </div>
-              <div className="flex justify-center gap-10 ">
+              <div className="flex justify-center gap-10 mt-5 ">
                 <Button type="submit" className={`${styles.addButton}`}>
                   <FiCheck className="mr-2" />
                   حفظ

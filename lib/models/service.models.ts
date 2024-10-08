@@ -21,6 +21,7 @@ const serviceSchema = new mongoose.Schema({
   state: { type: String, default: "created" },
   step: { type: String, default: 1 },
   loan_amount: { type: String },
+  loan_amount1: { type: String },
   installment: { type: String },
   duration: { type: String },
   loan_amount2: { type: String },

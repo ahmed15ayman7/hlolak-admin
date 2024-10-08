@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import { Input } from "../ui/input";
 import PhoneInput from "react-phone-number-input";
@@ -47,12 +48,13 @@ const ServiceForm = ({ NameService,emp }: { NameService?: string,emp?:boolean })
     },
   });
 
-  async function onsubmit(data: z.infer<typeof serviceValidation>) {
+ let  onsubmit= async (data: z.infer<typeof serviceValidation>) =>{
     try {
     let service=  await addService({
         name: data.name,
         mobile: data.mobile,
         employer: data.employer,
+        employee:[user._id],
         salary: +data.salary,
         provided_service_type: data.provided_service_type,
         has_debts: data.has_debts,

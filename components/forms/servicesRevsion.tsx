@@ -208,7 +208,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
                         ) : //@ts-ignore
                         selectOptions[fieldItems.key] ? (
                           renderSelect(field, fieldItems.key)
-                        ) : (
+                        ): (
                           <Input
                             {...field}
                             className="form-input mt-1 block w-full "
@@ -220,7 +220,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
                   />
                 ))}
               </div>
-              <div className="flex justify-center gap-10 ">
+              <div className="flex justify-center gap-10 mt-5">
                 <Button type="submit" className={`${styles.addButton}`}>
                   <FiCheck className="mr-2" />
                   حفظ
