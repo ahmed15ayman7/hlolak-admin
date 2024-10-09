@@ -72,6 +72,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       net_salary: service?.net_salary || "",
       gross_salary: service?.gross_salary || "",
       loan_amount: service?.loan_amount || "",
+      loan_amount1: service?.loan_amount1 || "",
       installment: service?.installment || "",
       duration: service?.duration || "",
       loan_amount2: service?.loan_amount2 || "",
@@ -150,6 +151,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
       let updatedService: IService | null | undefined = await UpdateService({
         serviceId: service?._id!,
         loan_amount: data.loan_amount,
+        loan_amount1: data.loan_amount1,
         installment: data.installment,
         duration: data.duration,
         loan_amount2: data.loan_amount2,
@@ -241,7 +243,7 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
               onSubmit={editForm.handleSubmit(handleSave)}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {DataLableAndKeys.map((fieldItems, index) =>(
-                  fieldItems.key==="loan_amount"?
+                  fieldItems.key==="loan_amount1"?
                   <div className="grid grid-cols-subgrid gap-4 col-span-3">
                   <div className="col-start-2">
                   <FormField
