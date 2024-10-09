@@ -152,7 +152,6 @@ const ServicesPage = ({ params }: { params: { id: string } }) => {
           </span>
               {service.name}
       </h1> */}
-        {loading && <Loader is />}
         <ServicesRevsionForm params={{
         id: id
       }}/>

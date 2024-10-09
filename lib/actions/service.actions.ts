@@ -244,7 +244,6 @@ export const UpdateService = async ({
   loan_amount1?: string;
   installment?: string;
   duration?: string;
-  
   loan_amount2?: string;
   installment2?: string;
   duration2?: string;

@@ -187,9 +187,9 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
                     name={fieldItems.key as EditSchemaKeys}
                     render={({ field }) => (
                       <FormItem className="w-full">
-                        <Label className="text-lg text-white">
+                        {fieldItems.key=="loan_amount1"?<></>:<Label className="text-lg text-white">
                           {fieldItems.label}
-                        </Label>
+                        </Label>}
                         {fieldItems.key === "has_debts" ||
                         fieldItems.key === "stop"||fieldItems.key === "property_age" ? (
                           <RadioGroup
@@ -208,7 +208,7 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
                         ) : //@ts-ignore
                         selectOptions[fieldItems.key] ? (
                           renderSelect(field, fieldItems.key)
-                        ): (
+                        ):fieldItems.key=="loan_amount1"?<></>: (
                           <Input
                             {...field}
                             className="form-input mt-1 block w-full "
@@ -280,22 +280,22 @@ const ServicesRevsionForm = ({ params }: { params: { id: string } }) => {
             <div className="flex justify-center">
               <Button
                 onClick={() => {
-                  editForm.reset({
-                    mobile: service?.mobile || "",
-                    employer: service?.employer || "",
-                    salary: service?.salary || "",
-                    provided_service_type: service?.provided_service_type || "",
-                    has_debts: service?.has_debts || "",
-                    bank: service?.bank || "",
-                    stop: service?.stop || "",
-                    appointment_date: service?.appointment_date || "",
-                    id_number: service?.id_number || "",
-                    property_value: service?.property_value || "",
-                    property_status: service?.property_status || "",
-                    property_age: service?.property_age || "",
-                    net_salary: service?.net_salary || "",
-                    gross_salary: service?.gross_salary || "",
-                  })
+                  // editForm.reset({
+                  //   mobile: service?.mobile || "",
+                  //   employer: service?.employer || "",
+                  //   salary: service?.salary || "",
+                  //   provided_service_type: service?.provided_service_type || "",
+                  //   has_debts: service?.has_debts || "",
+                  //   bank: service?.bank || "",
+                  //   stop: service?.stop || "",
+                  //   appointment_date: service?.appointment_date || "",
+                  //   id_number: service?.id_number || "",
+                  //   property_value: service?.property_value || "",
+                  //   property_status: service?.property_status || "",
+                  //   property_age: service?.property_age || "",
+                  //   net_salary: service?.net_salary || "",
+                  //   gross_salary: service?.gross_salary || "",
+                  // })
                   setIsEditing(true)
                 }}
                 className="px-4 py-2 bg-yellow-500/80 hover:bg-yellow-500/60 text-white rounded-md flex items-center">

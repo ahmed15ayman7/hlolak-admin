@@ -92,7 +92,7 @@ export const translateState = (value: string) => {
 export const DataLableAndKeys = [
   { label: "رقم الجوال", key: "mobile" },
   { label: "جهة العمل", key: "employer" },
-  { label: "الراتب", key: "salary" },
+  { label: "المرتبة", key: "salary" },
   { label: "نوع الخدمه", key: "provided_service_type" },
   { label: "البنك", key: "bank" },
   { label: "تاريخ الميلاد", key: "appointment_date" },
@@ -102,7 +102,7 @@ export const DataLableAndKeys = [
   { label: " مدعوم ؟", key: "property_age" },
   { label: "الراتب الصافي", key: "net_salary" },
   { label: "الراتب الإجمالي", key: "gross_salary" },
-  { label: "مبلغ التمويل١", key: "loan_amount1" },
+  { label: "مبلغ التمويل", key: "loan_amount1" },
   { label: "اجمالي اقساط العميل فترة اولي", key: "loan_amount" },
   { label: "القسط ١", key: "installment" },
   { label: "المدة/شهر ١", key: "duration" },
@@ -121,14 +121,13 @@ export const DataLableAndKeys = [
 export const DataLableAndKeysUSER = [
   { label: "رقم الجوال", key: "mobile" },
   { label: "جهة العمل", key: "employer" },
-  { label: "المرتب", key: "salary" },
+  { label: "المرتبة", key: "salary" },
   { label: "نوع الخدمه", key: "provided_service_type" },
   { label: "البنك", key: "bank" },
   { label: "تاريخ الميلاد", key: "appointment_date" },
   { label: "رقم الهوية", key: "id_number" },
   { label: "قيمة العقار", key: "property_value" },
   { label: "حالة العقار", key: "property_status" },
-  { label: "عمر العقار", key: "property_age" },
   { label: "الراتب الصافي", key: "net_salary" },
   { label: "الراتب الإجمالي", key: "gross_salary" },
   // { label: "مبلغ التمويل", key: "loan_amount" },
@@ -137,6 +136,7 @@ export const DataLableAndKeysUSER = [
   { label: " مدعوم ؟", key: "property_age" },
   { label: "هل يوجد ايقاف؟", key: "stop" },
   { label: "هل يوجد عليه التزامات أو ديون؟", key: "has_debts" },
+  { label: "مبلغ التمويل", key: "loan_amount1" },
 ];
 
 export const selectOptions = {
