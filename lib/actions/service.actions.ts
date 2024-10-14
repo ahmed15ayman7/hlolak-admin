@@ -281,7 +281,7 @@ export const UpdateService = async ({
     await connectDB();
     const updateQuery: any = {
       ...(loan_amount ? { loan_amount } : {}),
-      ...(loan_amount1 ? { loan_amount } : {}),
+      ...(loan_amount1 ? { loan_amount1 } : {}),
       ...(installment ? { installment } : {}),
       ...(duration ? { duration } : {}),
       ...(loan_amount2 ? { loan_amount2 } : {}),
